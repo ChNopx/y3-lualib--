@@ -26,7 +26,7 @@ y3.py_converter.register_lua_to_py("py.UnitGroup", function(lua_value)
     return lua_value.handle
 end)
 
---创建空单位组(3月28号更新后可用)
+--创建空单位组
 ---@return UnitGroup
 function M.创建空单位组()
     return M.从handle获取(GameAPI.create_unit_group())

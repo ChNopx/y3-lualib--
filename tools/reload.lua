@@ -5,7 +5,7 @@ local originRequire = require
 --热重载相关的方法，详细请看 `演示/热重载`。
 ---@class Reload
 ---@overload fun(optional?: Reload.Optional): self
-local M = Class "Reload"
+local M = Class 'Reload'
 
 ---@private
 ---@type table<string, boolean>
@@ -71,7 +71,7 @@ function M:isValidName(name)
 end
 
 function M:fire()
-    log.info("=========== reload start ===========")
+    log.info('=========== reload start ===========')
 
     local beforeReloadCallbacksNoReload = {}
     local afterReloadCallbacksNoReload  = {}
@@ -112,7 +112,7 @@ function M:fire()
     for _, data in ipairs(M.afterReloadCallbacks) do
         xpcall(data.callback, log.error, self, self:isValidName(data.name))
     end
-    log.info("=========== reload finish ===========")
+    log.info('=========== reload finish ===========')
 end
 
 ---@private
@@ -164,16 +164,18 @@ function M.getIncludeName(func)
     if not debug or not debug.getinfo then
         return nil
     end
-    local info = debug.getinfo(func, "S")
+    local info = debug.getinfo(func, 'S')
     local source = info.source
-    if source:sub(1, 1) ~= "@" then
-        return nil
-    end
-    local path = source:sub(2)
-    local modName = M.modNameMap[path]
-    if not M.includedNameMap[modName] then
-        return nil
-    end
+    -- if source:sub(1, 1) ~= "@" then
+    --     return nil
+    -- end
+    -- local path = source:sub(2)
+    -- local modName = M.modNameMap[path]
+    local modName = source:match('/script/(.*)%.') --[[@as string]]
+    modName = modName:gsub('\\', '.')
+    -- if not M.includedNameMap[modName] then
+    --     return nil
+    -- end
     return modName
 end
 
@@ -192,7 +194,7 @@ end
 ---@param optional? Reload.Optional
 function M.reload(optional)
     optional = optional or M.defaultReloadOptional
-    local reload = New "Reload" (optional)
+    local reload = New 'Reload' (optional)
     reload:fire()
 end
 

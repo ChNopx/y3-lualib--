@@ -1,7 +1,7 @@
 ---@class Pool
 ---@field private pool table<any, integer>
 ---@overload fun(): self
-local M = Class "Pool"
+local M = Class 'Pool'
 
 function M:__init()
     ---@private
@@ -92,7 +92,7 @@ function M:取一个随机对象(filter)
         end
     end
 
-    error("unreachable")
+    error('unreachable')
 end
 
 -- 抽取多个随机对象，不重复
@@ -133,9 +133,9 @@ function M:dump()
     end)
     local buf = {}
     for i, obj in ipairs(self.order) do
-        buf[i] = ("%s: %d"):format(tostring(obj), self.pool[obj])
+        buf[i] = ('%s: %d'):format(tostring(obj), self.pool[obj])
     end
-    return table.concat(buf, "\n")
+    return table.concat(buf, '\n')
 end
 
 -- 遍历池的对象
@@ -150,7 +150,16 @@ function M:遍历()
 end
 
 function M.创建()
-    return New "Pool" ()
+    return New 'Pool' ()
+end
+
+---@param 参数 table<any,integer>[] {{对象, 权重}}
+function M.创建自数据表(参数)
+    local r = M.创建()
+    for index, value in ipairs(参数) do
+        r:添加对象(value[1], value[2])
+    end
+    return r
 end
 
 return M

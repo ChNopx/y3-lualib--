@@ -22,7 +22,7 @@ local function 缓存对象(类型, 对象)
         if 缓存[类型][载入名称] == nil then
             缓存[类型][载入名称] = {}
         end
-        log.debug(string.format('创建 %s %s %s', 载入名称, 类型, tostring(对象)))
+        -- log.debug(string.format('创建 %s %s %s', 载入名称, 类型, tostring(对象)))
 
         table.insert(缓存[类型][载入名称], 对象)
     end
@@ -52,7 +52,7 @@ y3.reload.onBeforeReload(function(reload, willReload)
         if reload:isValidName(value) or 强制清理[value] then
             if 缓存.事件[value] then
                 for _, 触发器 in ipairs(缓存.事件[value]) do
-                    log.debug(string.format('重载移除 %s 事件 %s', value, tostring(触发器)))
+                    -- log.debug(string.format('重载移除 %s 事件 %s', value, tostring(触发器)))
                     触发器:移除()
                 end
             end

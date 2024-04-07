@@ -3,7 +3,7 @@
 local M = {}
 
 ---@private
-M.table_cache = setmetatable({}, { __mode = "k" })
+M.table_cache = setmetatable({}, { __mode = 'k' })
 
 -- 获取玩家的存档数据（布尔）
 ---@param player Player
@@ -87,7 +87,7 @@ end
 ---@param slot integer
 ---@param t table
 function M.保存玩家表格数据(player, slot, t)
-    assert(type(t) == "table", "数据类型必须是表！")
+    assert(type(t) == 'table', '数据类型必须是表！')
     if y3.proxy.raw(t) then
         t = y3.proxy.raw(t)
     end
@@ -109,7 +109,7 @@ function M.upload_save_data(player)
     M.timer_map[player] = y3.本地计时器.wait(0.1, function()
         M.timer_map[player] = nil
         player.handle:upload_save_data()
-        log.info("自动保存存档：", player)
+        log.info('自动保存存档：', player)
     end)
 end
 
@@ -124,35 +124,36 @@ function M.load_table_with_cover_enable(player, slot)
     ---@type Proxy.Config
     local proxy_config = {
         anySetter = function(self, raw, key, value, config, custom)
-            if custom >= 3 and type(value) == "table" then
-                error("存档表最多只支持3层嵌套")
+            if custom >= 3 and type(value) == 'table' then
+                error('存档表最多只支持3层嵌套')
             end
-            if type(key) ~= "string"
-                and math.type(key) ~= "integer" then
-                error("存档的key必须是字符串或者整数")
+            if type(key) ~= 'string'
+                and math.type(key) ~= 'integer' then
+                error('存档的key必须是字符串或者整数')
             end
             local vtype = type(value)
-            if vtype ~= "nil"
-                and vtype ~= "string"
-                and vtype ~= "boolean"
-                and vtype ~= "number"
-                and vtype ~= "table" then
-                error("存档的值只能是基础类型或表")
+            if vtype ~= 'nil'
+                and vtype ~= 'string'
+                and vtype ~= 'boolean'
+                and vtype ~= 'number'
+                and vtype ~= 'table' then
+                error('存档的值只能是基础类型或表')
             end
-            if vtype == "table" and y3.proxy.raw(value) then
+            if vtype == 'table' and y3.proxy.raw(value) then
                 value = y3.proxy.raw(value)
             end
             raw[key] = value
+            log.info('更新存档', player, custom, key, value)
 
             M.保存玩家表格数据(player, slot, save_data)
         end,
         anyGetter = function(self, raw, key, config, custom)
             local value = raw[key]
-            if type(value) == "table" then
+            if type(value) == 'table' then
                 return create_proxy(value, custom + 1)
             end
             return value
-        end
+        end,
     }
 
     function create_proxy(raw, level)
@@ -186,36 +187,36 @@ function M.load_table_with_cover_disable(player, slot)
         update_timer = y3.本地计时器.wait(update_delay, function()
             update_timer = nil
             player.handle:upload_save_data()
-            log.info("自动保存存档：", player, slot)
+            log.info('自动保存存档：', player, slot)
         end)
     end
 
     local function set_value(key, value)
-        player.handle:set_save_table_key_value(slot, key, value, "", "", "")
+        player.handle:set_save_table_key_value(slot, key, value, '', '', '')
         update_save_data()
     end
 
     local function get_value(key)
         ---@diagnostic disable-next-line: param-type-mismatch
-        return player.handle:get_save_table_key_value(slot, key, "", "", nil, "")
+        return player.handle:get_save_table_key_value(slot, key, '', '', nil, '')
     end
 
     ---@type Proxy.Config
     local proxy_config = {
         anySetter = function(self, raw, key, value, config)
-            if type(key) ~= "string"
-                and math.type(key) ~= "integer" then
-                error("表的key必须是字符串或者整数")
+            if type(key) ~= 'string'
+                and math.type(key) ~= 'integer' then
+                error('表的key必须是字符串或者整数')
             end
             local vtype = type(value)
-            if vtype == "table" then
-                error("禁止覆盖模式下表不能作为存档的值")
+            if vtype == 'table' then
+                error('禁止覆盖模式下表不能作为存档的值')
             end
-            if vtype ~= "nil"
-                and vtype ~= "string"
-                and vtype ~= "boolean"
-                and vtype ~= "number" then
-                error("存档的值只能是基础类型")
+            if vtype ~= 'nil'
+                and vtype ~= 'string'
+                and vtype ~= 'boolean'
+                and vtype ~= 'number' then
+                error('存档的值只能是基础类型')
             end
 
             set_value(key, value)
@@ -224,7 +225,7 @@ function M.load_table_with_cover_disable(player, slot)
             local value = get_value(key)
 
             return value
-        end
+        end,
     }
 
     function create_proxy(raw)

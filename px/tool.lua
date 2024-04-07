@@ -1,5 +1,5 @@
 ---@class 表
-local m = Class "表"
+local m = Class '表'
 
 ---@overload fun(表:table,值:any)
 ---@overload fun(表:table,位置:integer,值:any)
@@ -75,22 +75,45 @@ end
 ---@param 分隔符 string
 ---@return string|nil
 function m.数组_连接P(表, 分隔符)
-    local 返回文本 = ""
+    local 返回文本 = ''
     if 表 then
         for _, value in ipairs(表) do
             if value ~= nil then
-                if type(value) == "table" and not 表.是否存在字段(value, "__class__") then
+                if type(value) == 'table' and not 表.是否存在字段(value, '__class__') then
                     返回文本 = 返回文本 .. 表.到字符串(value) .. 分隔符
                 else
                     返回文本 = 返回文本 .. 到字符串(value) .. 分隔符
                 end
             else
-                返回文本 = 返回文本 .. "nil" .. 分隔符
+                返回文本 = 返回文本 .. 'nil' .. 分隔符
             end
         end
         return 返回文本
     end
     return nil
+end
+
+---@param 表 table
+---@param 开始位置? integer
+---@param 结束位置? integer
+---@return string
+function m.数组_连接为路径文本(表, 开始位置, 结束位置)
+    开始位置 = 开始位置 or 1
+    结束位置 = 结束位置 and 结束位置 >= 1 and 结束位置 <= #表 and 结束位置 or #表
+    local s = ''
+    for i = 开始位置, 结束位置 - 1 do
+        if type(表[i]) == 'number' then
+            s = s .. '[' .. 表[i] .. '].'
+        else
+            s = s .. 表[i] .. '.'
+        end
+    end
+    if type(表[结束位置]) == 'number' then
+        s = s .. '[' .. 表[结束位置] .. ']'
+    else
+        s = s .. 表[结束位置]
+    end
+    return s
 end
 
 ---表_获取最小可用索引
@@ -147,7 +170,7 @@ end
 ---@package
 function m.表_解析路径字段(键)
     local 返回键
-    返回键 = 字符串.匹配(键, "^%[(%d+)%]$")
+    返回键 = 字符串.匹配(键, '^%[(%d+)%]$')
     if 返回键 then
         return 到数值(返回键)
     end
@@ -159,7 +182,7 @@ end
 ---@param 路径 string  字段2.[1].字段2
 ---@param 值 any
 function m.表_设置路径值(表, 路径, 值)
-    local 字段数组 = 字符串.分割(路径, ".")
+    local 字段数组 = 字符串.分割(路径, '.')
     local 字段数 = m.表_获取长度(字段数组)
     local 当前表 = 表
     local 当前字段 = m.表_解析路径字段(路径)
@@ -180,7 +203,10 @@ end
 ---@param 路径 string  字段1.字段2.字段3
 ---@return any
 function m.表_获取路径值(表, 路径)
-    local 字段数组 = 字符串.分割(路径, ".")
+    if 表 == nil then
+        return nil
+    end
+    local 字段数组 = 字符串.分割(路径, '.')
     local 字段数 = m.表_获取长度(字段数组)
     local 当前表 = 表
     local 当前字段 = m.表_解析路径字段(路径)
@@ -244,7 +270,7 @@ end
 ---@return any[]
 function m.表_排序P(待排序表, 数值回调, 降序)
     local 临时表, 插入值, 返回表
-    返回表 = { "占位" }
+    返回表 = { '占位' }
     if 降序 then
         临时表 = { { 对比值 = -9999999999 } }
         插入值 = function(key, 对比值)

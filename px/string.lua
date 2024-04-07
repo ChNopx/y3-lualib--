@@ -1,5 +1,5 @@
 ---@class 字符串
-local 字符串 = Class "字符串"
+local 字符串 = Class '字符串'
 
 ---@param 对象 any Y3对象
 ---@return string
@@ -113,7 +113,7 @@ end
 ---@param 分隔符 any
 ---@return string[]
 function 字符串.分割(待处理字符串, 分隔符)
-    if type(分隔符) ~= "string" or #分隔符 <= 0 then
+    if type(分隔符) ~= 'string' or #分隔符 <= 0 then
         return {}
     end
     local start = 1
@@ -135,12 +135,12 @@ end
 ---@param 模板 string
 ---@param 包含模板? boolean
 function 字符串.取左边文本(文本, 模板, 包含模板)
-    local s = 字符串.匹配(文本, ".-" .. 模板, 1)
+    local s = 字符串.匹配(文本, '.-' .. 模板, 1)
     if s then
         if 包含模板 then
             return s
         end
-        return 字符串.替换(s, 模板, "")
+        return 字符串.替换(s, 模板, '')
     end
     return 文本
 end
@@ -149,12 +149,12 @@ end
 ---@param 模板 string
 ---@param 包含模板? boolean
 function 字符串.取右边文本(文本, 模板, 包含模板)
-    local s = 字符串.匹配(文本, 模板 .. ".*", 1)
+    local s = 字符串.匹配(文本, 模板 .. '.*', 1)
     if s then
         if 包含模板 then
             return s
         end
-        return 字符串.替换(s, 模板, "")
+        return 字符串.替换(s, 模板, '')
     end
     return 文本
 end
@@ -164,13 +164,13 @@ end
 ---@param 右边文本 string
 ---@param 包含模板? boolean
 function 字符串.取中间文本(文本, 左边文本, 右边文本, 包含模板)
-    local s = 字符串.匹配(文本, 左边文本 .. ".*" .. 右边文本, 1)
+    local s = 字符串.匹配(文本, 左边文本 .. '.*' .. 右边文本, 1)
     if s then
         if 包含模板 then
             return s
         else
-            s = 字符串.替换(s, 左边文本, "")
-            s = 字符串.替换(s, 右边文本, "")
+            s = 字符串.替换(s, 左边文本, '')
+            s = 字符串.替换(s, 右边文本, '')
             return s
         end
     end
@@ -235,11 +235,11 @@ end
     local 替换文本
     for index, value in ipairs(颜色数组) do
         if value[1] and value[2] then
-            替换文本 = value[2] .. 到字符串(value[1]) .. "#ffffff"
-            返回内容 = 字符串.替换(返回内容, "{}", 替换文本, 1)
+            替换文本 = value[2] .. 到字符串(value[1]) .. '#ffffff'
+            返回内容 = 字符串.替换(返回内容, '{}', 替换文本, 1)
         else
             替换文本 = 到字符串(value[1])
-            返回内容 = 字符串.替换(返回内容, "{}", 替换文本, 1)
+            返回内容 = 字符串.替换(返回内容, '{}', 替换文本, 1)
         end
     end
     return 返回内容
@@ -249,19 +249,30 @@ end
 ---@param 字体大小 integer
 ---@param 最大宽度 number
 ---@param 保留换行? boolean
+---@return number 宽度, number 高度
 function 字符串.获取文本画板尺寸(内容, 字体大小, 最大宽度, 保留换行)
+    内容 = 字符串.替换(内容, '#%w%w%w%w%w%w', '')
     local 行高 = 字体大小 * 1.5
     if not 保留换行 then
         local 总长度 = 字符串.获取长度(内容) * 字体大小 / 2
-        调试输出(行高, 总长度)
         if 总长度 <= 最大宽度 then
-            调试输出(行高, 总长度)
             return 总长度, 行高
         else
-            调试输出(总长度 // 最大宽度, 总长度 / 最大宽度, 最大宽度, 行高 * 数学.向上取整(总长度 / 最大宽度))
-
             return 最大宽度, 行高 * 数学.向上取整(总长度 / 最大宽度)
         end
+    else
+        local 内容数组 = 字符串.分割(内容, '\n')
+        local 返回高度 = 0
+        local 返回行宽 = 0
+        for index, value in ipairs(内容数组) do
+            local 当前文本长度 = 字符串.获取长度(value) * 字体大小 / 2
+            if 当前文本长度 > 返回行宽 then
+                返回行宽 = 当前文本长度
+                返回高度 = 返回高度 + 行高 * 数学.向下取整(当前文本长度 / 最大宽度)
+            end
+        end
+        返回高度 = 返回高度 + #内容数组 * 行高
+        return 返回行宽, 返回高度
     end
 end
 

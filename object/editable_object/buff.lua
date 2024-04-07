@@ -4,21 +4,21 @@
 ---@field phandle py.ModifierEntity # 代理的对象，用这个调用引擎的方法会快得多
 ---@field id     integer
 ---@overload fun(id: integer, py_modifier: py.ModifierEntity): Buff
-local M = Class "Buff"
+local M = Class 'Buff'
 
-M.type = "buff"
+M.type = 'buff'
 
 ---@class Buff: Storage
-Extends("Buff", "Storage")
+Extends('Buff', 'Storage')
 ---@class Buff: GCHost
-Extends("Buff", "GCHost")
+Extends('Buff', 'GCHost')
 ---@class Buff: CustomEvent
-Extends("Buff", "CustomEvent")
+Extends('Buff', 'CustomEvent')
 ---@class Buff: KV
-Extends("Buff", "KV")
+Extends('Buff', 'KV')
 
 function M:__tostring()
-    return string.format("{buff|%s|%s} @ %s"
+    return string.format('{buff|%s|%s} @ %s'
     , self:获取名称()
     , self.handle
     , self:获取携带者单位()
@@ -44,8 +44,8 @@ end
 ---@param id integer
 ---@param py_buff py.ModifierEntity
 ---@return Buff
-M.ref_manager = New "Ref" ("Buff", function(id, py_buff)
-    return New "Buff" (id, py_buff)
+M.ref_manager = New 'Ref' ('Buff', function(id, py_buff)
+    return New 'Buff' (id, py_buff)
 end)
 
 ---通过py层的魔法效果实例获取lua层的魔法效果实例
@@ -62,13 +62,13 @@ function M.获取于ID(id)
     return M.ref_manager:get(id)
 end
 
-y3.py_converter.register_type_alias("py.ModifierEntity", "Buff")
-y3.py_converter.register_py_to_lua("py.ModifierEntity", M.获取于HD)
-y3.py_converter.register_lua_to_py("py.ModifierEntity", function(lua_value)
+y3.py_converter.register_type_alias('py.ModifierEntity', 'Buff')
+y3.py_converter.register_py_to_lua('py.ModifierEntity', M.获取于HD)
+y3.py_converter.register_lua_to_py('py.ModifierEntity', function(lua_value)
     return lua_value.handle
 end)
 
-y3.游戏:事件("效果-失去", function(trg, data)
+y3.游戏:事件('效果-失去', function(trg, data)
     local id = data.buff.id
     M.ref_manager:remove(id)
 end)
@@ -100,13 +100,13 @@ end
 ---设置魔法效果的名称
 ---@param name string 名字
 function M:设置名称(name)
-    self.phandle:api_set_buff_str_attr("name_str", name)
+    self.phandle:api_set_buff_str_attr('name_str', name)
 end
 
 ---设置魔法效果对象的描述
 ---@param description string 描述
 function M:设置描述(description)
-    self.phandle:api_set_buff_str_attr("description", description)
+    self.phandle:api_set_buff_str_attr('description', description)
 end
 
 ---设置剩余持续时间
@@ -136,13 +136,13 @@ end
 ---设置护盾值
 ---@param value number 护盾值
 function M:设置护盾值(value)
-    self.phandle:api_set_float_shield("", Fix32(value))
+    self.phandle:api_set_float_shield('', Fix32(value))
 end
 
 ---增加护盾值
 ---@param value number 护盾值
 function M:增加护盾值(value)
-    self.phandle:api_add_float_shield("", Fix32(value))
+    self.phandle:api_add_float_shield('', Fix32(value))
 end
 
 ---获取魔法效果的堆叠层数
@@ -160,25 +160,25 @@ end
 ---获取魔法效果类型
 ---@return y3.Const.魔法效果类别
 function M:获取效果类型()
-    return y3.const.魔法效果类别[self.phandle:api_get_modifier_type("modifier_type")]
+    return y3.const.魔法效果类别映射[self.phandle:api_get_modifier_type('modifier_type')]
 end
 
 ---获取魔法效果影响类型
 ---@return y3.Const.魔法影响类型
 function M:获取影响类型()
-    return y3.const.魔法效果影类型[self.phandle:api_get_modifier_effect_type("modifier_effect")]
+    return y3.const.魔法效果影类型映射[self.phandle:api_get_modifier_effect_type('modifier_effect')]
 end
 
 ---获取魔法效果的最大堆叠层数
 ---@return integer stack 层数
 function M:获取最大堆叠数()
-    return self.phandle:api_get_int_attr("layer_max")
+    return self.phandle:api_get_int_attr('layer_max')
 end
 
 ---获取魔法效果的护盾
 ---@return number shield 护盾值
 function M:获取护盾值()
-    return self.phandle:api_get_float_attr("cur_properties_shield"):float()
+    return self.phandle:api_get_float_attr('cur_properties_shield'):float()
 end
 
 ---获取所属光环
@@ -232,13 +232,13 @@ end
 ---获取魔法效果对象的名称
 ---@return string name 名字
 function M:获取名称()
-    return self.phandle:api_get_str_attr("name_str")
+    return self.phandle:api_get_str_attr('name_str')
 end
 
 ---获取魔法效果对象的描述
 ---@return string description 描述
 function M:获取描述()
-    return self.phandle:api_get_str_attr("description")
+    return self.phandle:api_get_str_attr('description')
 end
 
 ---获取等级

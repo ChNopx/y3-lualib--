@@ -4,23 +4,23 @@
 ---@field phandle py.Unit # 代理的对象，用这个调用引擎的方法会快得多
 ---@field id integer
 ---@overload fun(py_unit_id: py.UnitID, py_unit: py.Unit): self
-local M = Class "Unit"
+local M = Class 'Unit'
 
-M.type = "unit"
+M.type = 'unit'
 
 ---@class Unit: GCHost
-Extends("Unit", "GCHost")
+Extends('Unit', 'GCHost')
 ---@class Unit: Storage
-Extends("Unit", "Storage")
+Extends('Unit', 'Storage')
 ---@class Unit: CustomEvent
-Extends("Unit", "CustomEvent")
+Extends('Unit', 'CustomEvent')
 ---@class Unit: ObjectEvent
-Extends("Unit", "ObjectEvent")
+Extends('Unit', 'ObjectEvent')
 ---@class Unit: KV
-Extends("Unit", "KV")
+Extends('Unit', 'KV')
 
 function M:__tostring()
-    return string.format("{unit|%s|%s}"
+    return string.format('{unit|%s|%s}'
     , self:获取名称()
     , self.handle
     )
@@ -44,12 +44,12 @@ end
 ---@package
 ---@param id py.UnitID
 ---@return Unit?
-M.ref_manager = New "Ref" ("Unit", function(id)
+M.ref_manager = New 'Ref' ('Unit', function(id)
     local py_unit = GameAPI.get_unit_by_id(id)
     if not py_unit then
         return nil
     end
-    return New "Unit" (id, py_unit)
+    return New 'Unit' (id, py_unit)
 end)
 
 ---通过py层的单位实例获取lua层的单位实例
@@ -61,8 +61,8 @@ function M.从handle获取(py_unit)
     return unit
 end
 
-y3.py_converter.register_py_to_lua("py.Unit", M.从handle获取)
-y3.py_converter.register_lua_to_py("py.Unit", function(lua_value)
+y3.py_converter.register_py_to_lua('py.Unit', M.从handle获取)
+y3.py_converter.register_lua_to_py('py.Unit', function(lua_value)
     return lua_value.handle
 end)
 
@@ -80,7 +80,7 @@ end
 function M.从场景获取(res_id)
     local u = M.从唯一id获取(res_id --[[@as py.UnitID]])
     if not u then
-        error(("无法找到ID为%d的单位"):format(res_id))
+        error(('无法找到ID为%d的单位'):format(res_id))
     end
     return u
 end
@@ -90,18 +90,18 @@ end
 ---@param str string
 ---@return Unit?
 function M.获取于字符串(str)
-    local id = str:match("^{unit|.+|(%d+)}$")
-        or str:match("<LCreature%((%d+)%)>")
-        or str:match("^Unit:(%d+)")
+    local id = str:match('^{unit|.+|(%d+)}$')
+        or str:match('<LCreature%((%d+)%)>')
+        or str:match('^Unit:(%d+)')
     if not id then
         return nil
     end
     return M.从唯一id获取(tonumber(id) --[[@as py.UnitID]])
 end
 
-y3.py_converter.register_py_to_lua("py.UnitID", M.从唯一id获取)
+y3.py_converter.register_py_to_lua('py.UnitID', M.从唯一id获取)
 
-y3.游戏:事件("单位-移除后", function(trg, data)
+y3.游戏:事件('单位-移除后', function(trg, data)
     local id = data.触发单位.id
     M.ref_manager:remove(id)
 end)
@@ -122,7 +122,7 @@ end
 ---@param type y3.Const.技能分类 技能类型
 ---@param ability_key py.AbilityKey 物编id
 function M:移除_指定类型技能(type, ability_key)
-    self.phandle:api_remove_abilities_in_type(y3.const.技能类型[type], ability_key)
+    self.phandle:api_remove_abilities_in_type(y3.const.技能分类[type], ability_key)
 end
 
 ---单位添加物品
@@ -164,7 +164,7 @@ end
 function M:获取_指定类型所有技能(type)
     ---@type Ability[]
     local abilities = {}
-    local py_list = self.phandle:api_get_abilities_by_type(y3.const.技能类型[type])
+    local py_list = self.phandle:api_get_abilities_by_type(y3.const.技能分类[type])
     for i = 0, python_len(py_list) - 1 do
         local lua_ability = y3.技能.获取_通过handle(python_index(py_list, i))
         abilities[#abilities + 1] = lua_ability
@@ -198,7 +198,7 @@ end
 ---@param type_2 y3.Const.技能分类 第二个技能类型
 ---@param slot_2 y3.Const.AbilityIndex 第二个技能坑位
 function M:交换_技能_根据槽位(type_1, slot_1, type_2, slot_2)
-    self.phandle:api_switch_ability_by_index(y3.const.技能类型[type_1], slot_1, y3.const.技能类型[type_2], slot_2)
+    self.phandle:api_switch_ability_by_index(y3.const.技能分类[type_1], slot_1, y3.const.技能分类[type_2], slot_2)
 end
 
 ---停止所有技能
@@ -213,7 +213,7 @@ end
 ---@param 等级? integer 等级
 ---@return Ability?
 function M:添加_技能(类型, 物编id, 槽位, 等级)
-    local py_ability = self.phandle:api_add_ability(y3.const.技能类型[类型], 物编id, 槽位 or -1, 等级 or 1)
+    local py_ability = self.phandle:api_add_ability(y3.const.技能分类[类型], 物编id, 槽位 or -1, 等级 or 1)
     if not py_ability then
         return nil
     end
@@ -225,7 +225,7 @@ end
 ---@param type y3.Const.技能分类 技能类型
 ---@param slot y3.Const.AbilityIndex 技能位
 function M:移除_技能(type, slot)
-    self.phandle:api_remove_ability_by_index(y3.const.技能类型[type], slot)
+    self.phandle:api_remove_ability_by_index(y3.const.技能分类[type], slot)
 end
 
 ---通过技能名寻找技能
@@ -233,7 +233,7 @@ end
 ---@param id py.AbilityKey 物编id
 ---@return Ability? ability 技能
 function M:获取技能_通过技能类型(type, id)
-    local py_ability = self.phandle:api_get_ability_by_type(y3.const.技能类型[type], id)
+    local py_ability = self.phandle:api_get_ability_by_type(y3.const.技能分类[type], id)
     if not py_ability then
         return nil
     end
@@ -241,11 +241,12 @@ function M:获取技能_通过技能类型(type, id)
 end
 
 ---获得某个技能位的的技能
----@param type y3.Const.技能分类 技能类型
----@param slot y3.Const.AbilityIndex 技能位
+---@param type y3.Const.技能分类
+---@param slot integer 技能位
 ---@return Ability? ability 技能
 function M:获取技能_通过槽位(type, slot)
-    local py_ability = self.phandle:api_get_ability(y3.const.技能类型[type], slot)
+    ---@diagnostic disable-next-line: param-type-mismatch
+    local py_ability = self.phandle:api_get_ability(y3.const.技能分类[type], slot)
     if not py_ability then
         return nil
     end
@@ -352,7 +353,7 @@ end
 ---@param text_type? string 跳字类型
 function M:造成治疗(value, skill, source_unit, text_type)
     self.phandle:api_heal(Fix32(value), text_type ~= nil, skill and skill.handle or nil,
-                          source_unit and source_unit.handle or nil, text_type or "")
+                          source_unit and source_unit.handle or nil, text_type or '')
 end
 
 ---添加标签
@@ -368,7 +369,6 @@ function M:移除标签(tag)
 end
 
 ---添加状态
----@type y3.Const.单位状态[]
 ---@param 状态 y3.Const.单位状态
 function M:添加状态(状态)
     self.phandle:api_add_state(y3.const.单位状态[状态])
@@ -385,7 +385,7 @@ end
 ---@return GCNode
 function M:添加状态_gc(state_enum)
     self:添加状态(state_enum)
-    return New "GCNode" (function()
+    return New 'GCNode' (function()
         self:移除状态(state_enum)
     end)
 end
@@ -471,16 +471,16 @@ end
 function M:命令_释放技能(ability, target, extra_target)
     local tar_pos_1, tar_pos_2, tar_unit, tar_item, tar_dest
     if target then
-        if target.type == "point" then
+        if target.type == 'point' then
             ---@cast target Point
             tar_pos_1 = target.handle
-        elseif target.type == "unit" then
+        elseif target.type == 'unit' then
             ---@cast target Unit
             tar_unit = target.handle
-        elseif target.type == "item" then
+        elseif target.type == 'item' then
             ---@cast target Item
             tar_item = target.handle
-        elseif target.type == "destructible" then
+        elseif target.type == 'destructible' then
             ---@cast target Destructible
             tar_dest = target.handle
         end
@@ -533,16 +533,16 @@ end
 function M:use_item(item, target, extra_target)
     local tar_pos_1, tar_pos_2, tar_unit, tar_item, tar_dest
     if target then
-        if target.type == "point" then
+        if target.type == 'point' then
             ---@cast target Point
             tar_pos_1 = target.handle
-        elseif target.type == "unit" then
+        elseif target.type == 'unit' then
             ---@cast target Unit
             tar_unit = target.handle
-        elseif target.type == "item" then
+        elseif target.type == 'item' then
             ---@cast target Item
             tar_item = target.handle
-        elseif target.type == "destructible" then
+        elseif target.type == 'destructible' then
             ---@cast target Destructible
             tar_dest = target.handle
         end
@@ -562,7 +562,7 @@ end
 -- 命令跟随单位
 ---@param target Unit
 ---@return py.UnitCommand
-function M:follow(target)
+function M:命令_跟随单位(target)
     local command = GameAPI.create_unit_command_follow(target.handle)
     self:命令_发布(command)
     return command
@@ -583,34 +583,36 @@ end
 
 ---设置描述
 ---@param description string 描述
-function M:set_description(description)
-    self.phandle:api_set_str_attr("desc", description)
+function M:设置描述(description)
+    self.phandle:api_set_str_attr('desc', description)
 end
 
 ---设置属性
----@param attr_name string 属性名
+---@param attr_name string | y3.Const.UnitAttr
 ---@param value number 属性值
----@param attr_type y3.Const.单位属性分类
+---@param attr_type  y3.Const.UnitAttrType 属性类型
 function M:设置属性(attr_name, value, attr_type)
-    self.phandle:api_set_attr_by_attr_element(attr_name, Fix32(value), y3.const.单位属性类型[attr_type])
+    self.phandle:api_set_attr_by_attr_element(y3.const.UnitAttr[attr_name] or attr_name, Fix32(value),
+                                              y3.const.UnitAttrType[attr_type])
 end
 
 ---增加属性
----@param attr_name string 属性名
+---@param attr_name string | y3.Const.UnitAttr
 ---@param value number 属性值
----@param attr_type y3.Const.单位属性分类
+---@param attr_type  y3.Const.UnitAttrType 属性类型
 function M:增加属性(attr_name, value, attr_type)
-    self.phandle:api_add_attr_by_attr_element(attr_name, Fix32(value), y3.const.单位属性类型[attr_type])
+    self.phandle:api_add_attr_by_attr_element(y3.const.UnitAttr[attr_name] or attr_name, Fix32(value),
+                                              y3.const.UnitAttrType[attr_type])
 end
 
 ---增加属性
----@param attr_name string 属性名
+---@param attr_name string | y3.Const.UnitAttr
 ---@param value number 属性值
----@param attr_type y3.Const.单位属性分类
+---@param attr_type  y3.Const.UnitAttrType 属性类型
 ---@return GCNode
 function M:增加属性gc(attr_name, value, attr_type)
     self:增加属性(attr_name, value, attr_type)
-    return New "GCNode" (function()
+    return New 'GCNode' (function()
         self:增加属性(attr_name, -value, attr_type)
     end)
 end
@@ -641,37 +643,37 @@ end
 
 ---设置当前生命值
 ---@param hp number 当前生命值
-function M:设置_当前生命值(hp)
-    self.phandle:api_set_attr("hp_cur", Fix32(hp))
+function M:设置当前生命值(hp)
+    self.phandle:api_set_attr('hp_cur', Fix32(hp))
 end
 
 ---增加当前生命值
 ---@param hp number 当前生命值
-function M:add_hp(hp)
-    self.phandle:api_add_attr_base("hp_cur", Fix32(hp))
+function M:增加当前生命值(hp)
+    self.phandle:api_add_attr_base('hp_cur', Fix32(hp))
 end
 
 ---设置当前魔法值
 ---@param mp number 当前魔法值
-function M:set_mp(mp)
-    self.phandle:api_set_attr("mp_cur", Fix32(mp))
+function M:设置当前魔法值(mp)
+    self.phandle:api_set_attr('mp_cur', Fix32(mp))
 end
 
 ---增加当前魔法值
 ---@param mp number 当前魔法值
-function M:add_mp(mp)
-    self.phandle:api_add_attr_base("mp_cur", Fix32(mp))
+function M:增加当前魔法值(mp)
+    self.phandle:api_add_attr_base('mp_cur', Fix32(mp))
 end
 
 ---设置技能点
 ---@param skill_point integer 技能点
-function M:set_ability_point(skill_point)
+function M:设置技能点(skill_point)
     self.phandle:api_set_ability_point(skill_point)
 end
 
 ---增加技能点
 ---@param skill_point integer 技能点
-function M:add_ability_point(skill_point)
+function M:增加技能点(skill_point)
     self.phandle:api_add_ability_point(skill_point)
 end
 
@@ -684,31 +686,31 @@ end
 ---设置飞行高度
 ---@param height number 高度
 ---@param trans_time number 过渡时间
-function M:set_height(height, trans_time)
+function M:设置飞行高度(height, trans_time)
     self.phandle:api_raise_height(Fix32(height), Fix32(trans_time))
 end
 
 ---设置生命周期
 ---@param time number 生命周期
-function M:set_life_cycle(time)
+function M:设置生命周期(time)
     self.phandle:api_set_life_cycle(time)
 end
 
 ---设置生命周期暂停状态
 ---@param is_stop boolean 生命周期暂停状态
-function M:pause_life_cycle(is_stop)
+function M:设置生命周期暂停状态(is_stop)
     self.phandle:api_pause_life_cycle(is_stop)
 end
 
 ---设置警戒范围
 ---@param range number 范围
-function M:set_alert_range(range)
+function M:设置警戒范围(range)
     self.phandle:api_set_unit_alarm_range(range)
 end
 
 ---设置取消警戒范围
 ---@param range number 取消警戒范围
-function M:set_cancel_alert_range(range)
+function M:设置取消警戒范围(range)
     self.phandle:api_set_unit_cancel_alarm_range(range)
 end
 
@@ -726,7 +728,7 @@ end
 
 ---设置默认单位行为
 ---@param behavior py.UnitBehavior 单位行为
-function M:set_behavior(behavior)
+function M:设置单位默认行为(behavior)
     self.phandle:api_set_default_switch_behavior(behavior)
 end
 
@@ -735,7 +737,7 @@ end
 ---@param unit_key py.UnitKey 单位id
 ---@param attr_name string 属性名
 ---@param value number 属性成长
-function M.set_attr_growth(unit_key, attr_name, value)
+function M.设置属性成长(unit_key, attr_name, value)
     GameAPI.api_set_attr_growth(unit_key, attr_name, Fix32(value))
 end
 
@@ -748,19 +750,19 @@ end
 ---设置被击杀的玩家属性奖励
 ---@param player_attr_name py.RoleResKey 属性名
 ---@param value number 属性奖励
-function M:set_reward_res(player_attr_name, value)
+function M:设置被击杀玩家属性奖励(player_attr_name, value)
     self.phandle:api_set_unit_reward_res(player_attr_name, Fix32(value))
 end
 
 ---设置攻击类型
 ---@param attack_type integer 攻击类型
-function M:set_attack_type(attack_type)
+function M:设置攻击类型(attack_type)
     self.phandle:api_set_attack_type(attack_type)
 end
 
 ---设置护甲类型
 ---@param armor_type integer 护甲类型
-function M:set_armor_type(armor_type)
+function M:设置护甲类型(armor_type)
     self.phandle:api_set_armor_type(armor_type)
 end
 
@@ -814,32 +816,32 @@ end
 
 ---设置单位头像
 ---@param img_id py.Texture 单位头像
-function M:set_icon(img_id)
+function M:设置头像(img_id)
     self.phandle:api_set_unit_icon(img_id)
 end
 
 ---设置血条样式
 ---@param bar_type integer 血条样式
-function M:set_blood_bar_type(bar_type)
+function M:设置血条样式(bar_type)
     self.phandle:api_set_blood_bar_type(bar_type)
 end
 
 ---设置血条显示方式
 ---@param bar_show_type integer 血条显示方式
-function M:set_health_bar_display(bar_show_type)
+function M:设置血条显示方式(bar_show_type)
     self.phandle:api_set_blood_bar_show_type(bar_show_type)
 end
 
 --***************敌我合并一条
 ---设置单位小地图头像
 ---@param img_id py.Texture 单位小地图头像
-function M:set_minimap_icon(img_id)
+function M:设置小地图头像(img_id)
     self.phandle:api_set_mini_map_icon(img_id)
 end
 
 ---设置敌方单位小地图头像
 ---@param img_id py.Texture 敌方单位小地图头像
-function M:set_enemy_minimap_icon(img_id)
+function M:设置敌方单位小地图头像(img_id)
     self.phandle:api_set_enemy_mini_map_icon(img_id)
 end
 
@@ -982,37 +984,37 @@ end
 ---替换动画
 ---@param replace_anim_name string 动画名
 ---@param bereplace_anim_name string 动画名
-function M:change_animation(replace_anim_name, bereplace_anim_name)
+function M:动画替换(replace_anim_name, bereplace_anim_name)
     self.phandle:api_change_animation(replace_anim_name, bereplace_anim_name)
 end
 
 ---取消动画替换
 ---@param replace_anim_name string 动画名
 ---@param bereplace_anim_name string 动画名
-function M:cancel_change_animation(replace_anim_name, bereplace_anim_name)
+function M:动画取消替换(replace_anim_name, bereplace_anim_name)
     self.phandle:api_cancel_change_animation(replace_anim_name, bereplace_anim_name)
 end
 
 ---重置动画替换
 ---@param anim_name string 动画名
-function M:clear_change_animation(anim_name)
+function M:动画重置替换(anim_name)
     self.phandle:api_clear_change_animation(anim_name)
 end
 
 ---停止当前正在播放的动画
-function M:stop_cur_animation()
+function M:动画停止播放()
     self.phandle:api_stop_cur_animation()
 end
 
 ---设置动画播放速率
 ---@param speed number 速度
-function M:set_animation_speed(speed)
+function M:设置动画播放速度(speed)
     self.phandle:api_set_animation_speed(Fix32(speed))
 end
 
 ---设置走路动画基准速度
 ---@param speed number 速度
-function M:set_base_speed(speed)
+function M:设置移动动画基准速度(speed)
     self.phandle:api_set_base_speed(Fix32(speed))
 end
 
@@ -1081,21 +1083,21 @@ end
 
 ---单位移除所有指定id的魔法效果
 ---@param buff_key py.ModifierKey 影响类型的魔法效果
-function M:remove_buffs_by_key(buff_key)
+function M:移除所有指定物编id魔法效果(buff_key)
     self.phandle:api_remove_modifier_type(buff_key)
 end
 
 ---单位移除所有指定类型的魔法效果
 ---@param effect_type y3.Const.魔法影响类型 影响类型的魔法效果
-function M:remove_buffs_by_effect_type(effect_type)
-    self.phandle:api_delete_all_modifiers_by_effect_type(y3.const.ModifierEffectType[effect_type])
+function M:移除所有指定类型魔法效果(effect_type)
+    self.phandle:api_delete_all_modifiers_by_effect_type(y3.const.魔法效果影类型[effect_type])
 end
 
 ---获取单位指定id的魔法效果
 ---@param buff_key py.ModifierKey 魔法效果id
 ---@param index? integer 第几个
 ---@return Buff? # 单位指定类型的魔法效果
-function M:find_buff(buff_key, index)
+function M:回去指定物编id魔法效果(buff_key, index)
     local py_modifier = self.phandle:api_get_modifier(index or -1, buff_key)
     if not py_modifier then
         return nil
@@ -1135,70 +1137,107 @@ end
 ---获取当前生命值
 ---@return number current_unit_hp 当前生命值
 function M:获取当前生命值()
-    return self.phandle:api_get_float_attr("hp_cur"):float()
+    return self.phandle:api_get_float_attr('hp_cur'):float()
 end
 
 ---获取当前魔法值
 ---@return number current_mp 当前魔法值
 function M:获取当前魔法值()
-    return self.phandle:api_get_float_attr("mp_cur"):float()
+    return self.phandle:api_get_float_attr('mp_cur'):float()
 end
 
 ---获取最终属性
----@param attr_name string 属性名
+---@private
+---@param attr_name string | y3.Const.UnitAttr
 ---@return number
-function M:获取最终属性(attr_name)
-    return self.phandle:api_get_float_attr(attr_name):float()
+function M:get_final_attr(attr_name)
+    return self.phandle:api_get_float_attr(y3.const.UnitAttr[attr_name] or attr_name):float()
 end
 
 ---获取属性（额外）
----@param attr_name string 属性名
+---@private
+---@param attr_name string | y3.Const.UnitAttr
 ---@return number
-function M:获取额外属性(attr_name)
-    return self.phandle:api_get_attr_other(attr_name):float()
+function M:get_attr_other(attr_name)
+    return self.phandle:api_get_attr_other(y3.const.UnitAttr[attr_name] or attr_name):float()
 end
 
 ---获取单属性（基础）
----@param attr_name string
+---@private
+---@param attr_name string | y3.Const.UnitAttr
 ---@return number attr_base 单位基础属性类型的属性
-function M:获取基础属性(attr_name)
-    return self.phandle:api_get_attr_base(attr_name):float()
+function M:get_attr_base(attr_name)
+    return self.phandle:api_get_attr_base(y3.const.UnitAttr[attr_name] or attr_name):float()
 end
 
 ---获取属性（基础加成）
----@param attr_name string
+---@private
+---@param attr_name string | y3.Const.UnitAttr
 ---@return number
-function M:获取基础加成属性(attr_name)
-    return self.phandle:api_get_attr_base_ratio(attr_name):float()
+function M:get_attr_base_ratio(attr_name)
+    return self.phandle:api_get_attr_base_ratio(y3.const.UnitAttr[attr_name] or attr_name):float()
 end
 
 ---获取属性（增益）
----@param attr_name string
+---@private
+---@param attr_name string | y3.Const.UnitAttr
 ---@return number
-function M:获取增益属性(attr_name)
-    return self.phandle:api_get_attr_bonus(attr_name):float()
+function M:get_attr_bonus(attr_name)
+    return self.phandle:api_get_attr_bonus(y3.const.UnitAttr[attr_name] or attr_name):float()
 end
 
 ---获取属性（最终加成）
----@param attr_name string
+---@private
+---@param attr_name string | y3.Const.UnitAttr
 ---@return number
-function M:获取最终加成属性(attr_name)
-    return self.phandle:api_get_attr_all_ratio(attr_name):float()
+function M:get_attr_all_ratio(attr_name)
+    return self.phandle:api_get_attr_all_ratio(y3.const.UnitAttr[attr_name] or attr_name):float()
 end
 
 ---获取属性（增益加成）
----@param attr_name string
+---@private
+---@param attr_name string | y3.Const.UnitAttr
 ---@return number
-function M:获取增益加成属性(attr_name)
-    return self.phandle:api_get_attr_bonus_ratio(attr_name):float()
+function M:get_attr_bonus_ratio(attr_name)
+    return self.phandle:api_get_attr_bonus_ratio(y3.const.UnitAttr[attr_name] or attr_name):float()
+end
+
+---获取属性（默认为实际属性）
+---@param attr_name y3.Const.UnitAttr
+---@param attr_type? '实际' | '额外' | y3.Const.UnitAttrType
+---@return number
+function M:获取属性(attr_name, attr_type)
+    if attr_type == '实际'
+        or attr_type == nil then
+        return self:get_final_attr(attr_name)
+    end
+    if attr_type == '额外' then
+        return self:get_attr_other(attr_name)
+    end
+    if attr_type == '基础' then
+        return self:get_attr_base(attr_name)
+    end
+    if attr_type == '基础加成' then
+        return self:get_attr_base_ratio(attr_name)
+    end
+    if attr_type == '增益' then
+        return self:get_attr_bonus(attr_name)
+    end
+    if attr_type == '增益加成' then
+        return self:get_attr_bonus_ratio(attr_name)
+    end
+    if attr_type == '最终加成' then
+        return self:get_attr_all_ratio(attr_name)
+    end
+    error('未知的属性类型:' .. tostring(attr_type))
 end
 
 ---获取单位属性成长
 ---@param unit_key py.UnitKey
----@param attr_name any
+---@param attr_name string | y3.Const.UnitAttr
 ---@return number unit_attribute_growth 单位属性成长
 function M.获取属性成长(unit_key, attr_name)
-    return GameAPI.api_get_attr_growth(unit_key, attr_name):float()
+    return GameAPI.api_get_attr_growth(unit_key, y3.const.UnitAttr[attr_name] or attr_name):float()
 end
 
 ---获取单位剩余生命周期
@@ -1386,7 +1425,7 @@ end
 ---获取单位的描述
 ---@return string unit_description 单位的描述
 function M:获取_描述()
-    return self.phandle:api_get_str_attr("desc")
+    return self.phandle:api_get_str_attr('desc')
 end
 
 ---获取单位类型名称
@@ -1419,7 +1458,13 @@ end
 ---是否是英雄
 ---@returr boolean
 function M:is_hero()
-    return self.phandle:api_get_type() == y3.const.UnitCategory["HERO"]
+    return self.phandle:api_get_type() == y3.const.UnitCategory['HERO']
+end
+
+--获取单位的头像
+---@return py.Texture image 单位的头像
+function M:get_icon()
+    return GameAPI.get_icon_id_by_unit_type(self:get_key()) --[[@as py.Texture]]
 end
 
 ---获取单位类型的头像
@@ -1554,7 +1599,7 @@ end
 ---@param range number 范围
 ---@return boolean in_radius 在单位附近
 function M:是否在单位或点附近(other, range)
-    if other.type == "unit" then
+    if other.type == 'unit' then
         ---@cast other Unit
         return self.phandle:api_is_in_range(other.handle, range)
     else
@@ -1629,7 +1674,7 @@ end
 ---@param effect_type y3.Const.魔法影响类型 魔法效果类型
 ---@return boolean has_modifier_style 有指定类型的魔法效果
 function M:has_buff_by_effect_type(effect_type)
-    return self.phandle:api_has_modifier_type(y3.const.ModifierEffectType[effect_type])
+    return self.phandle:api_has_modifier_type(y3.const.魔法效果影类型[effect_type])
 end
 
 ---是否有指定标签的魔法效果
@@ -1733,7 +1778,7 @@ end
 ---@param key string 属性key
 ---@return string 属性名字
 function M.属性_转_名称(key)
-    return GameAPI.unit_attr_to_str(key):match("%((.-)%)")
+    return GameAPI.unit_attr_to_str(key):match('%((.-)%)')
 end
 
 --- 造成伤害
@@ -1780,8 +1825,8 @@ function M:造成伤害(参数)
         data.critical or false,
         data.no_miss or false,
         data.particle or nil,
-        data.socket or "",
-        data.text_type or "physics",
+        data.socket or '',
+        data.text_type or 'physics',
         data.text_track or 0
     )
 end

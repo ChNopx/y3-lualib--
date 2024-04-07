@@ -2,9 +2,9 @@
 ---@field player Player
 ---@field handle string
 ---@overload fun(player: Player, ui_name: string): self
-local M = Class "UI"
+local M = Class 'UI'
 
-M.type = "ui"
+M.type = 'ui'
 
 ---@param player Player
 ---@param handle string
@@ -21,7 +21,7 @@ function M:__del()
 end
 
 function M:__tostring()
-    return string.format("{UI|%s|%s} @ %s"
+    return string.format('{UI|%s|%s} @ %s'
     , self.name
     , self.handle
     , self.player
@@ -38,7 +38,7 @@ M.comp_id = y3.proxy.new({}, {
             return key
         end
         local id = GameAPI.get_prefab_ins_id_by_name(key)
-        if id == "" or id == nil then
+        if id == '' or id == nil then
             return key
         else
             return id
@@ -51,7 +51,7 @@ M.comp_id = y3.proxy.new({}, {
 ---@param handle string
 ---@return UI
 function M.获取于HD(player, handle)
-    local ui = New "UI" (player, handle)
+    local ui = New 'UI' (player, handle)
     return ui
 end
 
@@ -70,7 +70,9 @@ end
 ---@return UI
 function M.从路径获取(player, ui_path)
     local py_ui = GameAPI.get_comp_by_absolute_path(player.handle, ui_path)
-    assert(py_ui, string.format("UI “%s” 不存在。注意，在界面编辑器中放置的UI需要在游戏初始化事件之后才能获取。", ui_path))
+    if not py_ui then
+        error(string.format('UI “%s” 不存在。注意，在界面编辑器中放置的UI需要在游戏初始化事件之后才能获取。', ui_path))
+    end
     return y3.控件.获取于HD(player, py_ui)
 end
 
@@ -97,7 +99,7 @@ end
 ---@param event y3.Const.UIEvent # 界面事件类型
 ---@param callback fun(本地玩家: Player) # 回调函数
 function M:添加本地事件(event, callback)
-    assert(y3.const.UIEventMap[event], "无效的事件类型")
+    assert(y3.const.UIEventMap[event], '无效的事件类型')
     GameAPI.bind_local_listener(self.handle, y3.const.UIEventMap[event], function()
         y3.玩家.执行本地代码(function(local_player)
             callback(local_player)
@@ -559,17 +561,18 @@ function M:设置_模型控件观察点(x, y, z)
 end
 
 --绑定单位属性到玩家界面控件的属性
----@param uiAttr y3.Const.控件界面属性
----@param attr string 单位属性
----@param accuracy integer 小数精度
+---@param uiAttr y3.Const.UIAttr 界面控件属性
+---@param attr_name y3.Const.UnitAttr 单位属性
+---@param accuracy? integer 小数精度，默认为0
 ---@return self
-function M:绑定_单位属性(uiAttr, attr, accuracy)
-    GameAPI.set_ui_comp_bind_attr(self.player.handle, self.handle, y3.const.控件属性[uiAttr], attr, accuracy)
+function M:绑定_单位属性(uiAttr, attr_name, accuracy)
+    GameAPI.set_ui_comp_bind_attr(self.player.handle, self.handle, y3.const.控件属性[uiAttr],
+                                  y3.const.UnitAttr[attr_name] or attr_name, accuracy or 0)
     return self
 end
 
 --绑定玩家属性到玩家界面控件的属性
----@param uiAttr y3.Const.控件界面属性 界面控件属性
+---@param uiAttr y3.Const.UIAttr 界面控件属性
 ---@param player Player # 玩家
 ---@param attr_or_var string # 玩家属性key
 ---@param accuracy integer 小数精度
@@ -581,7 +584,7 @@ function M:绑定_玩家属性(uiAttr, player, attr_or_var, accuracy)
 end
 
 --绑定全局变量到玩家界面控件的属性
----@param uiAttr y3.Const.控件界面属性
+---@param uiAttr y3.Const.UIAttr
 ---@param globalVar string 全局属性
 ---@param accuracy integer 小数精度
 ---@return self
@@ -591,7 +594,7 @@ function M:绑定_全局变量(uiAttr, globalVar, accuracy)
 end
 
 --解绑界面控件属性绑定
----@param uiAttr y3.Const.控件界面属性
+---@param uiAttr y3.Const.UIAttr
 ---@return self
 function M:解绑_单位属性(uiAttr)
     GameAPI.ui_comp_unbind(self.player.handle, self.handle, y3.const.控件属性[uiAttr])
@@ -669,7 +672,7 @@ function M:是否被移除()
 end
 
 --绑定技能冷却时间到玩家界面控件的属性
----@param uiAttr y3.Const.控件界面属性 界面控件属性
+---@param uiAttr y3.Const.UIAttr 界面控件属性
 ---@param skill Ability 技能
 ---@return self
 function M:绑定_技能冷却(uiAttr, skill)
@@ -678,7 +681,7 @@ function M:绑定_技能冷却(uiAttr, skill)
 end
 
 --绑定魔法效果剩余时间到玩家界面控件的属性
----@param uiAttr y3.Const.控件界面属性 界面控件属性
+---@param uiAttr y3.Const.UIAttr 界面控件属性
 ---@param buff Buff 魔法效果S
 ---@return self
 function M:绑定_魔法效果剩余时间(uiAttr, buff)
@@ -835,7 +838,7 @@ end
 ---@return UI? ui_comp ui控件
 function M:获取子控件(name)
     local py_ui = GameAPI.get_comp_by_path(self.player.handle, self.handle, name)
-    if not py_ui or py_ui == "" then
+    if not py_ui or py_ui == '' then
         return nil
     end
     return y3.控件.获取于HD(self.player, py_ui)
@@ -978,10 +981,10 @@ end
 
 ---@enum(key) Item.UseOperation
 local use_operation_map = {
-    ["无"] = 0,
-    ["左键单击"] = 1,
-    ["右键单击"] = 2,
-    ["左键双击"] = 3,
+    ['无'] = 0,
+    ['左键单击'] = 1,
+    ['右键单击'] = 2,
+    ['左键双击'] = 3,
 }
 
 --设置使用物品操作方式
@@ -992,9 +995,9 @@ end
 
 ---@enum(key) Item.DrapOperation
 local drag_operation_map = {
-    ["无"] = 0,
-    ["左键"] = 1,
-    ["右键"] = 2,
+    ['无'] = 0,
+    ['左键'] = 1,
+    ['右键'] = 2,
 }
 
 --设置拖拽物品操作方式

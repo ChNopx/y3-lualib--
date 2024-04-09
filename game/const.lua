@@ -2,7 +2,7 @@
 ---@class y3.Const
 local M = {}
 
----@enum y3.Const.EaseType
+---@enum (key) y3.Const.EaseType
 M.EaseType = {
     ['渐入'] = 1,
     ['渐出'] = 2,

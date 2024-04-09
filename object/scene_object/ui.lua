@@ -173,7 +173,7 @@ end
 ---@return self
 function M:播放透明度动画(start_alpha, end_alpha, duration, ease_type)
     GameAPI.set_ui_comp_anim_opacity(self.player.handle, self.handle, start_alpha, end_alpha, duration,
-                                     y3.const.曲线类型[ease_type])
+                                     y3.const.EaseType[ease_type])
     return self
 end
 
@@ -991,6 +991,7 @@ local use_operation_map = {
 ---@param use_operation Item.UseOperation # 操作方式
 function M:设置物品使用方式(use_operation)
     GameAPI.set_equip_slot_use_operation(self.player.handle, self.handle, use_operation_map[use_operation] or 0)
+    return self
 end
 
 ---@enum(key) Item.DrapOperation
@@ -1004,6 +1005,7 @@ local drag_operation_map = {
 ---@param drag_operation Item.DrapOperation # 操作方式
 function M:设置物品拖拽方式(drag_operation)
     GameAPI.set_equip_slot_drag_operation(self.player.handle, self.handle, drag_operation_map[drag_operation] or 0)
+    return self
 end
 
 return M

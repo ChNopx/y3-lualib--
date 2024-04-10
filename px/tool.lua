@@ -98,6 +98,9 @@ end
 ---@param 结束位置? integer
 ---@return string
 function m.数组_连接为路径文本(表, 开始位置, 结束位置)
+    if #表 == 0 then
+        return ''
+    end
     开始位置 = 开始位置 or 1
     结束位置 = 结束位置 and 结束位置 >= 1 and 结束位置 <= #表 and 结束位置 or #表
     local s = ''
@@ -254,6 +257,8 @@ function m.表_排序遍历(待排序表, 数值回调, 遍历回调, 降序)
         local 对比值 = 数值回调(key, value)
         if 对比值 then
             插入值(key, 对比值)
+        else
+            插入值(key, 1)
         end
     end
     table.remove(临时表)
@@ -299,6 +304,8 @@ function m.表_排序P(待排序表, 数值回调, 降序)
         local 对比值 = 数值回调(key, value)
         if 对比值 then
             插入值(key, 对比值)
+        else
+            插入值(key, 1)
         end
     end
     table.remove(临时表)

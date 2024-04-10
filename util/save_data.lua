@@ -143,7 +143,7 @@ function M.load_table_with_cover_enable(player, slot)
                 value = y3.proxy.raw(value)
             end
             raw[key] = value
-            log.info('更新存档', player, custom, key, value)
+            -- log.info('更新存档', player, custom, key, value)
 
             M.保存玩家表格数据(player, slot, save_data)
         end,

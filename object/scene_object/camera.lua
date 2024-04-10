@@ -2,9 +2,9 @@
 ---@class Camera
 ---@field handle integer
 ---@overload fun(py_camera: py.Camera): self
-local M = Class "Camera"
+local M = Class 'Camera'
 
-M.type = "camera"
+M.type = 'camera'
 
 ---@param py_camera integer
 ---@return self
@@ -16,12 +16,12 @@ end
 ---@param py_camera integer
 ---@return Camera camera
 function M.从handle获取(py_camera)
-    local camera = New "Camera" (py_camera)
+    local camera = New 'Camera' (py_camera)
     return camera
 end
 
-y3.py_converter.register_py_to_lua("py.Camera", M.从handle获取)
-y3.py_converter.register_lua_to_py("py.Camera", function(lua_value)
+y3.py_converter.register_py_to_lua('py.Camera', M.从handle获取)
+y3.py_converter.register_lua_to_py('py.Camera', function(lua_value)
     return lua_value.handle
 end)
 
@@ -119,11 +119,11 @@ end
 ---设置镜头跟随单位
 ---@param player Player 玩家
 ---@param unit Unit 目标单位
----@param x? number 过渡时间
----@param y? y3.Const.镜头移动类型
+---@param 横向偏移? number
+---@param 纵向偏移? number
 ---@param height? number 高度
-function M.设置_跟随单位(player, unit, x, y, height)
-    GameAPI.camera_set_follow_unit(player.handle, unit.handle, x or 0, y3.const.镜头移动类型[y or "匀速"], height or 0)
+function M.设置_跟随单位(player, unit, 横向偏移, 纵向偏移, height)
+    GameAPI.camera_set_follow_unit(player.handle, unit.handle, 横向偏移 or 0, 纵向偏移 or 0, height or 0)
 end
 
 ---设置镜头取消跟随
@@ -233,7 +233,7 @@ end
 ---@return Point 摄像机朝向
 function M.获取_玩家摄像机朝向(player)
     if not y3.config.sync.camera then
-        error("必须先设置 `y3.config.sync.camera = true`")
+        error('必须先设置 `y3.config.sync.camera = true`')
     end
     local py_point = GameAPI.get_player_camera_direction(player.handle)
     -- TODO 见问题2
@@ -247,7 +247,7 @@ end
 ---@return Point 摄像机中心射线的碰撞点
 function M.获取_玩家摄像机射线碰撞点(player)
     if not y3.config.sync.camera then
-        error("必须先设置 `y3.config.sync.camera = true`")
+        error('必须先设置 `y3.config.sync.camera = true`')
     end
     local py_point = GameAPI.get_camera_center_raycast(player.handle)
     -- TODO 见问题2

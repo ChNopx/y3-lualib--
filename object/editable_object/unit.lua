@@ -590,8 +590,20 @@ end
 ---设置属性
 ---@param attr_name string | y3.Const.UnitAttr
 ---@param value number 属性值
----@param attr_type  y3.Const.UnitAttrType 属性类型
+---@param attr_type?  y3.Const.UnitAttrType 属性类型，默认为“基础”
 function M:设置属性(attr_name, value, attr_type)
+    attr_name = y3.const.UnitAttr[attr_name] or attr_name
+    if attr_name == 'hp_cur' then
+        self:设置当前生命值(value)
+        return
+    end
+    if attr_name == 'mp_cur' then
+        self:设置当前魔法值(value)
+        return
+    end
+    if attr_type == nil then
+        attr_type = '基础'
+    end
     self.phandle:api_set_attr_by_attr_element(y3.const.UnitAttr[attr_name] or attr_name, Fix32(value),
                                               y3.const.UnitAttrType[attr_type])
 end
@@ -599,9 +611,21 @@ end
 ---增加属性
 ---@param attr_name string | y3.Const.UnitAttr
 ---@param value number 属性值
----@param attr_type  y3.Const.UnitAttrType 属性类型
+---@param attr_type?  y3.Const.UnitAttrType 属性类型，默认为“增益”
 function M:增加属性(attr_name, value, attr_type)
-    self.phandle:api_add_attr_by_attr_element(y3.const.UnitAttr[attr_name] or attr_name, Fix32(value),
+    attr_name = y3.const.UnitAttr[attr_name] or attr_name
+    if attr_name == 'hp_cur' then
+        self:增加当前生命值(value)
+        return
+    end
+    if attr_name == 'mp_cur' then
+        self:增加当前魔法值(value)
+        return
+    end
+    if attr_type == nil then
+        attr_type = '增益'
+    end
+    self.phandle:api_add_attr_by_attr_element(attr_name, Fix32(value),
                                               y3.const.UnitAttrType[attr_type])
 end
 
@@ -1849,6 +1873,12 @@ end
 ---@param air_limitation? boolean # 空中限制
 function M:set_move_channel_air(air_limitation)
     self.phandle:set_move_channel_air(air_limitation)
+end
+
+---获取单位阵营ID
+---@return py.CampID
+function M:get_camp_id()
+    return self.phandle:api_get_camp_id()
 end
 
 return M

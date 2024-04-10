@@ -3,23 +3,23 @@
 ---@field handle py.Ability
 ---@field phandle py.Ability
 ---@overload fun(id: integer, py_ability: py.Ability): self
-local M = Class "Ability"
+local M = Class 'Ability'
 
-M.type = "ability"
+M.type = 'ability'
 
 ---@class Ability: GCHost
-Extends("Ability", "GCHost")
+Extends('Ability', 'GCHost')
 ---@class Ability: Storage
-Extends("Ability", "Storage")
+Extends('Ability', 'Storage')
 ---@class Ability: CustomEvent
-Extends("Ability", "CustomEvent")
+Extends('Ability', 'CustomEvent')
 ---@class Ability: ObjectEvent
-Extends("Ability", "ObjectEvent")
+Extends('Ability', 'ObjectEvent')
 ---@class Ability: KV
-Extends("Ability", "KV")
+Extends('Ability', 'KV')
 
 function M:__tostring()
-    return string.format("{ability|%s|%s} @ %s"
+    return string.format('{ability|%s|%s} @ %s'
     , self:获取_名称()
     , self.handle
     , self:获取_拥有者_单位()
@@ -44,8 +44,8 @@ end
 ---@param id integer
 ---@param py_ability py.Ability
 ---@return Ability
-M.ref_manager = New "Ref" ("Ability", function(id, py_ability)
-    return New "Ability" (id, py_ability)
+M.ref_manager = New 'Ref' ('Ability', function(id, py_ability)
+    return New 'Ability' (id, py_ability)
 end)
 
 ---通过py层的技能实例获取lua层的技能实例
@@ -62,17 +62,17 @@ function M.获取_通过id(id)
     return M.ref_manager:get(id)
 end
 
-y3.py_converter.register_py_to_lua("py.Ability", M.获取_通过handle)
-y3.py_converter.register_lua_to_py("py.Ability", function(lua_value)
+y3.py_converter.register_py_to_lua('py.Ability', M.获取_通过handle)
+y3.py_converter.register_lua_to_py('py.Ability', function(lua_value)
     return lua_value.handle
 end)
 
-y3.游戏:事件("技能-失去", function(trg, data)
+y3.游戏:事件('技能-失去', function(trg, data)
     local id = data.ability.id
     M.ref_manager:remove(id)
 end)
 
-function M:获取_技能类型id()
+function M:获取_物编id()
     return self.phandle:api_get_ability_id()
 end
 
@@ -96,13 +96,13 @@ end
 
 ---@param 标签 别名.技能.标签
 function M:添加_标签(标签)
-    local 标签组 = self:获取存储值("@标签") or self:设置存储值("@标签", {}) or self:获取存储值("@标签")
+    local 标签组 = self:获取存储值('@标签') or self:设置存储值('@标签', {}) or self:获取存储值('@标签')
     标签组[标签] = true
 end
 
 ---@param 标签 别名.技能.标签
 function M:移除_标签(标签)
-    local 标签组 = self:获取存储值("@标签") or self:设置存储值("@标签", {}) or self:获取存储值("@标签")
+    local 标签组 = self:获取存储值('@标签') or self:设置存储值('@标签', {}) or self:获取存储值('@标签')
     标签组[标签] = nil
 end
 
@@ -110,7 +110,7 @@ end
 ---@param 标签 别名.技能.标签
 ---@return boolean
 function M:是否_具有_标签(标签)
-    local 标签组 = self:获取存储值("@标签") or self:设置存储值("@标签", {}) or self:获取存储值("@标签")
+    local 标签组 = self:获取存储值('@标签') or self:设置存储值('@标签', {}) or self:获取存储值('@标签')
     return 标签组[标签]
     -- return GlobalAPI.has_tag(self.handle, 标签)
 end
@@ -231,7 +231,14 @@ end
 function M:设置_描述(des)
     -- TODO 见问题1
     ---@diagnostic disable-next-line: param-type-mismatch
-    self.phandle:api_set_str_attr("desc", des)
+    self.phandle:api_set_str_attr('desc', des)
+end
+
+--获取技能描述
+---@return string
+function M:get_description()
+    ---@diagnostic disable-next-line: param-type-mismatch
+    return self.phandle:api_get_str_attr('desc')
 end
 
 ---学习技能
@@ -504,8 +511,14 @@ end
 ---获取技能类型的icon图标的图片ID
 ---@param ability_key py.AbilityKey 技能类型id (物编id)
 ---@return py.Texture id 图片ID
-function M.get_icon_by_key(ability_key)
+function M.获取技能类型图标(ability_key)
     return GameAPI.get_icon_id_by_ability_type(ability_key) --[[@as py.Texture]]
+end
+
+--获取技能图标
+---@return py.Texture id 图片ID
+function M:获取图标()
+    return M.获取技能类型图标(self:获取_物编id())
 end
 
 ---获取技能类型公式属性
@@ -557,7 +570,7 @@ end
 ---设置技能最大CD
 ---@param value number
 function M:设置_最大_冷却(value)
-    self:设置_实数_属性("cold_down_time", value)
+    self:设置_实数_属性('cold_down_time', value)
 end
 
 ---进入技能准备施法状态

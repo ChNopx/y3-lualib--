@@ -5,27 +5,27 @@
 ---@field id integer
 ---@overload fun(py_player?: py.Role): self
 ---@overload fun(id: py.RoleID): self
-local M = Class "Player"
+local M = Class 'Player'
 
-M.type = "player"
+M.type = 'player'
 
 ---@class Player: Storage
-Extends("Player", "Storage")
+Extends('Player', 'Storage')
 ---@class Player: CustomEvent
-Extends("Player", "CustomEvent")
+Extends('Player', 'CustomEvent')
 ---@class Player: ObjectEvent
-Extends("Player", "ObjectEvent")
+Extends('Player', 'ObjectEvent')
 ---@class Player: KV
-Extends("Player", "KV")
+Extends('Player', 'KV')
 
 ---@param key py.RoleID
 ---@return Player?
-M.ref_manager = New "Ref" ("Player", function(key)
+M.ref_manager = New 'Ref' ('Player', function(key)
     local py_player = GameAPI.get_role_by_role_id(key)
     if not py_player then
         return nil
     end
-    return New "Player" (py_player)
+    return New 'Player' (py_player)
 end)
 
 ---@param py_player py.Role
@@ -39,7 +39,7 @@ end
 
 ---@private
 function M:__tostring()
-    return string.format("{player|%s|%d}"
+    return string.format('{player|%s|%d}'
     , self:获取名称()
     , self.id
     )
@@ -66,17 +66,17 @@ end
 ---@param str string
 ---@return Player?
 function M.get_by_string(str)
-    local id = str:match("^{player|.+|(%d+)}$")
-        or str:match("<Camp.-%(%d+%),id%((%d+)%)")
-        or str:match("^Player:(%d+)")
+    local id = str:match('^{player|.+|(%d+)}$')
+        or str:match('<Camp.-%(%d+%),id%((%d+)%)')
+        or str:match('^Player:(%d+)')
     if not id then
         return nil
     end
     return M.从id获取(tonumber(id) --[[@as integer]])
 end
 
-y3.py_converter.register_type_alias("py.Role", "Player")
-y3.py_converter.register_py_to_lua("py.RoleID", M.从id获取)
+y3.py_converter.register_type_alias('py.Role', 'Player')
+y3.py_converter.register_py_to_lua('py.RoleID', M.从id获取)
 
 ---@param py_player py.Role
 ---@return Player
@@ -85,8 +85,8 @@ function M.从句柄获取(py_player)
     return M.从id获取(id)
 end
 
-y3.py_converter.register_py_to_lua("py.Role", M.从句柄获取)
-y3.py_converter.register_lua_to_py("py.Role", function(lua_value)
+y3.py_converter.register_py_to_lua('py.Role', M.从句柄获取)
+y3.py_converter.register_lua_to_py('py.Role', function(lua_value)
     return lua_value.handle
 end)
 
@@ -458,7 +458,7 @@ end
 ---@return Point point 点
 function M:get_mouse_pos()
     if not y3.config.sync.mouse then
-        error("必须先设置 `y3.config.sync.mouse = true`")
+        error('必须先设置 `y3.config.sync.mouse = true`')
     end
     local py_point = GameAPI.get_player_pointing_pos(self.handle)
     -- TODO 见问题2
@@ -471,7 +471,7 @@ end
 ---@return number x_per X的占比
 function M:get_mouse_ui_x_percent()
     if not y3.config.sync.mouse then
-        error("必须先设置 `y3.config.sync.mouse = true`")
+        error('必须先设置 `y3.config.sync.mouse = true`')
     end
     return GameAPI.get_role_ui_x_per(self.handle):float()
 end
@@ -481,7 +481,7 @@ end
 ---@return number y_per Y的占比
 function M:get_mouse_ui_y_percent()
     if not y3.config.sync.mouse then
-        error("必须先设置 `y3.config.sync.mouse = true`")
+        error('必须先设置 `y3.config.sync.mouse = true`')
     end
     return GameAPI.get_role_ui_y_per(self.handle):float()
 end
@@ -503,7 +503,7 @@ end
 ---@return boolean 是否被按下
 function M:是否按下按键(key)
     if not y3.config.sync.key then
-        error("必须先设置 `y3.config.sync.key = true`")
+        error('必须先设置 `y3.config.sync.key = true`')
     end
     return GameAPI.player_key_is_pressed(self.handle, key)
 end
@@ -601,7 +601,7 @@ end
 ---@param message string # 消息
 ---@param localize? boolean # 是否支持语言环境
 function M:发送文本消息(message, localize)
-    GameAPI.show_msg_to_role(self.handle, message, localize)
+    GameAPI.show_msg_to_role(self.handle, message, localize or false)
 end
 
 return M

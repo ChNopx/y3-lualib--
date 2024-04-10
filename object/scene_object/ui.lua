@@ -102,7 +102,7 @@ function M:添加本地事件(event, callback)
     assert(y3.const.UIEventMap[event], '无效的事件类型')
     GameAPI.bind_local_listener(self.handle, y3.const.UIEventMap[event], function()
         y3.玩家.执行本地代码(function(local_player)
-            callback(local_player)
+            xpcall(callback, log.error, local_player)
         end)
     end)
 end
@@ -459,6 +459,7 @@ function M:设置_相对旋转(rot)
 end
 
 --设置控件绝对坐标
+--> 同 `UI:set_absolute_pos`
 ---@param x number x轴
 ---@param y number y轴
 ---@return self
@@ -901,6 +902,15 @@ end
 ---@return self
 function M:设置_相对坐标(x, y)
     GameAPI.set_ui_comp_pos_no_trans(self.player.handle, self.handle, x, y)
+    return self
+end
+
+---设置控件绝对坐标
+---@param x number x轴
+---@param y number y轴
+---@return self
+function M:set_absolute_pos(x, y)
+    GameAPI.set_ui_comp_world_pos(self.player.handle, self.handle, x, y)
     return self
 end
 

@@ -79,6 +79,7 @@ y3.heal_instance = require 'y3.object.runtime_object.heal_instance'
 y3.声音 = require 'y3.object.runtime_object.sound'
 
 require 'y3.object.runtime_object.local_player'
+require 'y3.object.runtime_object.current_select'
 
 y3.区域 = require 'y3.object.scene_object.area'
 y3.镜头 = require 'y3.object.scene_object.camera'
@@ -95,6 +96,8 @@ y3.本地计时器 = require 'y3.util.local_timer'
 y3.存档 = require 'y3.util.save_data'
 y3.dump = require 'y3.util.dump'
 y3.sync = require 'y3.util.sync'
+
+require 'y3.util.local_ui_logic'
 
 y3.develop = {}
 y3.develop.command = include 'y3.develop.command'

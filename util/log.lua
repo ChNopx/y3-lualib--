@@ -1,4 +1,4 @@
-require "y3.tools.log"
+require 'y3.tools.log'
 
 ---@param path string
 ---@param mode openmode
@@ -6,10 +6,10 @@ require "y3.tools.log"
 ---@return string? errmsg
 local function io_open(path, mode)
     if not io then
-        return nil, "No io module"
+        return nil, 'No io module'
     end
     if not io.open then
-        return nil, "No io.open"
+        return nil, 'No io.open'
     end
     local file, err
     local suc, res = pcall(function()
@@ -22,11 +22,11 @@ local function io_open(path, mode)
 end
 
 local log_cache = {}
-local log_name = ("lua_player%02d.log"):format(GameAPI.get_client_role():get_role_id_num())
-local log_file = io_open(lua_script_path .. "/log/" .. log_name, "w+b")
-    or io_open(log_name, "w+b")
+local log_name = ('lua_player%02d.log'):format(GameAPI.get_client_role():get_role_id_num())
+local log_file = io_open(lua_script_path .. '/log/' .. log_name, 'w+b')
+    or io_open(log_name, 'w+b')
 if log_file then
-    log_file:setvbuf "no"
+    log_file:setvbuf 'no'
 end
 
 ---@param text string
@@ -48,8 +48,8 @@ local function remove_bad_utf8(text)
 end
 
 ---@diagnostic disable-next-line: lowercase-global
-log = New "Log" {
-    level     = "debug",
+log = New 'Log' {
+    level     = 'debug',
     file      = log_file,
     clock     = function()
         return GameAPI.get_cur_game_time():float()
@@ -65,9 +65,9 @@ log = New "Log" {
             end
         end
         if y3.config.log.toDialog then
-            if level == "error" or level == "fatal" then
+            if level == 'error' or level == 'fatal' then
                 GameAPI.print_to_dialog(1, message)
-            elseif level == "warn" then
+            elseif level == 'warn' then
                 GameAPI.print_to_dialog(2, message)
             else
                 GameAPI.print_to_dialog(3, message)
@@ -82,7 +82,8 @@ log = New "Log" {
                 table.remove(log_cache, 1)
             end
             ---@diagnostic disable-next-line: deprecated
-            y3.控件.display_message(y3.玩家.获取本地玩家(), remove_bad_utf8(table.concat(log_cache, "\n")), 60)
+            -- y3.控件.display_message(y3.玩家.获取本地玩家(), remove_bad_utf8(table.concat(log_cache, '\n')), 60)
+            y3.玩家.获取本地玩家():发送文本消息(remove_bad_utf8(table.concat(log_cache, '\n')))
         end
     end,
     traceback = function(message, level)
@@ -90,7 +91,7 @@ log = New "Log" {
         if python and python.get_exc_info then
             local py_traceback = python.get_exc_info()
             if py_traceback then
-                err = tostring(py_traceback) .. "\n" .. err
+                err = tostring(py_traceback) .. '\n' .. err
             end
         end
         return err

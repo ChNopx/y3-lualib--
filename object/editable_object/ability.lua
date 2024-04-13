@@ -432,7 +432,7 @@ function M:获取_施法_ID(cast)
 
     local item = GameAPI.get_target_item_in_ability(self.handle, cast)
     if item then
-        return y3.物品.从句柄获取(item)
+        return y3.物品.获取于hd(item)
     end
 
     local point = self.phandle:api_get_release_position(cast)

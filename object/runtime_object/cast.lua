@@ -5,12 +5,12 @@
 ---@field package ability Ability
 ---@field package cast_id integer
 ---@overload fun(ability: Ability, cast_id: integer): self
-local M = Class "Cast"
+local M = Class 'Cast'
 
 ---@class Cast: GCHost
-Extends("Cast", "GCHost")
+Extends('Cast', 'GCHost')
 ---@class Cast: Storage
-Extends("Cast", "Storage")
+Extends('Cast', 'Storage')
 
 ---@param ability Ability
 ---@param cast_id integer
@@ -22,7 +22,7 @@ function M:__init(ability, cast_id)
 end
 
 function M:__tostring()
-    return string.format("{cast|%d} @ %s"
+    return string.format('{cast|%d} @ %s'
     , self.cast_id
     , self.ability
     )
@@ -36,14 +36,14 @@ end
 ---@return Cast
 function M.get(ability, cast_id)
     if not ability._castRef then
-        ability._castRef = New "Ref" ("Cast", function(id)
-            return New "Cast" (ability, id)
+        ability._castRef = New 'Ref' ('Cast', function(id)
+            return New 'Cast' (ability, id)
         end)
     end
     return ability._castRef:get(cast_id)
 end
 
-y3.游戏:事件("施法-结束", function(trg, data)
+y3.游戏:事件('施法-结束', function(trg, data)
     local id = data.cast.cast_id
     local ability = data.cast.ability
     local castRef = ability._castRef
@@ -76,7 +76,7 @@ function M:获取目标物品()
     if not py_item then
         return nil
     end
-    return y3.物品.从句柄获取(py_item)
+    return y3.物品.获取于hd(py_item)
 end
 
 -- 获取施法目标单位

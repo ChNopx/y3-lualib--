@@ -130,7 +130,7 @@ end
 ---@return Item
 function M:添加物品(item_id)
     local py_item = self.phandle:api_add_item(item_id)
-    return y3.物品.从句柄获取(py_item)
+    return y3.物品.获取于hd(py_item)
 end
 
 ---单位移除物品
@@ -262,7 +262,7 @@ function M:获取物品_通过槽位(type, slot)
     if not py_item then
         return nil
     end
-    return y3.物品.从句柄获取(py_item)
+    return y3.物品.获取于hd(py_item)
 end
 
 ---单位的所有物品

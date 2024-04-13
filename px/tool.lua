@@ -32,6 +32,19 @@ function m.数组_查找值(array, value)
     return nil
 end
 
+---@param array table[]
+---@param value string|integer
+---@param 回调 fun(key, value):string|integer
+---@return any
+function m.数组_查找值P(array, value, 回调)
+    for i = 1, #array do
+        if 回调(i, array[i]) == value then
+            return i
+        end
+    end
+    return nil
+end
+
 function m.数组_插入非重复值(array, value)
     if not m.数组_存在值(array, value) then
         table.insert(array, value)

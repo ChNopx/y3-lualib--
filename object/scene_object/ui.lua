@@ -322,7 +322,7 @@ end
 ---@param index integer 格子位置
 ---@return self
 function M:绑定物品组件到单位(unit, field, index)
-    GameAPI.set_ui_comp_unit_slot(self.player.handle, self.handle, unit.handle, y3.const.背包槽位类型[field], index)
+    GameAPI.set_ui_comp_unit_slot(self.player.handle, self.handle, unit.handle, y3.const.背包槽位类型[field], index - 1)
     return self
 end
 

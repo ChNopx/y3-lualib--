@@ -153,15 +153,6 @@ function M.创建()
     return New 'Pool' ()
 end
 
----@param 参数 table<any,integer>[] {{对象, 权重}}
-function M.创建自对象表(参数)
-    local r = M.创建()
-    for index, value in ipairs(参数) do
-        r:添加对象(value[1], value[2])
-    end
-    return r
-end
-
 ---@param 参数 {[any]:{权重:integer}} {{权重=?}}
 function M.创建自数据表(参数)
     local r = M.创建()

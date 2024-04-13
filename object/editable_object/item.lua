@@ -4,23 +4,23 @@
 ---@field phandle py.Item
 ---@field id py.ItemID
 ---@overload fun(id: py.ItemID, py_item: py.Item): self
-local M = Class "Item"
+local M = Class 'Item'
 
-M.type = "item"
+M.type = 'item'
 
 ---@class Item: Storage
-Extends("Item", "Storage")
+Extends('Item', 'Storage')
 ---@class Item: GCHost
-Extends("Item", "GCHost")
+Extends('Item', 'GCHost')
 ---@class Item: CustomEvent
-Extends("Item", "CustomEvent")
+Extends('Item', 'CustomEvent')
 ---@class Item: ObjectEvent
-Extends("Item", "ObjectEvent")
+Extends('Item', 'ObjectEvent')
 ---@class Item: KV
-Extends("Item", "KV")
+Extends('Item', 'KV')
 
 function M:__tostring()
-    return string.format("{item|%s|%s}"
+    return string.format('{item|%s|%s}'
     , self:获取名称()
     , self.handle
     )
@@ -43,38 +43,38 @@ end
 ---@package
 ---@param id py.ItemID
 ---@return Item?
-M.ref_manager = New "Ref" ("Item", function(id)
+M.ref_manager = New 'Ref' ('Item', function(id)
     local py_item = GameAPI.get_item(id)
     if not py_item then
         return nil
     end
-    return New "Item" (id, py_item)
+    return New 'Item' (id, py_item)
 end)
 
 ---通过py层的技能实例获取lua层的道具实例
 ---@param  py_item py.Item py层的道具实例
 ---@return Item # 返回在lua层初始化后的lua层道具实例
-function M.从句柄获取(py_item)
+function M.获取于hd(py_item)
     local id = py_item:api_get_id()
-    return M.从ID获取(id)
+    return M.获取于id(id)
 end
 
-y3.py_converter.register_py_to_lua("py.Item", M.从句柄获取)
-y3.py_converter.register_lua_to_py("py.Item", function(lua_value)
+y3.py_converter.register_py_to_lua('py.Item', M.获取于hd)
+y3.py_converter.register_lua_to_py('py.Item', function(lua_value)
     return lua_value.handle
 end)
 
 -- 通过id获取lua层的道具实例
 ---@param id py.ItemID
 ---@return Item # 返回在lua层初始化后的lua层道具实例
-function M.从ID获取(id)
+function M.获取于id(id)
     local item = M.ref_manager:get(id)
     return item
 end
 
-y3.py_converter.register_py_to_lua("py.ItemID", M.从ID获取)
+y3.py_converter.register_py_to_lua('py.ItemID', M.获取于id)
 
-y3.游戏:事件("物品-移除", function(trg, data)
+y3.游戏:事件('物品-移除', function(trg, data)
     local item = data.触发物品
     M.ref_manager:remove(item.id)
 end)
@@ -242,42 +242,42 @@ end
 ---@param key string 属性key
 ---@param value number 属性值
 function M:设置基础属性(key, value)
-    self.phandle:api_set_attr("ATTR_BASE", key, value)
+    self.phandle:api_set_attr('ATTR_BASE', key, value)
 end
 
 ---增加基础属性
 ---@param key string 属性key
 ---@param value number 属性值
 function M:增加基础属性(key, value)
-    self.phandle:api_change_attr("ATTR_BASE", key, value)
+    self.phandle:api_change_attr('ATTR_BASE', key, value)
 end
 
 ---获取物品的基础属性
 ---@param key string 属性key
 ---@return number
 function M:获取基础属性(key)
-    return self.phandle:api_get_attr("ATTR_BASE", key):float()
+    return self.phandle:api_get_attr('ATTR_BASE', key):float()
 end
 
 ---设置增益属性
 ---@param key string 属性key
 ---@param value number 属性值
 function M:设置增益属性(key, value)
-    self.phandle:api_set_attr("ATTR_BONUS", key, value)
+    self.phandle:api_set_attr('ATTR_BONUS', key, value)
 end
 
 ---增加增益属性
 ---@param key string 属性key
 ---@param value number 属性值
 function M:增加增益属性(key, value)
-    self.phandle:api_change_attr("ATTR_BONUS", key, value)
+    self.phandle:api_change_attr('ATTR_BONUS', key, value)
 end
 
 ---获取物品的增益属性
 ---@param key string 属性key
 ---@return number
 function M:获取增益属性(key)
-    return self.phandle:api_get_attr("ATTR_BONUS", key):float()
+    return self.phandle:api_get_attr('ATTR_BONUS', key):float()
 end
 
 ---设置生命值
@@ -491,7 +491,7 @@ function M.创建到点(point, item_key, player)
         player = y3.玩家(31)
     end
     local py_item = GameAPI.create_item_by_id(point.handle, item_key, player.handle)
-    return M.从句柄获取(py_item)
+    return M.获取于hd(py_item)
 end
 
 ---获取物品购买售价
@@ -574,7 +574,7 @@ end
 ---@return number
 function M.类型获取基础属性(item_key, key)
     ---@diagnostic disable-next-line: return-type-mismatch
-    return GameAPI.api_get_attr_of_item_key(item_key, "ATTR_BASE", key)
+    return GameAPI.api_get_attr_of_item_key(item_key, 'ATTR_BASE', key)
 end
 
 ---物品类型是否存在标签

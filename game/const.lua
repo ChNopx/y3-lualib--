@@ -362,7 +362,7 @@ M.SfxRotateType = {
     ['NOT_FOLLOW'] = 2,
 }
 
----@enum (key) y3.Const.物品槽位类型
+---@alias y3.Const.物品槽位类型 '物品栏'|'背包栏'|'栏位外'
 M.背包槽位类型 = {
     ['物品栏'] = 1,
     ['背包栏'] = 0,

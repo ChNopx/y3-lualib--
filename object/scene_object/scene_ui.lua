@@ -2,9 +2,9 @@
 ---@field handle py.SceneNode
 ---@field res_id? integer
 ---@overload fun(py_scene_node: py.SceneNode): self
-local M = Class "SceneUI"
+local M = Class 'SceneUI'
 
-M.type = "scene_ui"
+M.type = 'scene_ui'
 
 ---@private
 ---@param py_scene_node py.SceneNode
@@ -25,13 +25,13 @@ M.map = {}
 ---@param py_scene_node py.SceneNode
 ---@return SceneUI
 function M.获取于HD(py_scene_node)
-    local scene_ui = New "SceneUI" (py_scene_node)
+    local scene_ui = New 'SceneUI' (py_scene_node)
     return scene_ui
 end
 
-y3.py_converter.register_type_alias("py.SceneNode", "SceneUI")
-y3.py_converter.register_py_to_lua("py.SceneNode", M.获取于HD)
-y3.py_converter.register_lua_to_py("py.SceneNode", function(lua_value)
+y3.py_converter.register_type_alias('py.SceneNode', 'SceneUI')
+y3.py_converter.register_py_to_lua('py.SceneNode', M.获取于HD)
+y3.py_converter.register_lua_to_py('py.SceneNode', function(lua_value)
     return lua_value.handle
 end)
 
@@ -64,10 +64,14 @@ end
 ---@param unit Unit 单位
 ---@param socket_name string 挂接点名称
 ---@param distance? number 可见距离
+---@param follow_scale? boolean 是否跟随缩放
 ---@return SceneUI scene_ui 场景ui
-function M.创建到单位挂接点(scene_ui_type, player, unit, socket_name, distance)
-    local py_scene_node = GameAPI.create_scene_node_on_unit(y3.控件.comp_id[scene_ui_type], player.handle, unit.handle,
-                                                            socket_name, distance or 10000)
+function M.创建到单位挂接点(scene_ui_type, player, unit, socket_name, distance, follow_scale)
+    if follow_scale == nil then
+        follow_scale = true
+    end
+    local py_scene_node = GameAPI.create_scene_node_on_unit_ex(y3.控件.comp_id[scene_ui_type], player.handle, unit.handle,
+                                                               socket_name, follow_scale, distance or 100000)
     return M.获取于HD(py_scene_node)
 end
 

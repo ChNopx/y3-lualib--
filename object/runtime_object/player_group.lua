@@ -3,13 +3,13 @@
 ---@field handle py.RoleGroup
 ---@field private _removed? boolean
 ---@overload fun(py_player_group?: py.RoleGroup): self
-local M = Class "PlayerGroup"
+local M = Class 'PlayerGroup'
 
-M.type = "player_group"
+M.type = 'player_group'
 
 ---@private
 function M:__tostring()
-    return string.format("{PlayerGroup|%s}"
+    return string.format('{PlayerGroup|%s}'
     , self.handle
     )
 end
@@ -25,13 +25,13 @@ end
 ---@param py_role_group py.RoleGroup
 ---@return PlayerGroup
 function M.从句柄获取(py_role_group)
-    local player_group = New "PlayerGroup" (py_role_group)
+    local player_group = New 'PlayerGroup' (py_role_group)
     return player_group
 end
 
-y3.py_converter.register_type_alias("py.RoleGroup", "PlayerGroup")
-y3.py_converter.register_py_to_lua("py.RoleGroup", M.从句柄获取)
-y3.py_converter.register_lua_to_py("py.RoleGroup", function(lua_value)
+y3.py_converter.register_type_alias('py.RoleGroup', 'PlayerGroup')
+y3.py_converter.register_py_to_lua('py.RoleGroup', M.从句柄获取)
+y3.py_converter.register_lua_to_py('py.RoleGroup', function(lua_value)
     return lua_value.handle
 end)
 
@@ -77,11 +77,13 @@ function M:清空()
     return self
 end
 
+---@private
+M.ALL_PLAYERS = M.从句柄获取(GameAPI.get_all_role_ids())
+
 ---获取所有玩家
 ---@return PlayerGroup player_group
 function M.获取所有玩家()
-    local py_player_group = GameAPI.get_all_role_ids()
-    return M.从句柄获取(py_player_group)
+    return M.ALL_PLAYERS
 end
 
 ---阵营內所有玩家

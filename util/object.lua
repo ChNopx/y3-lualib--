@@ -8,6 +8,7 @@ local DataModule = Class 'EditorObject.DataModule'
 
 ---@diagnostic disable-next-line: undefined-field
 DataModule.__getter.data = function(self)
+    调试输出(self, self.data_key, self.key, GameAPI.api_get_editor_type_data(self.data_key, self.key))
     return GameAPI.api_get_editor_type_data(self.data_key, self.key), true
 end
 
@@ -219,43 +220,43 @@ end
 
 subscribe(Unit, 'on_create', function()
     y3.游戏:事件('单位-创建', function(trg, data)
-        M.callMethod('unit', 'on_create', data.触发单位:get_key(), data.触发单位, data.触发单位)
+        M.callMethod('unit', 'on_create', data.触发单位:获取物编ID(), data.触发单位, data.触发单位)
     end)
 end)
 
 subscribe(Unit, 'on_remove', function()
     y3.游戏:事件('单位-移除', function(trg, data)
-        M.callMethod('unit', 'on_remove', data.触发单位:get_key(), data.触发单位, data.触发单位)
+        M.callMethod('unit', 'on_remove', data.触发单位:获取物编ID(), data.触发单位, data.触发单位)
     end)
 end)
 
 subscribe(Unit, 'on_dead', function()
     y3.游戏:事件('单位-死亡', function(trg, data)
-        M.callMethod('unit', 'on_dead', data.触发单位:get_key(), data.触发单位, data.触发单位)
+        M.callMethod('unit', 'on_dead', data.触发单位:获取物编ID(), data.触发单位, data.触发单位)
     end)
 end)
 
 subscribe(Item, 'on_add', function()
     y3.游戏:事件('物品-获得', function(trg, data)
-        M.callMethod('item', 'on_add', data.触发物品:获取类型id(), data.触发物品, data.触发物品)
+        M.callMethod('item', 'on_add', data.触发物品:获取物编ID(), data.触发物品, data.触发物品)
     end)
 end)
 
 subscribe(Item, 'on_lose', function()
     y3.游戏:事件('物品-失去', function(trg, data)
-        M.callMethod('item', 'on_lose', data.触发物品:获取类型id(), data.触发物品, data.触发物品)
+        M.callMethod('item', 'on_lose', data.触发物品:获取物编ID(), data.触发物品, data.触发物品)
     end)
 end)
 
 subscribe(Item, 'on_create', function()
     y3.游戏:事件('物品-创建', function(trg, data)
-        M.callMethod('item', 'on_create', data.触发物品:获取类型id(), data.触发物品, data.触发物品)
+        M.callMethod('item', 'on_create', data.触发物品:获取物编ID(), data.触发物品, data.触发物品)
     end)
 end)
 
 subscribe(Item, 'on_remove', function()
     y3.游戏:事件('物品-移除', function(trg, data)
-        M.callMethod('item', 'on_remove', data.触发物品:获取类型id(), data.触发物品, data.触发物品)
+        M.callMethod('item', 'on_remove', data.触发物品:获取物编ID(), data.触发物品, data.触发物品)
     end)
 end)
 
@@ -285,61 +286,61 @@ end)
 
 subscribe(Ability, 'on_add', function()
     y3.游戏:事件('技能-获得', function(trg, data)
-        M.callMethod('ability', 'on_add', data.ability:获取_物编id(), data.ability, data.ability)
+        M.callMethod('ability', 'on_add', data.ability:获取物编ID(), data.ability, data.ability)
     end)
 end)
 
 subscribe(Ability, 'on_lose', function()
     y3.游戏:事件('技能-失去', function(trg, data)
-        M.callMethod('ability', 'on_lose', data.ability:获取_物编id(), data.ability, data.ability)
+        M.callMethod('ability', 'on_lose', data.ability:获取物编ID(), data.ability, data.ability)
     end)
 end)
 
 subscribe(Ability, 'on_cooldown', function()
     y3.游戏:事件('技能-冷却结束', function(trg, data)
-        M.callMethod('ability', 'on_cooldown', data.ability:获取_物编id(), data.ability, data.ability)
+        M.callMethod('ability', 'on_cooldown', data.ability:获取物编ID(), data.ability, data.ability)
     end)
 end)
 
 subscribe(Ability, 'on_upgrade', function()
     y3.游戏:事件('技能-升级', function(trg, data)
-        M.callMethod('ability', 'on_upgrade', data.ability:获取_物编id(), data.ability, data.ability)
+        M.callMethod('ability', 'on_upgrade', data.ability:获取物编ID(), data.ability, data.ability)
     end)
 end)
 
 subscribe(Ability, 'on_can_cast', function()
     y3.游戏:事件('施法-即将开始', function(trg, data)
-        M.callMethod('ability', 'on_can_cast', data.ability:获取_物编id(), nil, data.ability, data.cast)
+        M.callMethod('ability', 'on_can_cast', data.ability:获取物编ID(), nil, data.ability, data.cast)
     end)
 end)
 
 subscribe(Ability, 'on_cast_start', function()
     y3.游戏:事件('施法-开始', function(trg, data)
-        M.callMethod('ability', 'on_cast_start', data.ability:获取_物编id(), nil, data.ability, data.cast)
+        M.callMethod('ability', 'on_cast_start', data.ability:获取物编ID(), nil, data.ability, data.cast)
     end)
 end)
 
 subscribe(Ability, 'on_cast_channel', function()
     y3.游戏:事件('施法-引导', function(trg, data)
-        M.callMethod('ability', 'on_cast_channel', data.ability:获取_物编id(), nil, data.ability, data.cast)
+        M.callMethod('ability', 'on_cast_channel', data.ability:获取物编ID(), nil, data.ability, data.cast)
     end)
 end)
 
 subscribe(Ability, 'on_cast_shot', function()
     y3.游戏:事件('施法-出手', function(trg, data)
-        M.callMethod('ability', 'on_cast_shot', data.ability:获取_物编id(), nil, data.ability, data.cast)
+        M.callMethod('ability', 'on_cast_shot', data.ability:获取物编ID(), nil, data.ability, data.cast)
     end)
 end)
 
 subscribe(Ability, 'on_cast_finish', function()
     y3.游戏:事件('施法-完成', function(trg, data)
-        M.callMethod('ability', 'on_cast_finish', data.ability:获取_物编id(), nil, data.ability, data.cast)
+        M.callMethod('ability', 'on_cast_finish', data.ability:获取物编ID(), nil, data.ability, data.cast)
     end)
 end)
 
 subscribe(Ability, 'on_cast_stop', function()
     y3.游戏:事件('施法-停止', function(trg, data)
-        M.callMethod('ability', 'on_cast_stop', data.ability:获取_物编id(), nil, data.ability, data.cast)
+        M.callMethod('ability', 'on_cast_stop', data.ability:获取物编ID(), nil, data.ability, data.cast)
     end)
 end)
 

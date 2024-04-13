@@ -144,7 +144,7 @@ function M.declare(name, super, superInit)
     local superClass = M._classes[super]
     if superClass then
         if class == superClass then
-            M._errorHandler(("class %q can not inherit itself"):format(name))
+            M._errorHandler(('class %q can not inherit itself'):format(name))
         end
 
         class.__super = superClass
@@ -175,7 +175,7 @@ end
 function M.new(name, tbl)
     local class = M._classes[name]
     if not class then
-        M._errorHandler(("class %q not found"):format(name))
+        M._errorHandler(('class %q not found'):format(name))
     end
 
     if not tbl then
@@ -197,7 +197,7 @@ function M.delete(obj)
     obj.__deleted__ = true
     local name = obj.__class__
     if not name then
-        M._errorHandler("can not delete undeclared class : " .. tostring(obj))
+        M._errorHandler('can not delete undeclared class : ' .. tostring(obj))
     end
 
     M.runDel(obj, name)
@@ -255,7 +255,7 @@ function M.runInit(obj, name, ...)
 
         local function collectInitCalls(cname)
             if collected[cname] then
-                error(("class %q has circular inheritance"):format(cname))
+                error(('class %q has circular inheritance'):format(cname))
             end
             collected[cname]   = true
             local class        = M._classes[cname]
@@ -327,17 +327,17 @@ function Config:super(name)
     if not self.superCache[name] then
         local class = M._classes[name]
         if not class then
-            M._errorHandler(("class %q not found"):format(name))
+            M._errorHandler(('class %q not found'):format(name))
         end
         local super = self.superClass
         if not super then
-            M._errorHandler(("class %q not inherit from any class"):format(name))
+            M._errorHandler(('class %q not inherit from any class'):format(name))
         end
         ---@cast super -?
         self.superCache[name] = function(...)
             local k, obj = debug.getlocal(2, 1)
-            if k ~= "self" then
-                M._errorHandler(("`%s()` must be called by the class"):format(name))
+            if k ~= 'self' then
+                M._errorHandler(('`%s()` must be called by the class'):format(name))
             end
             super.__call(obj, ...)
         end
@@ -352,15 +352,15 @@ function Config:extends(extendsName, init)
     local class   = M._classes[self.name]
     local extends = M._classes[extendsName]
     if not extends then
-        M._errorHandler(("class %q not found"):format(extendsName))
+        M._errorHandler(('class %q not found'):format(extendsName))
     end
-    if type(init) ~= "nil" and type(init) ~= "function" then
-        M._errorHandler(("init must be nil or function"))
+    if type(init) ~= 'nil' and type(init) ~= 'function' then
+        M._errorHandler(('init must be nil or function'))
     end
     if not self.extendsMap[extendsName] then
         self.extendsMap[extendsName] = true
         for k, v in pairs(extends) do
-            if not class[k] and not k:match "^__" then
+            if not class[k] and not k:match '^__' then
                 class[k] = v
             end
         end
@@ -384,7 +384,7 @@ function Config:extends(extendsName, init)
         if not extends.__init then
             return
         end
-        local info = debug.getinfo(extends.__init, "u")
+        local info = debug.getinfo(extends.__init, 'u')
         if info.nparams <= 1 then
             return
         end

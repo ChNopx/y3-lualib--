@@ -727,11 +727,13 @@ end
 ---@param point Point 点
 ---@param text_type y3.Const.HarmTextType 跳字类型
 ---@param str string 文字
----@param player_group PlayerGroup 玩家组
-function M.创建_悬浮文字(point, text_type, str, player_group)
+---@param player_group? PlayerGroup 玩家组
+---@param jump_word_track? integer 跳字轨迹类型
+function M.创建_悬浮文字(point, text_type, str, player_group, jump_word_track)
     -- TODO 见问题2
     ---@diagnostic disable-next-line: param-type-mismatch
-    GameAPI.create_harm_text(point.handle, y3.const.HarmTextType[text_type] or text_type, str, player_group.handle)
+    GameAPI.create_harm_text_ex(point.handle, y3.const.HarmTextType[text_type] or text_type, str,
+                                (player_group or y3.玩家组.获取所有玩家()).handle, jump_word_track or 0)
 end
 
 --设置窗口
@@ -878,9 +880,12 @@ function M:获取_真实高度()
 end
 
 --获得界面控件的父控件
----@return UI ui_comp ui控件
+---@return UI? ui_comp ui控件
 function M:获取_父控件()
     local py_ui = GameAPI.get_ui_comp_parent(self.player.handle, self.handle)
+    if not py_ui then
+        return nil
+    end
     return y3.控件.获取于HD(self.player, py_ui)
 end
 

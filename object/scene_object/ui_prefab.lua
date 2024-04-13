@@ -3,9 +3,9 @@
 ---@field handle string
 ---@field player Player
 ---@overload fun(player: Player, py_ui_prefab: string): self
-local M = Class "UIPrefab"
+local M = Class 'UIPrefab'
 
-M.type = "ui_prefab"
+M.type = 'ui_prefab'
 
 ---@private
 ---@param player Player
@@ -27,7 +27,7 @@ end
 ---@param  prefab_name string
 ---@return UIPrefab # 返回在lua层初始化后的lua层技能实例
 function M.从handle获取(player, prefab_name)
-    local ui_prefab = New "UIPrefab" (player, prefab_name)
+    local ui_prefab = New 'UIPrefab' (player, prefab_name)
     return ui_prefab
 end
 
@@ -46,12 +46,23 @@ function M:移除()
     Delete(self)
 end
 
--- 获取 UIPrefab 的 UI 实例
----@param path? string 路径
+--获取 UIPrefab 的 UI 实例
+-->注意！这里的 path 是相对于 *节点第一层之后* 的（就是节点列表里有个默认不能删的节点，那个是第一层）
+---@param child_path? string 路径，默认为根节点。
 ---@return UI
-function M:获取子控件(path)
+function M:获取子控件(child_path)
     ---@diagnostic disable-next-line: param-type-mismatch
-    return y3.控件.获取于HD(self.player, GameAPI.get_ui_prefab_child_by_path(self.handle, path))
+    local py_ui = GameAPI.get_ui_prefab_child_by_path(self.handle, '')
+    -- if not py_ui then
+    --     return nil
+    -- end
+
+    local ui = y3.控件.获取于HD(self.player, py_ui)
+    if child_path and #child_path > 0 then
+        return ui:获取子控件(child_path)
+    end
+
+    return ui
 end
 
 return M

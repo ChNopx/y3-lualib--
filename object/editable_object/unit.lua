@@ -253,6 +253,17 @@ function M:获取技能_通过槽位(type, slot)
     return y3.技能.获取_通过handle(py_ability)
 end
 
+--根据技能序号获取技能
+---@param seq py.AbilitySeq
+---@return Ability?
+function M:获取于槽位索引(seq)
+    local py_ability = self.phandle:api_get_ability_by_seq(seq)
+    if not py_ability then
+        return nil
+    end
+    return y3.技能.获取_通过handle(py_ability)
+end
+
 ---获取单位背包槽位上的物品
 ---@param type y3.Const.物品槽位类型
 ---@param slot integer 位置
@@ -1372,7 +1383,7 @@ end
 
 ---获取单位类型的ID
 ---@return py.UnitKey type_id 单位类型的ID
-function M:get_key()
+function M:获取物编ID()
     return self.phandle:api_get_key()
 end
 
@@ -1488,7 +1499,7 @@ end
 --获取单位的头像
 ---@return py.Texture image 单位的头像
 function M:get_icon()
-    return GameAPI.get_icon_id_by_unit_type(self:get_key()) --[[@as py.Texture]]
+    return GameAPI.get_icon_id_by_unit_type(self:获取物编ID()) --[[@as py.Texture]]
 end
 
 ---获取单位类型的头像

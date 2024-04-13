@@ -340,7 +340,7 @@ end
 
 ---获取物品类型id
 ---@return py.ItemKey key 类型
-function M:获取类型id()
+function M:获取物编ID()
     return self.phandle:api_get_key()
 end
 

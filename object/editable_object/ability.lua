@@ -72,7 +72,7 @@ y3.游戏:事件('技能-失去', function(trg, data)
     M.ref_manager:remove(id)
 end)
 
-function M:获取_物编id()
+function M:获取物编ID()
     return self.phandle:api_get_ability_id()
 end
 
@@ -518,7 +518,7 @@ end
 --获取技能图标
 ---@return py.Texture id 图片ID
 function M:获取图标()
-    return M.获取技能类型图标(self:获取_物编id())
+    return M.获取技能类型图标(self:获取物编ID())
 end
 
 ---获取技能类型公式属性

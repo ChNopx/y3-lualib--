@@ -488,13 +488,13 @@ end
 
 ---获取鼠标在屏幕上的X坐标
 ---@return number pos_x X坐标
-function M:get_mouse_pos_x()
+function M:获取鼠标在屏幕的X坐标()
     return GameAPI.get_player_ui_pos_x(self.handle)
 end
 
 ---获取鼠标在屏幕上的y坐标
 ---@return number pos_y Y坐标
-function M:get_mouse_pos_y()
+function M:获取鼠标在屏幕的Y坐标()
     return GameAPI.get_player_ui_pos_y(self.handle)
 end
 

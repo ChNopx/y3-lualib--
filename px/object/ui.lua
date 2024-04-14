@@ -1,5 +1,5 @@
 ---@class UI
-local M = Class "UI"
+local M = Class 'UI'
 
 --设置文本
 ---@param str string 文本
@@ -9,8 +9,8 @@ function M:设置文本_颜色格式化(str, ...)
     local 返回内容 = str
     for index, value in ipairs(...) do
         if value then
-            local 替换文本 = value[2] .. 到字符串(value[1]) .. "#ffffff"
-            返回内容 = 字符串.替换(str, "{}", 替换文本, 1)
+            local 替换文本 = value[2] .. 到字符串(value[1]) .. '#ffffff'
+            返回内容 = 字符串.替换(str, '{}', 替换文本, 1)
         end
     end
     return self:设置文本(返回内容)
@@ -34,11 +34,17 @@ function M:遍历父控件(回调)
         if 回调(i, 父控件) then
             return
         end
-        if 字符串.查找(父控件:获取_名称(), "画板_") then
+        if 字符串.查找(父控件:获取_名称(), '画板_') then
             break
         end
         父控件 = 父控件:获取_父控件()
     end
+    return 父控件
+end
+
+---@return UI
+function M:获取最高父控件()
+    return self:遍历父控件(function() end)
 end
 
 ---@param 公式 string
@@ -75,7 +81,7 @@ function M:获取所属元件()
     return y3.元件.从handle获取(self.player, GameAPI.get_ui_comp_prefab(self.player.handle, self.handle))
 end
 
-y3.游戏:事件("游戏-初始化", function(trg, data)
+y3.游戏:事件('游戏-初始化', function(trg, data)
     y3.玩家组.获取所有玩家():遍历(function(索引, 遍历到的玩家)
         控件存储值[遍历到的玩家.id] = {}
     end)

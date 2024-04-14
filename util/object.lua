@@ -8,7 +8,6 @@ local DataModule = Class 'EditorObject.DataModule'
 
 ---@diagnostic disable-next-line: undefined-field
 DataModule.__getter.data = function(self)
-    调试输出(self, self.data_key, self.key, GameAPI.api_get_editor_type_data(self.data_key, self.key))
     return GameAPI.api_get_editor_type_data(self.data_key, self.key), true
 end
 

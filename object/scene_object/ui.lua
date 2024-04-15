@@ -962,9 +962,11 @@ end
 
 -- 设置控件跟随鼠标
 ---@param follow_mouse boolean
+---@param 横向偏移? number
+---@param 纵向偏移? number
 ---@return self
-function M:设置_控件跟随鼠标(follow_mouse)
-    GameAPI.set_ui_comp_follow_mouse(self.player.handle, self.handle, follow_mouse)
+function M:设置_控件跟随鼠标(follow_mouse, 横向偏移, 纵向偏移)
+    GameAPI.set_ui_comp_follow_mouse(self.player.handle, self.handle, follow_mouse, 横向偏移 or 0, 纵向偏移 or 0)
     return self
 end
 

@@ -27,7 +27,7 @@ function M:遍历子控件(回调)
     end
 end
 
----@param 回调 fun(深度:integer,父控件:UI)
+---@param 回调 fun(深度:integer,父控件:UI):self
 function M:遍历父控件(回调)
     local 父控件 = self
     for i = 1, 30, 1 do

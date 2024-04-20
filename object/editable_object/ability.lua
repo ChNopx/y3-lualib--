@@ -51,18 +51,18 @@ end)
 ---通过py层的技能实例获取lua层的技能实例
 ---@param py_ability py.Ability # py层的技能实例
 ---@return Ability ability # 返回在lua层初始化后的lua层技能实例
-function M.获取_通过handle(py_ability)
+function M.获取于HD(py_ability)
     local id = py_ability:api_get_ability_global_id()
     return M.ref_manager:get(id, py_ability)
 end
 
 ---@param id integer
 ---@return Ability
-function M.获取_通过id(id)
+function M.获取于ID(id)
     return M.ref_manager:get(id)
 end
 
-y3.py_converter.register_py_to_lua('py.Ability', M.获取_通过handle)
+y3.py_converter.register_py_to_lua('py.Ability', M.获取于HD)
 y3.py_converter.register_lua_to_py('py.Ability', function(lua_value)
     return lua_value.handle
 end)
@@ -78,7 +78,7 @@ end
 
 ---是否受冷却缩减影响
 ---@return boolean is_influenced 是否受冷却缩减影响
-function M:是否受_冷却影响()
+function M:是否受冷却影响()
     return self.phandle:api_get_influenced_by_cd_reduce()
 end
 
@@ -236,7 +236,7 @@ end
 
 --获取技能描述
 ---@return string
-function M:get_description()
+function M:获取描述()
     ---@diagnostic disable-next-line: param-type-mismatch
     return self.phandle:api_get_str_attr('desc')
 end
@@ -353,19 +353,19 @@ end
 ---获取技能消耗的玩家属性值
 ---@param key string 属性key
 ---@return number cost 玩家属性值
-function M:get_player_attr_cost(key)
+function M:获取消耗玩家属性值(key)
     return self.phandle:api_get_ability_player_attr_cost(key):float()
 end
 
 ---获取技能释放类型 AbilityCastType
 ---@return py.AbilityCastType type 技能释放类型
-function M:get_cast_type()
+function M:获取释放类型()
     return self.phandle:api_get_ability_cast_type()
 end
 
 ---自动施法是否开启
 ---@return boolean is_enabled 是否开启
-function M:is_autocast_enabled()
+function M:获取自动施法是否已开启()
     return self.phandle:api_is_autocast_enabled()
 end
 

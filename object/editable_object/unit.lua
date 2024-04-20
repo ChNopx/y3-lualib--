@@ -166,7 +166,7 @@ function M:获取_指定类型所有技能(type)
     local abilities = {}
     local py_list = self.phandle:api_get_abilities_by_type(y3.const.技能分类[type])
     for i = 0, python_len(py_list) - 1 do
-        local lua_ability = y3.技能.获取_通过handle(python_index(py_list, i))
+        local lua_ability = y3.技能.获取于HD(python_index(py_list, i))
         abilities[#abilities + 1] = lua_ability
     end
     return abilities
@@ -217,7 +217,7 @@ function M:添加_技能(类型, 物编id, 槽位, 等级)
     if not py_ability then
         return nil
     end
-    local ability = y3.技能.获取_通过handle(py_ability)
+    local ability = y3.技能.获取于HD(py_ability)
     return ability
 end
 
@@ -237,7 +237,7 @@ function M:获取技能_通过技能类型(type, id)
     if not py_ability then
         return nil
     end
-    return y3.技能.获取_通过handle(py_ability)
+    return y3.技能.获取于HD(py_ability)
 end
 
 ---获得某个技能位的的技能
@@ -250,7 +250,7 @@ function M:获取技能_通过槽位(type, slot)
     if not py_ability then
         return nil
     end
-    return y3.技能.获取_通过handle(py_ability)
+    return y3.技能.获取于HD(py_ability)
 end
 
 --根据技能序号获取技能
@@ -261,7 +261,7 @@ function M:获取于槽位索引(seq)
     if not py_ability then
         return nil
     end
-    return y3.技能.获取_通过handle(py_ability)
+    return y3.技能.获取于HD(py_ability)
 end
 
 ---获取单位背包槽位上的物品

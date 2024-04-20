@@ -245,6 +245,27 @@ end
     return 返回内容
 end
 
+---@param 字体大小 integer
+---@param 内容 string
+local function 获取文本宽度(字体大小, 内容)
+    local r = 0
+    local 字体大小2 = 字体大小 * 0.66
+    local curIndex = 0;
+    local i = 1;
+    local lastCount = 1;
+    repeat
+        lastCount = 字符串.获取字符字节数(内容, i)
+        i = i + lastCount;
+        if lastCount > 1 then
+            r = r + 字体大小
+        else
+            r = r + 字体大小2
+        end
+        curIndex = curIndex + 1;
+    until (lastCount == 0);
+    return r
+end
+
 ---@param 内容 string
 ---@param 字体大小 integer
 ---@param 最大宽度 number
@@ -252,12 +273,12 @@ end
 ---@return number 宽度, number 高度
 function 字符串.获取文本画板尺寸(内容, 字体大小, 最大宽度, 保留换行)
     内容 = 字符串.替换(内容, '#%w%w%w%w%w%w', '')
-    local 行高 = 字体大小 * 1.3
+    local 行高 = 字体大小 * 1.38
     if 内容 == '' then
         return 0, 0
     end
     if not 保留换行 then
-        local 总长度 = 字符串.获取长度(内容) * 字体大小 / 2
+        local 总长度 = 获取文本宽度(字体大小, 内容)
         if 总长度 <= 最大宽度 then
             return 总长度, 行高
         else

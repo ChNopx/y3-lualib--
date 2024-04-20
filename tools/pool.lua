@@ -27,6 +27,13 @@ end
 ---@param obj any
 function M:移除对象(obj)
     self.pool[obj] = nil
+    for i, v in ipairs(self.order) do
+        if v == obj then
+            self.order[i] = self.order[#self.order]
+            self.order[#self.order] = nil
+            break
+        end
+    end
 end
 
 -- 是否包含对象
@@ -62,6 +69,7 @@ end
 -- 清空池
 function M:清空()
     self.pool = {}
+    self.order = {}
 end
 
 -- 随机抽取一个对象
@@ -124,13 +132,6 @@ end
 -- 显示池的内容，仅用于调试
 ---@return string
 function M:dump()
-    local keys = {}
-    for k in pairs(self.pool) do
-        keys[#keys + 1] = k
-    end
-    table.sort(keys, function(a, b)
-        return tostring(a) < tostring(b)
-    end)
     local buf = {}
     for i, obj in ipairs(self.order) do
         buf[i] = ('%s: %d'):format(tostring(obj), self.pool[obj])

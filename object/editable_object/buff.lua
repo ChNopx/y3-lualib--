@@ -281,7 +281,7 @@ end
 function M:获取关联技能()
     local py_ability = GlobalAPI.get_related_ability(self.handle)
     if py_ability then
-        return y3.技能.获取_通过handle(py_ability)
+        return y3.技能.获取于HD(py_ability)
     end
     return nil
 end

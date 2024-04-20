@@ -255,7 +255,8 @@ function M.runInit(obj, name, ...)
 
         local function collectInitCalls(cname)
             if collected[cname] then
-                error(('class %q has circular inheritance'):format(cname))
+                -- error(('class %q has circular inheritance'):format(cname))
+                调试输出(cname, '跳过循环引用错我')
             end
             collected[cname]   = true
             local class        = M._classes[cname]

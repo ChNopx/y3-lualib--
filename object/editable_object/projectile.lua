@@ -3,17 +3,17 @@
 ---@field handle py.ProjectileEntity
 ---@field phandle py.ProjectileEntity
 ---@overload fun(id: integer, py_projectile: py.ProjectileEntity): self
-local M = Class "Projectile"
-M.type = "projectile"
+local M = Class 'Projectile'
+M.type = 'projectile'
 
 ---@class Projectile: ObjectEvent
-Extends("Projectile", "ObjectEvent")
+Extends('Projectile', 'ObjectEvent')
 ---@class Projectile: KV
-Extends("Projectile", "KV")
+Extends('Projectile', 'KV')
 
 ---@private
 function M:__tostring()
-    return string.format("{projectile|%s|%s}"
+    return string.format('{projectile|%s|%s}'
     , self:获取类型id()
     , self.handle
     )
@@ -36,12 +36,12 @@ function M:__del()
 end
 
 ---@package
-M.ref_manager = New "Ref" ("Projectile", function(id)
+M.ref_manager = New 'Ref' ('Projectile', function(id)
     local py_proj = GameAPI.get_projectile_by_id(id)
     if not py_proj then
         return nil
     end
-    return New "Projectile" (id, py_proj)
+    return New 'Projectile' (id, py_proj)
 end)
 
 ---@param py_projectile py.ProjectileEntity
@@ -59,13 +59,13 @@ function M.get_by_id(id)
     return projectile
 end
 
-y3.py_converter.register_py_to_lua("py.Projectile", M.从handle获取)
-y3.py_converter.register_lua_to_py("py.Projectile", function(lua_value)
+y3.py_converter.register_py_to_lua('py.Projectile', M.从handle获取)
+y3.py_converter.register_lua_to_py('py.Projectile', function(lua_value)
     return lua_value.handle
 end)
-y3.py_converter.register_py_to_lua("py.ProjectileID", M.get_by_id)
+y3.py_converter.register_py_to_lua('py.ProjectileID', M.get_by_id)
 
-y3.游戏:事件("投射物-死亡", function(trg, data)
+y3.游戏:事件('投射物-死亡', function(trg, data)
     local id = data.projectile.id
     M.ref_manager:remove(id)
 end)
@@ -156,7 +156,7 @@ function M.创建(data)
         data.owner = y3.玩家.从id获取(31)
     end
     local target = data.target
-    if target.type == "point" then
+    if target.type == 'point' then
         ---@cast target Point
         local py_obj = GameAPI.create_projectile_in_scene_new(
             data.key,
@@ -179,7 +179,7 @@ function M.创建(data)
         local py_obj = GameAPI.create_projectile_on_socket(
             data.key,
             target.handle,
-            data.socket or "origin",
+            data.socket or 'origin',
             Fix32(data.angle or 0.0),
             -- TODO 见问题3
             ---@diagnostic disable-next-line: param-type-mismatch
@@ -271,7 +271,7 @@ end
 function M:获取关联技能()
     local py_ability = GlobalAPI.get_related_ability(self.handle)
     if py_ability then
-        return y3.技能.获取_通过handle(py_ability)
+        return y3.技能.获取于HD(py_ability)
     end
     return nil
 end

@@ -432,7 +432,7 @@ function M:获取主动技能()
     if not py_ability then
         return nil
     end
-    return y3.技能.获取_通过handle(py_ability)
+    return y3.技能.获取于HD(py_ability)
 end
 
 ---获取物品的被动技能
@@ -443,7 +443,7 @@ function M:获取被动技能(index)
     if not py_ability then
         return nil
     end
-    return y3.技能.获取_通过handle(py_ability)
+    return y3.技能.获取于HD(py_ability)
 end
 
 ---获取物品在单位身上的格子位置

@@ -82,8 +82,8 @@ log = New 'Log' {
                 table.remove(log_cache, 1)
             end
             ---@diagnostic disable-next-line: deprecated
-            -- y3.控件.display_message(y3.玩家.获取本地玩家(), remove_bad_utf8(table.concat(log_cache, '\n')), 60)
-            y3.玩家.获取本地玩家():发送文本消息(remove_bad_utf8(table.concat(log_cache, '\n')))
+            y3.控件.display_message(y3.玩家.获取本地玩家(), remove_bad_utf8(table.concat(log_cache, '\n')), 30)
+            -- y3.玩家.获取本地玩家():发送文本消息(remove_bad_utf8(table.concat(log_cache, '\n')))
         end
     end,
     traceback = function(message, level)

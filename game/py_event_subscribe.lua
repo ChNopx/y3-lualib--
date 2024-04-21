@@ -1,11 +1,11 @@
-local event_datas    = require "y3.meta.event"
-local event_configs  = require "y3.meta.eventconfig"
-local game_event     = require "y3.game.game_event"
-local object_event   = require "y3.game.object_event"
+local event_datas    = require 'y3.meta.event'
+local event_configs  = require 'y3.meta.eventconfig'
+local game_event     = require 'y3.game.game_event'
+local object_event   = require 'y3.game.object_event'
 
 ---@class PYEventRegister
 ---@field package need_enable_trigger_manualy boolean
-local M              = Class "PYEventRegister"
+local M              = Class 'PYEventRegister'
 
 ---@private
 M.trigger_id_counter = y3.util.counter()
@@ -16,7 +16,9 @@ M.trigger_id_counter = y3.util.counter()
 ---@return table
 function M.convert_py_params(event_key, event_params)
     local event_data = event_datas[event_key]
-    assert(event_data, string.format("event %s not found", event_key))
+    if not event_data then
+        error(string.format('event %s not found', event_key))
+    end
     -- TODO 见问题10，改为用户访问时才会实际访问py层的字段
     --local lua_params = M.convert_py_params_instant(event_name, event_config, event_params)
     local lua_params = M.convert_py_params_lazy(event_key, event_data, event_params)
@@ -219,7 +221,7 @@ function M.unref_args(name, args)
         end
     end
 
-    error("未找到事件的引用！" .. tostring(name))
+    error('未找到事件的引用！' .. tostring(name))
 end
 
 --引擎没有提供移除触发器的接口，但是使用已有id注册事件时会移除之前
@@ -289,13 +291,13 @@ function M.event_unregister(event_name, extra_args)
     table.insert(M.removed_ids, trigger_id)
 
     -- 建一个占位的触发器，以尽快释放引用
-    local dummy_trigger = new_global_trigger(trigger_id, "GAME_INIT", "ET_GAME_INIT", false)
+    local dummy_trigger = new_global_trigger(trigger_id, 'GAME_INIT', 'ET_GAME_INIT', false)
     if M.need_enable_trigger_manualy then
         GameAPI.enable_global_lua_trigger(dummy_trigger)
     end
 end
 
-new_global_trigger(M.next_id(), "GAME_INIT", "ET_GAME_INIT", true).on_event = function()
+new_global_trigger(M.next_id(), 'GAME_INIT', 'ET_GAME_INIT', true).on_event = function()
     M.need_enable_trigger_manualy = true
 end
 

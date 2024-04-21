@@ -319,11 +319,6 @@ M.config['玩家-使用平台道具'] = {
     name = '玩家-使用平台道具',
     object = 'Player',
     params = {
-        [1] = {
-            desc = '道具编号',
-            name = 'store_key',
-            type = 'py.StoreKey',
-        },
     },
 }
 
@@ -350,11 +345,6 @@ M.config['玩家-持有平台道具'] = {
     name = '玩家-持有平台道具',
     object = 'Player',
     params = {
-        [1] = {
-            desc = '道具编号',
-            name = 'store_key',
-            type = 'py.StoreKey',
-        },
     },
 }
 
@@ -2568,7 +2558,6 @@ end\
     },
 }
 
--- 标签 界面有文本代码, 不知道对重命名有影响没,日后如果有bug,排查下
 ---@alias EventParam.界面-消息 EventParam.ET_TRIGGER_COMPONENT_EVENT
 M.config['界面-消息'] = {
     __class__ = 'EventConfigBuilder',
@@ -2872,6 +2861,34 @@ end\
     },
     key = 'ET_START_SKILL_POINTER',
     name = '技能-打开指示器',
+    object = 'Ability',
+    params = {
+    },
+}
+
+---@alias EventParam.技能-建造指示器检查通过 EventParam.ET_BUILD_SKILL_POINTER_CHECK_PASS
+M.config['技能-建造指示器检查通过'] = {
+    __class__ = 'EventConfigBuilder',
+    desc = '建造技能的指示器检查通过时触发',
+    extraArgs = {
+        [1] = {
+            code = 'function (data)\
+    return data.unit:get_ability_by_seq(data.ability_seq)\
+end\
+',
+            desc = '技能',
+            name = 'ability',
+            type = 'Ability',
+        },
+    },
+    extraObjs = {
+        [1] = {
+            getter = function(self) return self:get_owner() end,
+            luaType = 'Unit',
+        },
+    },
+    key = 'ET_BUILD_SKILL_POINTER_CHECK_PASS',
+    name = '技能-建造指示器检查通过',
     object = 'Ability',
     params = {
     },
@@ -3245,8 +3262,8 @@ M.config['对话框-点击按钮'] = {
 ---@field 事件 fun(self: self, event: "玩家-加入游戏", callback: fun(trg: Trigger, data: EventParam.玩家-加入游戏)): Trigger
 ---@field 事件 fun(self: self, event: "玩家-离开游戏", callback: fun(trg: Trigger, data: EventParam.玩家-离开游戏)): Trigger
 ---@field 事件 fun(self: self, event: "玩家-掉线", callback: fun(trg: Trigger, data: EventParam.玩家-掉线)): Trigger
----@field 事件 fun(self: self, event: "玩家-使用平台道具", store_key: py.StoreKey, callback: fun(trg: Trigger, data: EventParam.玩家-使用平台道具)): Trigger
----@field 事件 fun(self: self, event: "玩家-持有平台道具", store_key: py.StoreKey, callback: fun(trg: Trigger, data: EventParam.玩家-持有平台道具)): Trigger
+---@field 事件 fun(self: self, event: "玩家-使用平台道具", callback: fun(trg: Trigger, data: EventParam.玩家-使用平台道具)): Trigger
+---@field 事件 fun(self: self, event: "玩家-持有平台道具", callback: fun(trg: Trigger, data: EventParam.玩家-持有平台道具)): Trigger
 ---@field 事件 fun(self: self, event: "玩家-属性变化", callback: fun(trg: Trigger, data: EventParam.玩家-属性变化)): Trigger
 ---@field 事件 fun(self: self, event: "玩家-发送指定消息", msg: string, callback: fun(trg: Trigger, data: EventParam.玩家-发送指定消息)): Trigger
 ---@field 事件 fun(self: self, event: "玩家-科技提升", callback: fun(trg: Trigger, data: EventParam.玩家-科技提升)): Trigger
@@ -3373,6 +3390,7 @@ M.config['对话框-点击按钮'] = {
 ---@field 事件 fun(self: self, event: "鼠标-双击可破坏物", callback: fun(trg: Trigger, data: EventParam.鼠标-双击可破坏物)): Trigger
 ---@field 事件 fun(self: self, event: "选中-单位组", callback: fun(trg: Trigger, data: EventParam.选中-单位组)): Trigger
 ---@field 事件 fun(self: self, event: "技能-打开指示器", callback: fun(trg: Trigger, data: EventParam.技能-打开指示器)): Trigger
+---@field event fun(self: self, event: "技能-建造指示器检查通过", callback: fun(trg: Trigger, data: EventParam.技能-建造指示器检查通过)): Trigger
 ---@field 事件 fun(self: self, event: "技能-关闭指示器", callback: fun(trg: Trigger, data: EventParam.技能-关闭指示器)): Trigger
 ---@field 事件 fun(self: self, event: "物品-获得", callback: fun(trg: Trigger, data: EventParam.物品-获得)): Trigger
 ---@field 事件 fun(self: self, event: "物品-进入物品栏", callback: fun(trg: Trigger, data: EventParam.物品-进入物品栏)): Trigger
@@ -3426,6 +3444,7 @@ M.config['对话框-点击按钮'] = {
 ---@field 事件 fun(self: Ability, event: "技能-启用", callback: fun(trg: Trigger, data: EventParam.技能-启用)): Trigger
 ---@field 事件 fun(self: Ability, event: "技能-冷却结束", callback: fun(trg: Trigger, data: EventParam.技能-冷却结束)): Trigger
 ---@field 事件 fun(self: Ability, event: "技能-打开指示器", callback: fun(trg: Trigger, data: EventParam.技能-打开指示器)): Trigger
+---@field event fun(self: Ability, event: "技能-建造指示器检查通过", callback: fun(trg: Trigger, data: EventParam.技能-建造指示器检查通过)): Trigger
 ---@field 事件 fun(self: Ability, event: "技能-关闭指示器", callback: fun(trg: Trigger, data: EventParam.技能-关闭指示器)): Trigger
 
 ---@class Area
@@ -3470,8 +3489,8 @@ M.config['对话框-点击按钮'] = {
 ---@field 事件 fun(self: Player, event: "玩家-加入游戏", callback: fun(trg: Trigger, data: EventParam.玩家-加入游戏)): Trigger
 ---@field 事件 fun(self: Player, event: "玩家-离开游戏", callback: fun(trg: Trigger, data: EventParam.玩家-离开游戏)): Trigger
 ---@field 事件 fun(self: Player, event: "玩家-掉线", callback: fun(trg: Trigger, data: EventParam.玩家-掉线)): Trigger
----@field 事件 fun(self: Player, event: "玩家-使用平台道具", store_key: py.StoreKey, callback: fun(trg: Trigger, data: EventParam.玩家-使用平台道具)): Trigger
----@field 事件 fun(self: Player, event: "玩家-持有平台道具", store_key: py.StoreKey, callback: fun(trg: Trigger, data: EventParam.玩家-持有平台道具)): Trigger
+---@field 事件 fun(self: Player, event: "玩家-使用平台道具", callback: fun(trg: Trigger, data: EventParam.玩家-使用平台道具)): Trigger
+---@field 事件 fun(self: Player, event: "玩家-持有平台道具", callback: fun(trg: Trigger, data: EventParam.玩家-持有平台道具)): Trigger
 ---@field 事件 fun(self: Player, event: "玩家-属性变化", callback: fun(trg: Trigger, data: EventParam.玩家-属性变化)): Trigger
 ---@field 事件 fun(self: Player, event: "玩家-发送指定消息", msg: string, callback: fun(trg: Trigger, data: EventParam.玩家-发送指定消息)): Trigger
 ---@field 事件 fun(self: Player, event: "玩家-科技提升", callback: fun(trg: Trigger, data: EventParam.玩家-科技提升)): Trigger
@@ -3591,6 +3610,7 @@ M.config['对话框-点击按钮'] = {
 ---@field 事件 fun(self: Unit, event: "效果-即将获得", callback: fun(trg: Trigger, data: EventParam.效果-即将获得)): Trigger
 ---@field 事件 fun(self: Unit, event: "效果-覆盖", callback: fun(trg: Trigger, data: EventParam.效果-覆盖)): Trigger
 ---@field 事件 fun(self: Unit, event: "技能-打开指示器", callback: fun(trg: Trigger, data: EventParam.技能-打开指示器)): Trigger
+---@field event fun(self: Unit, event: "技能-建造指示器检查通过", callback: fun(trg: Trigger, data: EventParam.技能-建造指示器检查通过)): Trigger
 ---@field 事件 fun(self: Unit, event: "技能-关闭指示器", callback: fun(trg: Trigger, data: EventParam.技能-关闭指示器)): Trigger
 ---@field 事件 fun(self: Unit, event: "单位-寻路开始", callback: fun(trg: Trigger, data: EventParam.单位-寻路开始)): Trigger
 ---@field 事件 fun(self: Unit, event: "单位-寻路结束", callback: fun(trg: Trigger, data: EventParam.单位-寻路结束)): Trigger

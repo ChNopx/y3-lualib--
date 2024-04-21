@@ -56,7 +56,7 @@ end)
 ---@param py_unit py.Unit
 ---@return Unit
 function M.从handle获取(py_unit)
-    local id = py_unit:api_get_id()
+    local id = y3.py_proxy.wrap(py_unit):api_get_id()
     local unit = M.ref_manager:get(id)
     return unit
 end

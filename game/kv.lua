@@ -1,4 +1,4 @@
-local class = require "y3.tools.class"
+local class = require 'y3.tools.class'
 
 ---@alias KV.SupportType
 ---| boolean
@@ -18,33 +18,34 @@ local class = require "y3.tools.class"
 
 ---@enum(key) KV.SupportTypeEnum
 local apiAlias = {
-    Unit         = "unit_entity",
-    Ability      = "ability",
-    Item         = "item_entity",
-    Buff         = "modifier_entity",
-    Point        = "point",
-    Player       = "player",
-    Projectile   = "projectile_entity",
-    Destructible = "destructible_entity",
-    Particle     = "sfx_entity",
-    Mover        = "mover_entity",
+    Unit         = 'unit_entity',
+    UnitKey      = 'unit_name',
+    Ability      = 'ability',
+    Item         = 'item_entity',
+    Buff         = 'modifier_entity',
+    Point        = 'point',
+    Player       = 'player',
+    Projectile   = 'projectile_entity',
+    Destructible = 'destructible_entity',
+    Particle     = 'sfx_entity',
+    Mover        = 'mover_entity',
 }
 
 ---@class KV
 ---@field private handle? unknown
 ---@field private kv_key? string
 ---@field private key? integer
-local M = Class "KV"
+local M = Class 'KV'
 
 ---@param value KV.SupportType
 ---@return any
 ---@return string
 local function get_py_value_and_type(value)
     local tp = type(value)
-    if tp == "number" then
+    if tp == 'number' then
         return value, math.type(value)
     end
-    if tp == "table" then
+    if tp == 'table' then
         local cls = class.type(value)
         local alias = apiAlias[cls]
         if cls and alias then
@@ -64,11 +65,11 @@ end
 local function kv_save_from_handle(handle, key, value)
     local py_value, tp = get_py_value_and_type(value)
     if not py_value then
-        error("不支持的类型：" .. tp)
+        error('不支持的类型：' .. tp)
     end
-    local api = GameAPI["add_" .. tp .. "_kv"]
+    local api = GameAPI['add_' .. tp .. '_kv']
     if not api then
-        error("不支持的类型：" .. tp)
+        error('不支持的类型：' .. tp)
     end
     api(handle, key, py_value)
 end
@@ -80,11 +81,11 @@ end
 local function kv_save_from_key(kv_key, object_key, key, value)
     local py_value, tp = get_py_value_and_type(value)
     if not py_value then
-        error("不支持的类型：" .. tp)
+        error('不支持的类型：' .. tp)
     end
-    local api = GameAPI["set_" .. kv_key .. "_" .. tp .. "_kv"]
+    local api = GameAPI['set_' .. kv_key .. '_' .. tp .. '_kv']
     if not api then
-        error("不支持的类型：" .. tp)
+        error('不支持的类型：' .. tp)
     end
     api(object_key, key, py_value)
 end
@@ -123,16 +124,16 @@ end
 ---@param lua_type 'boolean' | 'number' | 'integer' | 'string' | 'table' | KV.SupportTypeEnum
 ---@return any
 local function kv_load_from_handle(handle, key, lua_type)
-    if lua_type == "boolean" then
+    if lua_type == 'boolean' then
         return GameAPI.get_kv_pair_value_boolean(handle, key)
     end
-    if lua_type == "integer" then
+    if lua_type == 'integer' then
         return GameAPI.get_kv_pair_value_integer(handle, key)
     end
-    if lua_type == "number" then
+    if lua_type == 'number' then
         return GameAPI.get_kv_pair_value_float(handle, key):float()
     end
-    if lua_type == "string" then
+    if lua_type == 'string' then
         return GameAPI.get_kv_pair_value_string(handle, key)
     end
     if lua_type == 'table' then
@@ -140,7 +141,7 @@ local function kv_load_from_handle(handle, key, lua_type)
     end
     local alias = apiAlias[lua_type]
     if alias then
-        local api = GameAPI["get_kv_pair_value_" .. alias]
+        local api = GameAPI['get_kv_pair_value_' .. alias]
         if api then
             local py_type = y3.py_converter.get_py_type(lua_type)
             local py_value = api(handle, key)
@@ -148,7 +149,7 @@ local function kv_load_from_handle(handle, key, lua_type)
             return lua_value
         end
     end
-    error("不支持的类型：" .. lua_type)
+    error('不支持的类型：' .. lua_type)
 end
 
 ---@param kv_key string
@@ -159,15 +160,15 @@ end
 local function kv_load_from_key(kv_key, object_key, key, lua_type)
     ---@type string
     local py_type = apiAlias[lua_type] or lua_type
-    if lua_type == "number" then
-        py_type = "float"
+    if lua_type == 'number' then
+        py_type = 'float'
     end
-    local api = GameAPI["get_" .. kv_key .. "_" .. py_type .. "_kv"]
+    local api = GameAPI['get_' .. kv_key .. '_' .. py_type .. '_kv']
     if not api then
-        error("不支持的类型：" .. lua_type)
+        error('不支持的类型：' .. lua_type)
     end
     local py_value = api(object_key, key)
-    if py_type == "float" then
+    if py_type == 'float' then
         py_value = py_value:float()
     end
     return py_value

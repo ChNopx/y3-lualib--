@@ -81,7 +81,7 @@ y3.py_converter.register_py_to_lua('py.RoleID', M.从id获取)
 ---@param py_player py.Role
 ---@return Player
 function M.从句柄获取(py_player)
-    local id = py_player:get_role_id_num()
+    local id = y3.py_proxy.wrap(py_player):get_role_id_num()
     return M.从id获取(id)
 end
 
@@ -124,16 +124,20 @@ function M:设置队伍id(id)
 end
 
 ---设置属性值
----@param key py.RoleResKey 属性名
+---@param key y3.Const.PlayerAttr | string 属性名
 ---@param value number 值
 function M:设置属性值(key, value)
+    key = y3.const.PlayerAttr[key] or key
+    ---@cast key py.RoleResKey
     self.phandle:set_role_res(key, Fix32(value))
 end
 
 ---增加属性值
----@param key py.RoleResKey 属性名
+---@param key y3.Const.PlayerAttr | string 属性名
 ---@param value number 值
 function M:增加属性值(key, value)
+    key = y3.const.PlayerAttr[key] or key
+    ---@cast key py.RoleResKey
     self.phandle:change_role_res(key, Fix32(value))
 end
 
@@ -297,9 +301,11 @@ function M:is_in_shadow(point)
 end
 
 ---获取玩家属性
----@param key py.RoleResKey 属性名
+---@param key y3.Const.PlayerAttr | string # 属性名
 ---@return number role_res 玩家属性
 function M:get_attr(key)
+    key = y3.const.PlayerAttr[key] or key
+    ---@cast key py.RoleResKey
     return self.phandle:get_role_res(key):float()
 end
 

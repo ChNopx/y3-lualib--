@@ -4,16 +4,16 @@
 ---@field phandle py.Destructible
 ---@field id integer
 ---@overload fun(py_destructible: py.Destructible): self
-local M = Class "Destructible"
-M.type = "destructible"
+local M = Class 'Destructible'
+M.type = 'destructible'
 
 ---@class Destructible: ObjectEvent
-Extends("Destructible", "ObjectEvent")
+Extends('Destructible', 'ObjectEvent')
 ---@class Destructible: KV
-Extends("Destructible", "KV")
+Extends('Destructible', 'KV')
 
 function M:__tostring()
-    return string.format("{destructible|%s|%s}"
+    return string.format('{destructible|%s|%s}'
     , self:get_name()
     , self.handle
     )
@@ -22,23 +22,24 @@ end
 ---@param py_destructible py.Destructible
 ---@return self
 function M:__init(py_destructible)
-    self.handle = py_destructible
+    self.handle  = py_destructible
     self.phandle = y3.py_proxy.wrap(py_destructible)
-    self.id     = py_destructible:api_get_id()
+    self.id      = py_destructible:api_get_id()
     return self
 end
 
 function M:__del()
+    M.ref_manager:remove(self.id)
     self.phandle:api_delete()
 end
 
 ---@package
-M.ref_manager = New "Ref" ("Destructible", function(id)
+M.ref_manager = New 'Ref' ('Destructible', function(id)
     local py_destructible = GameAPI.get_dest_by_id(id)
     if not py_destructible then
         return nil
     end
-    return New "Destructible" (py_destructible)
+    return New 'Destructible' (py_destructible)
 end)
 
 ---通过py层的可破坏物实例获取lua层的可破坏物对象
@@ -50,8 +51,8 @@ function M.get_by_handle(py_destructible)
     return dest
 end
 
-y3.py_converter.register_py_to_lua("py.Destructible", M.get_by_handle)
-y3.py_converter.register_lua_to_py("py.Destructible", function(lua_value)
+y3.py_converter.register_py_to_lua('py.Destructible', M.get_by_handle)
+y3.py_converter.register_lua_to_py('py.Destructible', function(lua_value)
     return lua_value.handle
 end)
 
@@ -63,11 +64,10 @@ function M.get_by_id(id)
     return M.get_by_handle(py_destructible)
 end
 
-y3.py_converter.register_py_to_lua("py.DestructibleID", M.get_by_id)
+y3.py_converter.register_py_to_lua('py.DestructibleID', M.get_by_id)
 
-y3.游戏:事件("可破坏物-移除", function(trg, data)
-    local id = data.destructible.id
-    M.ref_manager:remove(id)
+y3.游戏:事件('可破坏物-移除', function(trg, data)
+    data.destructible:remove()
 end)
 
 ---是否存在
@@ -199,7 +199,7 @@ end
 ---@param description string 描述
 ---设置描述
 function M:set_description(description)
-    self.phandle:api_set_str_attr("description", description)
+    self.phandle:api_set_str_attr('description', description)
 end
 
 ---设置缩放
@@ -307,31 +307,31 @@ end
 ---获取可破坏物的名称
 ---@return string name 可破坏物的名称
 function M:get_name()
-    return self.phandle:api_get_str_attr("name")
+    return self.phandle:api_get_str_attr('name')
 end
 
 ---获取可破坏物描述
 ---@return string description 描述
 function M:get_description()
-    return self.phandle:api_get_str_attr("description")
+    return self.phandle:api_get_str_attr('description')
 end
 
 ---获取可破坏物的生命值
 ---@return number cur_hp 生命值
 function M:get_hp()
-    return self.phandle:api_get_float_attr("hp_cur"):float()
+    return self.phandle:api_get_float_attr('hp_cur'):float()
 end
 
 ---获取可破坏物的资源名称
 ---@return string source_name 资源名称
 function M:get_resource_name()
-    return self.phandle:api_get_str_attr("source_desc")
+    return self.phandle:api_get_str_attr('source_desc')
 end
 
 ---获取可破坏物的生命值
 ---@return number hp 可破坏物的生命值
 function M:get_max_hp()
-    return self.phandle:api_get_float_attr("hp_max"):float()
+    return self.phandle:api_get_float_attr('hp_max'):float()
 end
 
 ---获取可破坏物的当前资源数

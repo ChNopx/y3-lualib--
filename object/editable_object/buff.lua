@@ -38,6 +38,7 @@ function M:__init(id, py_modifier)
 end
 
 function M:__del()
+    M.ref_manager:remove(self.id)
     self.phandle:api_remove()
 end
 
@@ -71,8 +72,7 @@ y3.py_converter.register_lua_to_py('py.ModifierEntity', function(lua_value)
 end)
 
 y3.游戏:事件('效果-失去', function(trg, data)
-    local id = data.buff.id
-    M.ref_manager:remove(id)
+    data.buff:移除()
 end)
 
 ---是否具有标签

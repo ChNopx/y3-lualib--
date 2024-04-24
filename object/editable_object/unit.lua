@@ -38,6 +38,7 @@ end
 
 ---@private
 function M:__del()
+    M.ref_manager:remove(self.id)
     self.phandle:api_delete()
 end
 
@@ -102,8 +103,7 @@ end
 y3.py_converter.register_py_to_lua('py.UnitID', M.从唯一id获取)
 
 y3.游戏:事件('单位-移除后', function(trg, data)
-    local id = data.触发单位.id
-    M.ref_manager:remove(id)
+    data.触发单位:移除()
 end)
 
 ---是否存在
@@ -1106,7 +1106,7 @@ function M:添加_魔法效果(data)
         data.key,
         data.source and data.source.handle or nil,
         data.ability and data.ability.handle or nil,
-        Fix32(data.time or 100.0),
+        Fix32(data.time or -1),
         Fix32(data.pulse or 0.0),
         data.stacks or 1
     )

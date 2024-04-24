@@ -736,9 +736,9 @@ function M.创建_悬浮文字(point, text_type, str, player_group, jump_word_tr
                                 (player_group or y3.玩家组.获取所有玩家()).handle, jump_word_track or 0)
 end
 
---设置窗口
+--设置窗口类型
 ---@param player Player 玩家
----@param window_mode string 窗口类型
+---@param window_mode Game.WindowMode 窗口类型
 function M.设置_窗口类型(player, window_mode)
     GameAPI.set_window_type(player.handle, window_mode)
 end

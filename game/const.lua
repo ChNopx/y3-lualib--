@@ -51,7 +51,6 @@ M.单位存活状态 = {
     ['消散'] = 'Dissolve',
 }
 
----@diagnostic disable-next-line: duplicate-doc-alias
 ---@enum (key) y3.Const.UnitAttr
 M.UnitAttr = {
     ['生命'] = 'hp_cur',
@@ -89,8 +88,6 @@ M.UnitAttr = {
     ['夜晚扇形视野半径'] = 'vision_sector_night',
     ['白天扇形视野夹角'] = 'vision_sector_angle_day',
     ['夜晚扇形视野夹角'] = 'vision_sector_angle_night',
-    ['等级'] = 'level',
-    ['经验'] = 'agility',
 }
 
 ---@enum(key) y3.Const.UnitAttrType
@@ -102,7 +99,6 @@ M.UnitAttrType = {
     ['总加成'] = 'ATTR_ALL_RATIO', --百分比
 }
 
----@diagnostic disable-next-line: duplicate-doc-alias
 ---@enum(key) y3.Const.PlayerAttr
 M.PlayerAttr = {}
 

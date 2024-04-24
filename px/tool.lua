@@ -35,7 +35,7 @@ end
 ---@param array table[]
 ---@param value string|integer
 ---@param 回调 fun(key, value):string|integer
----@return any
+---@return integer?
 function m.数组_查找值P(array, value, 回调)
     for i = 1, #array do
         if 回调(i, array[i]) == value then

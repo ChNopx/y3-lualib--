@@ -193,49 +193,82 @@ function m.表_解析路径字段(键)
     return 键
 end
 
----表_设置路径字段值
----@param 表 table
----@param 路径 string  字段2.[1].字段2
----@param 值 any
-function m.表_设置路径值(表, 路径, 值)
-    local 字段数组 = 字符串.分割(路径, '.')
-    local 字段数 = m.表_获取长度(字段数组)
+---@class 表
+---@field 表_设置值 fun(表:table, ...?:string|integer, 值:any)
+---@field 表_插入值 fun(表:table, ...?:string|integer, 值:any)
+---@field 表_获取值 fun(表:table, ...?:string|integer?):any
+
+function m.表_设置值(表, ...)
+    local 字段数组 = m.数组_创建于不定长参数(...)
     local 当前表 = 表
-    local 当前字段 = m.表_解析路径字段(路径)
-
-    for i = 1, 字段数 - 1, 1 do
-        当前字段 = m.表_解析路径字段(字段数组[i])
-        if 当前表[当前字段] == nil then
-            当前表[当前字段] = {}
-        end
-        当前表 = 当前表[当前字段]
-    end
-    当前字段 = m.表_解析路径字段(字段数组[字段数])
-    当前表[当前字段] = 值
-end
-
----表_获取路径字段值
----@param 表 table
----@param 路径 string  字段1.字段2.字段3
----@return any
-function m.表_获取路径值(表, 路径)
     if 表 == nil then
-        return nil
+        调试错误('传入的table不能为nil')
+        return
     end
-    local 字段数组 = 字符串.分割(路径, '.')
-    local 字段数 = m.表_获取长度(字段数组)
-    local 当前表 = 表
-    local 当前字段 = m.表_解析路径字段(路径)
-    for i = 1, 字段数 - 1, 1 do
-        当前字段 = m.表_解析路径字段(字段数组[i])
-        if 当前表[当前字段] == nil then
-            return nil
+    if 字段数组.n > 1 then
+        for i = 1, 字段数组.n - 2 do
+            if 当前表[字段数组[i]] == nil or type(当前表[字段数组[i]]) ~= "table" then
+                当前表[字段数组[i]] = {}
+            end
+            当前表 = 当前表[字段数组[i]]
         end
-        当前表 = 当前表[当前字段]
+        当前表[字段数组[字段数组.n - 1]] = 字段数组[字段数组.n]
+        -- elseif 字段数组.n > 0 then
+        --     当前表 = 字段数组[字段数组.n]
+    else
+        调试错误('至少输入1个字段和1个值')
     end
-    当前字段 = m.表_解析路径字段(字段数组[字段数])
-    return 当前表[当前字段]
 end
+
+function m.表_插入值(表, ...)
+    local 字段数组 = m.数组_创建于不定长参数(...)
+    local 当前表 = 表
+    if 字段数组.n > 1 then
+        for i = 1, 字段数组.n - 1 do
+            if 当前表[字段数组[i]] == nil then
+                当前表[字段数组[i]] = {}
+            end
+            当前表 = 当前表[字段数组[i]]
+        end
+        table.insert(当前表, 字段数组[字段数组.n])
+    elseif 字段数组.n > 0 then
+        table.insert(当前表, 字段数组[字段数组.n])
+    else
+        调试错误('至少输入1个字段和1个值')
+    end
+end
+
+function m.表_获取值(表, ...)
+    local 字段数组 = m.数组_创建于不定长参数(...)
+    local 当前表 = 表
+    if 字段数组.n > 0 then
+        for i = 1, 字段数组.n do
+            if 当前表 == nil then
+                return nil
+            end
+            当前表 = 当前表[字段数组[i]]
+        end
+        return 当前表
+    else
+        return 当前表
+    end
+end
+
+-- local t = {}
+-- -- m.表_插入值(t, {})
+-- -- m.表_插入值(t, 5, {})
+-- -- m.表_插入值(t, { 经验 = 1, 等级 = 2 })
+-- -- m.表_插入值(t, 1, 2, 3, { 经验 = 1, 等级 = 2 })
+-- -- 调试输出(t)
+
+-- m.表_设置值(t, 1, '1')
+-- 调试输出(t)
+-- m.表_设置值(t, 2, 2, '2-2')
+-- 调试输出(t)
+
+-- 调试输出(m.表_获取值(t, 1))
+-- 调试输出(m.表_获取值(t, 2, 2))
+
 
 ---@param 待排序表 table
 ---@param 数值回调 fun(k:integer|string,v:any):number|nil

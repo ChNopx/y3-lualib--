@@ -43,7 +43,7 @@ M.comp_id = y3.proxy.new({}, {
         else
             return id
         end
-    end,
+    end
 })
 
 ---通过py层的界面实例获取lua层的界面实例
@@ -89,7 +89,7 @@ end
 ---@return string
 function M:添加事件(event, name, data)
     return GameAPI.create_ui_comp_event_ex_ex(self.handle, y3.const.UIEventMap[event] or event, name,
-                                              y3.dump.encode(data))
+        y3.dump.encode(data))
 end
 
 --创建本地界面事件
@@ -173,7 +173,7 @@ end
 ---@return self
 function M:播放透明度动画(start_alpha, end_alpha, duration, ease_type)
     GameAPI.set_ui_comp_anim_opacity(self.player.handle, self.handle, start_alpha, end_alpha, duration,
-                                     y3.const.EaseType[ease_type])
+        y3.const.EaseType[ease_type])
     return self
 end
 
@@ -568,7 +568,7 @@ end
 ---@return self
 function M:绑定_单位属性(uiAttr, attr_name, accuracy)
     GameAPI.set_ui_comp_bind_attr(self.player.handle, self.handle, y3.const.控件属性[uiAttr],
-                                  y3.const.UnitAttr[attr_name] or attr_name, accuracy or 0)
+        y3.const.UnitAttr[attr_name] or attr_name, accuracy or 0)
     return self
 end
 
@@ -580,7 +580,7 @@ end
 ---@return self
 function M:绑定_玩家属性(uiAttr, player, attr_or_var, accuracy)
     GameAPI.set_ui_comp_bind_player_prop(self.player.handle, self.handle, y3.const.控件属性[uiAttr], player.handle,
-                                         attr_or_var, accuracy)
+        attr_or_var, accuracy)
     return self
 end
 
@@ -686,7 +686,7 @@ end
 ---@param buff Buff 魔法效果S
 ---@return self
 function M:绑定_魔法效果剩余时间(uiAttr, buff)
-    GameAPI.endset_ui_comp_bind_modifier_cd(self.player.handle, self.handle, y3.const.控件属性[uiAttr], buff.handle)
+    GameAPI.set_ui_comp_bind_modifier_cd(self.player.handle, self.handle, y3.const.控件属性[uiAttr], buff.handle)
     return self
 end
 
@@ -733,7 +733,7 @@ function M.创建_悬浮文字(point, text_type, str, player_group, jump_word_tr
     -- TODO 见问题2
     ---@diagnostic disable-next-line: param-type-mismatch
     GameAPI.create_harm_text_ex(point.handle, y3.const.HarmTextType[text_type] or text_type, str,
-                                (player_group or y3.玩家组.获取所有玩家()).handle, jump_word_track or 0)
+        (player_group or y3.玩家组.获取所有玩家()).handle, jump_word_track or 0)
 end
 
 --设置窗口类型
@@ -992,7 +992,7 @@ end
 function M:播放_序列帧(loop, space, start_frame, end_frame)
     ---@diagnostic disable-next-line: param-type-mismatch
     GameAPI.play_ui_comp_sequence(self.player.handle, self.handle, loop or false, space or 0.1, start_frame or 0,
-                                  end_frame or -1)
+        end_frame or -1)
     return self
 end
 

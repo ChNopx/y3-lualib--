@@ -45,15 +45,18 @@ function M.创建到点(sceneui, point, range, height)
     -- TODO 见问题2
     ---@diagnostic disable-next-line: param-type-mismatch
     local py_scene_node = GameAPI.create_scene_node_on_point(y3.控件.comp_id[sceneui], point.handle, range or 10000,
-                                                             height or 0)
+        height or 0)
     return M.获取于HD(py_scene_node)
 end
 
 --获取指定玩家场景ui中的控件
----@param comp_path string # 控件路径
 ---@param player Player 玩家
+---@param comp_path string # 控件路径 '' 为根
 ---@return UI # UI控件
 function M:获取子控件(player, comp_path)
+    if comp_path == nil then
+        error('场景UI获取子控件路径为nil, 如果获取根控件, 请使用 空引号 ')
+    end
     local temp_ui = GameAPI.get_ui_comp_in_scene_ui(self.handle, comp_path)
     return y3.控件.获取于HD(player, temp_ui)
 end
@@ -71,7 +74,7 @@ function M.创建到单位挂接点(scene_ui_type, player, unit, socket_name, di
         follow_scale = true
     end
     local py_scene_node = GameAPI.create_scene_node_on_unit_ex(y3.控件.comp_id[scene_ui_type], player.handle, unit.handle,
-                                                               socket_name, follow_scale, distance or 100000)
+        socket_name, follow_scale, distance or 100000)
     return M.获取于HD(py_scene_node)
 end
 

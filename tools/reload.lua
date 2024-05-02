@@ -72,9 +72,8 @@ end
 
 function M:fire()
     log.info('=========== reload start ===========')
-
     local beforeReloadCallbacksNoReload = {}
-    local afterReloadCallbacksNoReload  = {}
+    local afterReloadCallbacksNoReload = {}
 
     for _, data in ipairs(M.beforeReloadCallbacks) do
         local willReload = self:isValidName(data.name)
@@ -215,5 +214,46 @@ function M.onAfterReload(callback)
         callback = callback,
     }
 end
+
+M.是否为重载 = (function()
+    local 局_是否为重载 = false
+    M.onBeforeReload(function(reload, willReload)
+        局_是否为重载 = true
+    end)
+    return function()
+        return 局_是否为重载
+    end
+end)()
+
+M.保护数据 = (function()
+    local 局_缓存数据 = {}
+    ---@param 传递数据 fun():...
+    return function(传递数据)
+        M.onBeforeReload(function(reload, willReload)
+            local 参数 = 表.创建自不定长参数(传递数据())
+            local 对象 = 参数[1]
+            local 名称 = debug.getinfo(传递数据, "S").source
+            局_缓存数据[名称] = {}
+            for i = 2, 参数.n do
+                local 字段 = 参数[i]
+                局_缓存数据[名称][i] = 对象[字段]
+            end
+        end)
+
+        M.onAfterReload(function(reload, hasReloaded)
+            local 参数 = 表.创建自不定长参数(传递数据())
+            local 对象 = 参数[1]
+            local 名称 = debug.getinfo(传递数据, "S").source
+            for i = 2, 参数.n do
+                local 字段 = 参数[i]
+                对象[参数[i]] = 局_缓存数据[名称][i]
+            end
+        end)
+    end
+end)()
+
+
+
+
 
 return M

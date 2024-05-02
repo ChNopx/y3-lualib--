@@ -142,9 +142,4 @@ function M:获取距离点排序前几个单位(目标点, 数量, 是否升序)
     return y3.单位组.从handle获取(py_unit)
 end
 
----@return UnitGroup
-function M:获取空单位组()
-    return y3.玩家(32):获取所有单位()
-end
-
 return M

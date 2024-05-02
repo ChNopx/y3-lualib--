@@ -7,6 +7,8 @@
 ---@overload fun(id: py.RoleID): self
 local M = Class 'Player'
 
+---@cast M - PlayerOrGroup
+
 M.type = 'player'
 
 ---@class Player: Storage

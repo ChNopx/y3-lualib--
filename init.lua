@@ -41,7 +41,6 @@ require 'y3.util.custom_event'
 require 'y3.util.ref'
 require 'y3.util.storage'
 require 'y3.util.gc_buffer'
-require 'y3.px.game.重载扩展'
 
 
 y3.const = require 'y3.game.const'
@@ -127,8 +126,5 @@ local function fixGC()
             collectgarbage('step', math.ceil(delta))
         end
     end)
-
-    fixGC()
 end
-
-include 'y3.px.init'
+fixGC()

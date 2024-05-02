@@ -49,6 +49,24 @@ local function remove_all_triggers_in_include(reload)
 end
 
 ---@param reload Reload
+local function remove_all_custom_triggers_in_include(reload)
+    ---@diagnostic disable-next-line: invisible
+    local event_manager = y3.游戏.custom_event_manager
+    if event_manager then
+        for trigger in event_manager:pairs() do
+            local name = trigger:获取载入名称()
+            -- 调试输出(name, reload:isValidName(name))
+            if reload:isValidName(name) then
+                -- 调试输出("remove", trigger)
+                trigger:移除()
+            end
+        end
+    end
+end
+
+
+
+---@param reload Reload
 local function remove_all_timers_in_include(reload)
     ---@diagnostic disable-next-line: invisible
     for timer in y3.计时器.pairs() do
@@ -120,6 +138,7 @@ M.register("CT", {
 
 y3.reload.onBeforeReload(function(reload, willReload)
     remove_all_triggers_in_include(reload)
+    remove_all_custom_triggers_in_include(reload)
     remove_all_timers_in_include(reload)
     remove_all_local_timers_in_include(reload)
 end)

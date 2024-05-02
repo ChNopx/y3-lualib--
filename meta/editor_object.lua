@@ -184,7 +184,7 @@
 ---@field suffix string
 --标签
 --用于对技能的分类处理。为技能贴上标签后可以对其进行更方便的关系，例如编写游戏逻辑：所有拥有XX标签的技能等级+1
----@field tags 别名.技能.标签[]
+---@field tags 技能.标签[]
 --特殊筛选（只有尸体有效）
 --特殊的技能目标筛选规则
 ---@field target_attribute number

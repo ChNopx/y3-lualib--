@@ -328,7 +328,7 @@ end
 ---@param clone_hp_mp boolean 复制当前的生命值和魔法值
 function M.创建幻象(illusion_unit, call_unit, player, point, direction, clone_hp_mp)
     GameAPI.create_illusion(illusion_unit.handle, call_unit.handle, player.handle, point.handle, Fix32(direction),
-                            clone_hp_mp)
+        clone_hp_mp)
 end
 
 ---删除单位
@@ -364,17 +364,17 @@ end
 ---@param text_type? string 跳字类型
 function M:造成治疗(value, skill, source_unit, text_type)
     self.phandle:api_heal(Fix32(value), text_type ~= nil, skill and skill.handle or nil,
-                          source_unit and source_unit.handle or nil, text_type or '')
+        source_unit and source_unit.handle or nil, text_type or '')
 end
 
 ---添加标签
----@param tag 别名.单位.标签
+---@param tag 单位.标签
 function M:添加标签(tag)
     self.phandle:api_add_tag(tag)
 end
 
 ---移除标签
----@param tag 别名.单位.标签
+---@param tag 单位.标签
 function M:移除标签(tag)
     self.phandle:api_remove_tag(tag)
 end
@@ -469,7 +469,7 @@ end
 ---@return py.UnitCommand # 命令
 function M:命令_沿路径移动(road, patrol_mode, can_attack, start_from_nearest, back_to_nearest)
     local command = GameAPI.create_unit_command_move_along_road(road.handle, patrol_mode, can_attack, start_from_nearest,
-                                                                back_to_nearest)
+        back_to_nearest)
     self:命令_发布(command)
     return command
 end
@@ -502,7 +502,7 @@ function M:命令_释放技能(ability, target, extra_target)
     -- TODO 见问题2
     ---@diagnostic disable-next-line: param-type-mismatch
     local command = GameAPI.create_unit_command_use_skill(ability.handle, tar_pos_1, tar_pos_2, tar_unit, tar_item,
-                                                          tar_dest)
+        tar_dest)
     self:命令_发布(command)
     return command
 end
@@ -581,9 +581,9 @@ end
 
 ---设置朝向
 ---@param direction number 朝向
----@param turn_time number 转向时间
+---@param turn_time? number 秒
 function M:设置朝向(direction, turn_time)
-    self.phandle:api_set_face_angle(Fix32(direction), math.floor(turn_time * 1000))
+    self.phandle:api_set_face_angle(Fix32(direction), math.floor((turn_time or 0) * 1000))
 end
 
 ---设置名称
@@ -616,7 +616,7 @@ function M:设置属性(attr_name, value, attr_type)
         attr_type = '基础'
     end
     self.phandle:api_set_attr_by_attr_element(y3.const.UnitAttr[attr_name] or attr_name, Fix32(value),
-                                              y3.const.UnitAttrType[attr_type])
+        y3.const.UnitAttrType[attr_type])
 end
 
 ---增加属性
@@ -637,7 +637,7 @@ function M:增加属性(attr_name, value, attr_type)
         attr_type = '增益'
     end
     self.phandle:api_add_attr_by_attr_element(attr_name, Fix32(value),
-                                              y3.const.UnitAttrType[attr_type])
+        y3.const.UnitAttrType[attr_type])
 end
 
 ---增加属性
@@ -1498,20 +1498,20 @@ end
 
 --获取单位的头像
 ---@return py.Texture image 单位的头像
-function M:get_icon()
+function M:获取_头像()
     return GameAPI.get_icon_id_by_unit_type(self:获取物编ID()) --[[@as py.Texture]]
 end
 
 ---获取单位类型的头像
 ---@param unit_key py.UnitKey 单位类型
 ---@return py.Texture image 单位类型的头像
-function M.get_icon_by_key(unit_key)
+function M.获取_头像于物编ID(unit_key)
     return GameAPI.get_icon_id_by_unit_type(unit_key) --[[@as py.Texture]]
 end
 
 ---最后创建的单位
 ---@return Unit? unit 最后创建的单位
-function M.get_last_created_unit()
+function M.获取_最后创建单位()
     local py_unit = GameAPI.get_last_created_unit()
     if not py_unit then
         return nil
@@ -1521,7 +1521,7 @@ end
 
 ---获取单位的拥有者（单位）
 ---@return Unit? unit 单位的拥有者
-function M:get_parent_unit()
+function M:获取_拥有者单位()
     local py_unit = self.phandle:api_get_parent_unit()
     if not py_unit then
         return nil
@@ -1531,7 +1531,7 @@ end
 
 ---获取幻象的召唤者
 ---@return Unit? unit 幻象的召唤者
-function M:get_illusion_owner()
+function M:获取_幻象召唤者()
     local py_unit = GameAPI.get_illusion_caller_unit(self.handle)
     if not py_unit then
         return nil
@@ -1602,15 +1602,15 @@ function M:get_team()
 end
 
 ---是否具有标签
----@param tag_name 别名.单位.标签
+---@param tag_name 单位.标签
 ---@return boolean has_tag 具有标签
-function M:是否存在标签(tag_name)
+function M:是否_存在标签(tag_name)
     return GlobalAPI.has_tag(self.handle, tag_name)
 end
 
 ---是否存活
 ---@return boolean alive 是否存活
-function M:是否存活()
+function M:是否_存活()
     return GlobalAPI.is_unit_alive(self.handle)
 end
 

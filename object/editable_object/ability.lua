@@ -95,7 +95,7 @@ function M:生命_不足_是否_可以_释放()
 end
 
 ---是否具有标签
----@param tag 别名.技能.标签 标签
+---@param tag 技能.标签 标签
 ---@return boolean
 function M:是否_具有_标签(tag)
     local 标签组 = self:获取存储值('@标签') or self:设置存储值('@标签', {}) or self:获取存储值('@标签')
@@ -105,7 +105,7 @@ end
 
 --添加标签
 ---5月30日版本更新后可用
----@param tag 别名.技能.标签 标签
+---@param tag 技能.标签 标签
 function M:添加_标签(tag)
     -- self.phandle:api_add_tag(标签)
     local 标签组 = self:获取存储值('@标签') or self:设置存储值('@标签', {}) or self:获取存储值('@标签')
@@ -114,7 +114,7 @@ end
 
 ---移除标签
 ---5月30日版本更新后可用
----@param tag 别名.技能.标签 标签
+---@param tag 技能.标签 标签
 function M:移除_标签(tag)
     -- self.phandle:api_remove_tag(tag)
     local 标签组 = self:获取存储值('@标签') or self:设置存储值('@标签', {}) or self:获取存储值('@标签')
@@ -537,7 +537,7 @@ end
 ---@return number value 值
 function M.get_formula_attr_by_key(ability_id, attr_name, level, stack_count, unit_hp_max, unit_hp_cur)
     return GameAPI.get_ability_conf_formula_attr(ability_id, attr_name, level, stack_count, Fix32(unit_hp_max),
-                                                 Fix32(unit_hp_cur)):float()
+        Fix32(unit_hp_cur)):float()
 end
 
 ---获取技能类型字符串属性

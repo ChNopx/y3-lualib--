@@ -149,11 +149,6 @@ function M:遍历(回调)
     end
 end
 
----@return PlayerGroup
-function M.获取空玩家组()
-    return M.获取所有失败玩家():清空()
-end
-
 ---@param 控件handle string
 ---@param 文本 string
 function M:设置控件文本(控件handle, 文本)

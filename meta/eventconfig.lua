@@ -3636,43 +3636,43 @@ M.config['对话框-点击按钮'] = {
 ---@field 事件 fun(self: self, event: "可破坏物-采集", callback: fun(trg: Trigger, data: EventParam.可破坏物-采集)): Trigger
 ---@field 事件 fun(self: self, event: "可破坏物-受到伤害", callback: fun(trg: Trigger, data: EventParam.可破坏物-受到伤害)): Trigger
 ---@field 事件 fun(self: self, event: "选中-可破坏物", callback: fun(trg: Trigger, data: EventParam.选中-可破坏物)): Trigger
----@field event fun(self: self, event: "本地-选中-可破坏物", callback: fun(trg: Trigger, data: EventParam.本地-选中-可破坏物)): Trigger
+---@field 事件 fun(self: self, event: "本地-选中-可破坏物", callback: fun(trg: Trigger, data: EventParam.本地-选中-可破坏物)): Trigger
 ---@field 事件 fun(self: self, event: "可破坏物-移除", callback: fun(trg: Trigger, data: EventParam.可破坏物-移除)): Trigger
 ---@field 事件 fun(self: self, event: "投射物-创建", callback: fun(trg: Trigger, data: EventParam.投射物-创建)): Trigger
 ---@field 事件 fun(self: self, event: "投射物-死亡", callback: fun(trg: Trigger, data: EventParam.投射物-死亡)): Trigger
 ---@field 事件 fun(self: self, event: "界面-消息", event_name: string, callback: fun(trg: Trigger, data: EventParam.界面-消息)): Trigger
 ---@field 事件 fun(self: self, event: "键盘-按下", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.键盘-按下)): Trigger
 ---@field 事件 fun(self: self, event: "键盘-抬起", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.键盘-抬起)): Trigger
----@field event fun(self: self, event: "本地-键盘-按下", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.本地-键盘-按下)): Trigger
----@field event fun(self: self, event: "本地-键盘-抬起", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.本地-键盘-抬起)): Trigger
+---@field 事件 fun(self: self, event: "本地-键盘-按下", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.本地-键盘-按下)): Trigger
+---@field 事件 fun(self: self, event: "本地-键盘-抬起", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.本地-键盘-抬起)): Trigger
 ---@field 事件 fun(self: self, event: "鼠标-按下", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.鼠标-按下)): Trigger
 ---@field 事件 fun(self: self, event: "鼠标-抬起", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.鼠标-抬起)): Trigger
 ---@field 事件 fun(self: self, event: "鼠标-双击", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.鼠标-双击)): Trigger
----@field event fun(self: self, event: "本地-鼠标-按下", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-按下)): Trigger
----@field event fun(self: self, event: "本地-鼠标-抬起", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-抬起)): Trigger
----@field event fun(self: self, event: "本地-鼠标-双击", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-双击)): Trigger
+---@field 事件 fun(self: self, event: "本地-鼠标-按下", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-按下)): Trigger
+---@field 事件 fun(self: self, event: "本地-鼠标-抬起", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-抬起)): Trigger
+---@field 事件 fun(self: self, event: "本地-鼠标-双击", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-双击)): Trigger
 ---@field 事件 fun(self: self, event: "鼠标-按下单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.鼠标-按下单位)): Trigger
 ---@field 事件 fun(self: self, event: "鼠标-抬起单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.鼠标-抬起单位)): Trigger
 ---@field 事件 fun(self: self, event: "鼠标-双击单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.鼠标-双击单位)): Trigger
----@field event fun(self: self, event: "本地-鼠标-按下单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-按下单位)): Trigger
----@field event fun(self: self, event: "本地-鼠标-抬起单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-抬起单位)): Trigger
----@field event fun(self: self, event: "本地-鼠标-双击单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-双击单位)): Trigger
+---@field 事件 fun(self: self, event: "本地-鼠标-按下单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-按下单位)): Trigger
+---@field 事件 fun(self: self, event: "本地-鼠标-抬起单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-抬起单位)): Trigger
+---@field 事件 fun(self: self, event: "本地-鼠标-双击单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-双击单位)): Trigger
 ---@field 事件 fun(self: self, event: "鼠标-移动", callback: fun(trg: Trigger, data: EventParam.鼠标-移动)): Trigger
----@field event fun(self: self, event: "本地-鼠标-移动", callback: fun(trg: Trigger, data: EventParam.本地-鼠标-移动)): Trigger
+---@field 事件 fun(self: self, event: "本地-鼠标-移动", callback: fun(trg: Trigger, data: EventParam.本地-鼠标-移动)): Trigger
 ---@field 事件 fun(self: self, event: "鼠标-滚轮", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.鼠标-滚轮)): Trigger
----@field event fun(self: self, event: "本地-鼠标-滚轮", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-滚轮)): Trigger
+---@field 事件 fun(self: self, event: "本地-鼠标-滚轮", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-滚轮)): Trigger
 ---@field 事件 fun(self: self, event: "选中-单位", callback: fun(trg: Trigger, data: EventParam.选中-单位)): Trigger
----@field event fun(self: self, event: "本地-选中-单位", callback: fun(trg: Trigger, data: EventParam.本地-选中-单位)): Trigger
----@field event fun(self: self, event: "选中-取消", callback: fun(trg: Trigger, data: EventParam.选中-取消)): Trigger
----@field event fun(self: self, event: "本地-选中-取消", callback: fun(trg: Trigger, data: EventParam.本地-选中-取消)): Trigger
+---@field 事件 fun(self: self, event: "本地-选中-单位", callback: fun(trg: Trigger, data: EventParam.本地-选中-单位)): Trigger
+---@field 事件 fun(self: self, event: "选中-取消", callback: fun(trg: Trigger, data: EventParam.选中-取消)): Trigger
+---@field 事件 fun(self: self, event: "本地-选中-取消", callback: fun(trg: Trigger, data: EventParam.本地-选中-取消)): Trigger
 ---@field 事件 fun(self: self, event: "选中-物品", callback: fun(trg: Trigger, data: EventParam.选中-物品)): Trigger
----@field event fun(self: self, event: "本地-选中-物品", callback: fun(trg: Trigger, data: EventParam.本地-选中-物品)): Trigger
+---@field 事件 fun(self: self, event: "本地-选中-物品", callback: fun(trg: Trigger, data: EventParam.本地-选中-物品)): Trigger
 ---@field 事件 fun(self: self, event: "鼠标-双击物品", callback: fun(trg: Trigger, data: EventParam.鼠标-双击物品)): Trigger
 ---@field 事件 fun(self: self, event: "鼠标-双击可破坏物", callback: fun(trg: Trigger, data: EventParam.鼠标-双击可破坏物)): Trigger
 ---@field 事件 fun(self: self, event: "选中-单位组", callback: fun(trg: Trigger, data: EventParam.选中-单位组)): Trigger
----@field event fun(self: self, event: "本地-选中-单位组", callback: fun(trg: Trigger, data: EventParam.本地-选中-单位组)): Trigger
+---@field 事件 fun(self: self, event: "本地-选中-单位组", callback: fun(trg: Trigger, data: EventParam.本地-选中-单位组)): Trigger
 ---@field 事件 fun(self: self, event: "技能-打开指示器", callback: fun(trg: Trigger, data: EventParam.技能-打开指示器)): Trigger
----@field event fun(self: self, event: "技能-建造指示器检查通过", callback: fun(trg: Trigger, data: EventParam.技能-建造指示器检查通过)): Trigger
+---@field 事件 fun(self: self, event: "技能-建造指示器检查通过", callback: fun(trg: Trigger, data: EventParam.技能-建造指示器检查通过)): Trigger
 ---@field 事件 fun(self: self, event: "技能-关闭指示器", callback: fun(trg: Trigger, data: EventParam.技能-关闭指示器)): Trigger
 ---@field 事件 fun(self: self, event: "物品-获得", callback: fun(trg: Trigger, data: EventParam.物品-获得)): Trigger
 ---@field 事件 fun(self: self, event: "物品-进入物品栏", callback: fun(trg: Trigger, data: EventParam.物品-进入物品栏)): Trigger
@@ -3691,7 +3691,7 @@ M.config['对话框-点击按钮'] = {
 ---@field 事件 fun(self: self, event: "物品-死亡", callback: fun(trg: Trigger, data: EventParam.物品-死亡)): Trigger
 ---@field 事件 fun(self: self, event: "物品-采集创建", callback: fun(trg: Trigger, data: EventParam.物品-采集创建)): Trigger
 ---@field 事件 fun(self: self, event: "鼠标-悬停", callback: fun(trg: Trigger, data: EventParam.鼠标-悬停)): Trigger
----@field event fun(self: self, event: "本地-鼠标-悬停", callback: fun(trg: Trigger, data: EventParam.本地-鼠标-悬停)): Trigger
+---@field 事件 fun(self: self, event: "本地-鼠标-悬停", callback: fun(trg: Trigger, data: EventParam.本地-鼠标-悬停)): Trigger
 ---@field 事件 fun(self: self, event: "玩家-发送消息", callback: fun(trg: Trigger, data: EventParam.玩家-发送消息)): Trigger
 ---@field 事件 fun(self: self, event: "游戏-消息", event_id: integer, callback: fun(trg: Trigger, data: EventParam.游戏-消息)): Trigger
 ---@field 事件 fun(self: self, event: "玩家-语音发言", callback: fun(trg: Trigger, data: EventParam.玩家-语音发言)): Trigger
@@ -3727,7 +3727,7 @@ M.config['对话框-点击按钮'] = {
 ---@field 事件 fun(self: Ability, event: "技能-启用", callback: fun(trg: Trigger, data: EventParam.技能-启用)): Trigger
 ---@field 事件 fun(self: Ability, event: "技能-冷却结束", callback: fun(trg: Trigger, data: EventParam.技能-冷却结束)): Trigger
 ---@field 事件 fun(self: Ability, event: "技能-打开指示器", callback: fun(trg: Trigger, data: EventParam.技能-打开指示器)): Trigger
----@field event fun(self: Ability, event: "技能-建造指示器检查通过", callback: fun(trg: Trigger, data: EventParam.技能-建造指示器检查通过)): Trigger
+---@field 事件 fun(self: Ability, event: "技能-建造指示器检查通过", callback: fun(trg: Trigger, data: EventParam.技能-建造指示器检查通过)): Trigger
 ---@field 事件 fun(self: Ability, event: "技能-关闭指示器", callback: fun(trg: Trigger, data: EventParam.技能-关闭指示器)): Trigger
 
 ---@class Area
@@ -3782,40 +3782,40 @@ M.config['对话框-点击按钮'] = {
 ---@field 事件 fun(self: Player, event: "玩家-关系变化", callback: fun(trg: Trigger, data: EventParam.玩家-关系变化)): Trigger
 ---@field 事件 fun(self: Player, event: "玩家-属性图标变化", callback: fun(trg: Trigger, data: EventParam.玩家-属性图标变化)): Trigger
 ---@field 事件 fun(self: Player, event: "选中-可破坏物", callback: fun(trg: Trigger, data: EventParam.选中-可破坏物)): Trigger
----@field event fun(self: Player, event: "本地-选中-可破坏物", callback: fun(trg: Trigger, data: EventParam.本地-选中-可破坏物)): Trigger
+---@field 事件 fun(self: Player, event: "本地-选中-可破坏物", callback: fun(trg: Trigger, data: EventParam.本地-选中-可破坏物)): Trigger
 ---@field 事件 fun(self: Player, event: "界面-消息", event_name: string, callback: fun(trg: Trigger, data: EventParam.界面-消息)): Trigger
 ---@field 事件 fun(self: Player, event: "键盘-按下", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.键盘-按下)): Trigger
 ---@field 事件 fun(self: Player, event: "键盘-抬起", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.键盘-抬起)): Trigger
----@field event fun(self: Player, event: "本地-键盘-按下", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.本地-键盘-按下)): Trigger
----@field event fun(self: Player, event: "本地-键盘-抬起", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.本地-键盘-抬起)): Trigger
+---@field 事件 fun(self: Player, event: "本地-键盘-按下", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.本地-键盘-按下)): Trigger
+---@field 事件 fun(self: Player, event: "本地-键盘-抬起", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.本地-键盘-抬起)): Trigger
 ---@field 事件 fun(self: Player, event: "鼠标-按下", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.鼠标-按下)): Trigger
 ---@field 事件 fun(self: Player, event: "鼠标-抬起", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.鼠标-抬起)): Trigger
 ---@field 事件 fun(self: Player, event: "鼠标-双击", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.鼠标-双击)): Trigger
----@field event fun(self: Player, event: "本地-鼠标-按下", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-按下)): Trigger
----@field event fun(self: Player, event: "本地-鼠标-抬起", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-抬起)): Trigger
----@field event fun(self: Player, event: "本地-鼠标-双击", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-双击)): Trigger
+---@field 事件 fun(self: Player, event: "本地-鼠标-按下", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-按下)): Trigger
+---@field 事件 fun(self: Player, event: "本地-鼠标-抬起", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-抬起)): Trigger
+---@field 事件 fun(self: Player, event: "本地-鼠标-双击", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-双击)): Trigger
 ---@field 事件 fun(self: Player, event: "鼠标-按下单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.鼠标-按下单位)): Trigger
 ---@field 事件 fun(self: Player, event: "鼠标-抬起单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.鼠标-抬起单位)): Trigger
 ---@field 事件 fun(self: Player, event: "鼠标-双击单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.鼠标-双击单位)): Trigger
----@field event fun(self: Player, event: "本地-鼠标-按下单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-按下单位)): Trigger
----@field event fun(self: Player, event: "本地-鼠标-抬起单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-抬起单位)): Trigger
----@field event fun(self: Player, event: "本地-鼠标-双击单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-双击单位)): Trigger
+---@field 事件 fun(self: Player, event: "本地-鼠标-按下单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-按下单位)): Trigger
+---@field 事件 fun(self: Player, event: "本地-鼠标-抬起单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-抬起单位)): Trigger
+---@field 事件 fun(self: Player, event: "本地-鼠标-双击单位", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-双击单位)): Trigger
 ---@field 事件 fun(self: Player, event: "鼠标-移动", callback: fun(trg: Trigger, data: EventParam.鼠标-移动)): Trigger
----@field event fun(self: Player, event: "本地-鼠标-移动", callback: fun(trg: Trigger, data: EventParam.本地-鼠标-移动)): Trigger
+---@field 事件 fun(self: Player, event: "本地-鼠标-移动", callback: fun(trg: Trigger, data: EventParam.本地-鼠标-移动)): Trigger
 ---@field 事件 fun(self: Player, event: "鼠标-滚轮", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.鼠标-滚轮)): Trigger
----@field event fun(self: Player, event: "本地-鼠标-滚轮", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-滚轮)): Trigger
+---@field 事件 fun(self: Player, event: "本地-鼠标-滚轮", key: y3.Const.MouseKey, callback: fun(trg: Trigger, data: EventParam.本地-鼠标-滚轮)): Trigger
 ---@field 事件 fun(self: Player, event: "选中-单位", callback: fun(trg: Trigger, data: EventParam.选中-单位)): Trigger
----@field event fun(self: Player, event: "本地-选中-单位", callback: fun(trg: Trigger, data: EventParam.本地-选中-单位)): Trigger
----@field event fun(self: Player, event: "选中-取消", callback: fun(trg: Trigger, data: EventParam.选中-取消)): Trigger
----@field event fun(self: Player, event: "本地-选中-取消", callback: fun(trg: Trigger, data: EventParam.本地-选中-取消)): Trigger
+---@field 事件 fun(self: Player, event: "本地-选中-单位", callback: fun(trg: Trigger, data: EventParam.本地-选中-单位)): Trigger
+---@field 事件 fun(self: Player, event: "选中-取消", callback: fun(trg: Trigger, data: EventParam.选中-取消)): Trigger
+---@field 事件 fun(self: Player, event: "本地-选中-取消", callback: fun(trg: Trigger, data: EventParam.本地-选中-取消)): Trigger
 ---@field 事件 fun(self: Player, event: "选中-物品", callback: fun(trg: Trigger, data: EventParam.选中-物品)): Trigger
----@field event fun(self: Player, event: "本地-选中-物品", callback: fun(trg: Trigger, data: EventParam.本地-选中-物品)): Trigger
+---@field 事件 fun(self: Player, event: "本地-选中-物品", callback: fun(trg: Trigger, data: EventParam.本地-选中-物品)): Trigger
 ---@field 事件 fun(self: Player, event: "鼠标-双击物品", callback: fun(trg: Trigger, data: EventParam.鼠标-双击物品)): Trigger
 ---@field 事件 fun(self: Player, event: "鼠标-双击可破坏物", callback: fun(trg: Trigger, data: EventParam.鼠标-双击可破坏物)): Trigger
 ---@field 事件 fun(self: Player, event: "选中-单位组", callback: fun(trg: Trigger, data: EventParam.选中-单位组)): Trigger
----@field event fun(self: Player, event: "本地-选中-单位组", callback: fun(trg: Trigger, data: EventParam.本地-选中-单位组)): Trigger
+---@field 事件 fun(self: Player, event: "本地-选中-单位组", callback: fun(trg: Trigger, data: EventParam.本地-选中-单位组)): Trigger
 ---@field 事件 fun(self: Player, event: "鼠标-悬停", callback: fun(trg: Trigger, data: EventParam.鼠标-悬停)): Trigger
----@field event fun(self: Player, event: "本地-鼠标-悬停", callback: fun(trg: Trigger, data: EventParam.本地-鼠标-悬停)): Trigger
+---@field 事件 fun(self: Player, event: "本地-鼠标-悬停", callback: fun(trg: Trigger, data: EventParam.本地-鼠标-悬停)): Trigger
 ---@field 事件 fun(self: Player, event: "玩家-发送消息", callback: fun(trg: Trigger, data: EventParam.玩家-发送消息)): Trigger
 ---@field 事件 fun(self: Player, event: "玩家-语音发言", callback: fun(trg: Trigger, data: EventParam.玩家-语音发言)): Trigger
 
@@ -3910,7 +3910,7 @@ M.config['对话框-点击按钮'] = {
 ---@field 事件 fun(self: Unit, event: "效果-即将获得", callback: fun(trg: Trigger, data: EventParam.效果-即将获得)): Trigger
 ---@field 事件 fun(self: Unit, event: "效果-覆盖", callback: fun(trg: Trigger, data: EventParam.效果-覆盖)): Trigger
 ---@field 事件 fun(self: Unit, event: "技能-打开指示器", callback: fun(trg: Trigger, data: EventParam.技能-打开指示器)): Trigger
----@field event fun(self: Unit, event: "技能-建造指示器检查通过", callback: fun(trg: Trigger, data: EventParam.技能-建造指示器检查通过)): Trigger
+---@field 事件 fun(self: Unit, event: "技能-建造指示器检查通过", callback: fun(trg: Trigger, data: EventParam.技能-建造指示器检查通过)): Trigger
 ---@field 事件 fun(self: Unit, event: "技能-关闭指示器", callback: fun(trg: Trigger, data: EventParam.技能-关闭指示器)): Trigger
 ---@field 事件 fun(self: Unit, event: "单位-寻路开始", callback: fun(trg: Trigger, data: EventParam.单位-寻路开始)): Trigger
 ---@field 事件 fun(self: Unit, event: "单位-寻路结束", callback: fun(trg: Trigger, data: EventParam.单位-寻路结束)): Trigger

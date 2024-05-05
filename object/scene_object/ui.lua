@@ -664,6 +664,7 @@ end
 
 --删除界面控件
 function M:移除()
+    y3.游戏:发起自定义事件('UI:__del', self)
     Delete(self)
 end
 
@@ -1023,6 +1024,13 @@ local drag_operation_map = {
 function M:设置物品拖拽方式(drag_operation)
     GameAPI.set_equip_slot_drag_operation(self.player.handle, self.handle, drag_operation_map[drag_operation] or 0)
     return self
+end
+
+---@param 处理方式 string
+---@param 最小字号 integer
+function M:设置_文本超框处理方式(处理方式, 最小字号)
+    ---@diagnostic disable-next-line: param-type-mismatch
+    GameAPI.set_text_over_length_handling_type(self.player.handle, self.handle, 处理方式, 最小字号)
 end
 
 return M

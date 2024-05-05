@@ -308,7 +308,7 @@ function M.创建(owner, unit_id, point, direction)
 end
 
 ---杀死单位
----@param killer Unit 凶手单位
+---@param killer? Unit 凶手单位
 function M:杀死_单位(killer)
     self.phandle:api_kill(killer and killer.handle or nil)
 end
@@ -362,9 +362,10 @@ end
 ---@param skill? Ability 技能
 ---@param source_unit? Unit 单位
 ---@param text_type? string 跳字类型
-function M:造成治疗(value, skill, source_unit, text_type)
+---@param 轨迹? integer
+function M:造成治疗(value, skill, source_unit, text_type, 轨迹)
     self.phandle:api_heal(Fix32(value), text_type ~= nil, skill and skill.handle or nil,
-        source_unit and source_unit.handle or nil, text_type or '')
+        source_unit and source_unit.handle or nil, text_type or '', 轨迹)
 end
 
 ---添加标签
@@ -541,7 +542,7 @@ end
 ---@param target? Point|Unit|Item|Destructible
 ---@param extra_target? Point
 ---@return py.UnitCommand
-function M:use_item(item, target, extra_target)
+function M:命令_使用物品(item, target, extra_target)
     local tar_pos_1, tar_pos_2, tar_unit, tar_item, tar_dest
     if target then
         if target.type == 'point' then

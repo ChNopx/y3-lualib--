@@ -65,7 +65,7 @@ end
 ---@field immediate? boolean 销毁时，是否有过度
 
 ---@class Particle.Param.CreateChine
----@field 特效类型 py.SfxKey 特效类型id
+---@field 特效类型 py.SfxKey|integer 特效类型id
 ---@field 单位或点 Point|Unit 点
 ---@field 朝向? number 方向
 ---@field 缩放? number 缩放

@@ -97,6 +97,15 @@ function m.获取随机实数(min, max)
     return GameAPI.get_random_fixed(Fix32(min), Fix32(max)):float()
 end
 
+---@param a number
+---@param o '+'|'-'|'*'|'/'
+---@param b number
+---@return number
+function m.角度_计算(a, o, b)
+    ---@diagnostic disable-next-line: return-type-mismatch, param-type-mismatch
+    return GlobalAPI.angle_arithmetic_operation(Fix32(a), o, Fix32(b)):float()
+end
+
 ---正弦（角度制）
 ---@param value number 实数
 ---@return number float 实数

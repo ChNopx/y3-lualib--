@@ -6886,7 +6886,7 @@ event.ET_BUILD_SKILL_POINTER_CHECK_PASS = {
         lua_name = "ability",
         lua_type = "Ability",
         lua_desc = "技能",
-        lua_code = function (data)
+        lua_code = function(data)
             return data.unit:get_ability_by_seq(data.ability_seq)
         end,
     },

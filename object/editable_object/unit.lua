@@ -361,7 +361,7 @@ end
 ---@param value number 治疗值
 ---@param skill? Ability 技能
 ---@param source_unit? Unit 单位
----@param text_type? string 跳字类型
+---@param text_type? y3.Const.DamageTextType 跳字类型
 ---@param 轨迹? integer
 function M:造成治疗(value, skill, source_unit, text_type, 轨迹)
     self.phandle:api_heal(Fix32(value), text_type ~= nil, skill and skill.handle or nil,
@@ -995,50 +995,50 @@ end
 --*******************播放动画全局统一
 ---播放动画
 ---@param anim_name string 动画名
----@param speed? number 速度
----@param start_time? number 开始时间
----@param end_time? number 结束时间
----@param is_loop? boolean 是否循环
----@param is_back_normal? boolean 是否返回默认状态
-function M:play_animation(anim_name, speed, start_time, end_time, is_loop, is_back_normal)
+---@param 速度? number 速度
+---@param 开始时间? number 开始时间
+---@param 结束时间? number 结束时间
+---@param 循环? boolean 是否循环
+---@param 返回默认状态? boolean 是否返回默认状态
+function M:动画_播放(anim_name, 速度, 开始时间, 结束时间, 循环, 返回默认状态)
     self.phandle:api_play_animation(
         anim_name,
-        speed,
-        start_time,
-        end_time,
-        is_loop,
-        is_back_normal
+        速度,
+        开始时间,
+        结束时间,
+        循环,
+        返回默认状态
     )
 end
 
 ---停止动画
 ---@param anim_name string 动画名
-function M:stop_animation(anim_name)
+function M:动画_停止(anim_name)
     self.phandle:api_stop_animation(anim_name)
 end
 
 ---替换动画
 ---@param replace_anim_name string 动画名
 ---@param bereplace_anim_name string 动画名
-function M:动画替换(replace_anim_name, bereplace_anim_name)
+function M:动画_替换(replace_anim_name, bereplace_anim_name)
     self.phandle:api_change_animation(replace_anim_name, bereplace_anim_name)
 end
 
 ---取消动画替换
 ---@param replace_anim_name string 动画名
 ---@param bereplace_anim_name string 动画名
-function M:动画取消替换(replace_anim_name, bereplace_anim_name)
+function M:动画_取消替换(replace_anim_name, bereplace_anim_name)
     self.phandle:api_cancel_change_animation(replace_anim_name, bereplace_anim_name)
 end
 
 ---重置动画替换
 ---@param anim_name string 动画名
-function M:动画重置替换(anim_name)
+function M:动画_重置替换(anim_name)
     self.phandle:api_clear_change_animation(anim_name)
 end
 
 ---停止当前正在播放的动画
-function M:动画停止播放()
+function M:动画_停止播放()
     self.phandle:api_stop_cur_animation()
 end
 
@@ -1050,7 +1050,7 @@ end
 
 ---设置走路动画基准速度
 ---@param speed number 速度
-function M:设置移动动画基准速度(speed)
+function M:动画_设置移动动画基准速度(speed)
     self.phandle:api_set_base_speed(Fix32(speed))
 end
 
@@ -1828,7 +1828,7 @@ end
 ---@field 视为普攻? boolean # 视为普攻
 ---@field 必定暴击? boolean # 必定暴击
 ---@field 必定命中? boolean # 必定命中
----@field 特效? py.SfxKey # 特效
+---@field 特效? py.SfxKey|integer # 特效
 ---@field 特效挂接点? string # 特效挂点
 
 ---@param 参数 Unit.DamageData

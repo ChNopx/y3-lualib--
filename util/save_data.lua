@@ -109,7 +109,7 @@ function M.upload_save_data(player)
     M.timer_map[player] = y3.本地计时器.wait(0.1, function()
         M.timer_map[player] = nil
         player.handle:upload_save_data()
-        log.info('自动保存存档：', player)
+        -- log.info('自动保存存档：', player)
     end)
 end
 

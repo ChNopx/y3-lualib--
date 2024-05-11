@@ -10,7 +10,7 @@ end
 
 ---@param py_sound py.SoundEntity
 ---@return Sound
-function M.get_by_handle(py_sound)
+function M.获取于HD(py_sound)
     local sound = New 'Sound' (py_sound)
     return sound
 end
@@ -25,7 +25,7 @@ end
 ---@param sound py.AudioKey 声音
 ---@param options Sound.PlayOptions? # 播放选项
 ---@return Sound?
-function M.play(player, sound, options)
+function M.播放(player, sound, options)
     local py_sound = GameAPI.play_sound_for_player(
         player.handle,
         sound,
@@ -36,7 +36,7 @@ function M.play(player, sound, options)
     if not py_sound then
         return nil
     end
-    return M.get_by_handle(py_sound)
+    return M.获取于HD(py_sound)
 end
 
 ---@class Sound.Play3DOptions: Sound.PlayOptions
@@ -49,7 +49,7 @@ end
 ---@param point Point 目标点
 ---@param options Sound.Play3DOptions? # 播放选项
 ---@return Sound?
-function M.play_3d(player, sound, point, options)
+function M.播放_3D(player, sound, point, options)
     local py_sound = GameAPI.play_3d_sound_for_player(
         player.handle,
         sound,
@@ -65,7 +65,7 @@ function M.play_3d(player, sound, point, options)
     if not py_sound then
         return nil
     end
-    return M.get_by_handle(py_sound)
+    return M.获取于HD(py_sound)
 end
 
 ---@class Sound.PlayUnitOptions: Sound.PlayOptions
@@ -80,7 +80,7 @@ end
 ---@param unit Unit 跟随的单位
 ---@param options Sound.PlayUnitOptions? # 播放选项
 ---@return Sound?
-function M.play_with_object(player, sound, unit, options)
+function M.播放_跟随单位(player, sound, unit, options)
     local py_sound = GameAPI.follow_object_play_3d_sound_for_player(
         player.handle,
         sound,
@@ -96,20 +96,20 @@ function M.play_with_object(player, sound, unit, options)
     if not py_sound then
         return nil
     end
-    return M.get_by_handle(py_sound)
+    return M.获取于HD(py_sound)
 end
 
 ---停止播放声音
 ---@param player Player 玩家
 ---@param is_immediately? boolean 是否立即停止
-function M:stop(player, is_immediately)
+function M:停止(player, is_immediately)
     GameAPI.stop_sound(player.handle, self.handle, not is_immediately or false)
 end
 
 -- 设置音量
 ---@param player Player 玩家
 ---@param volume integer 音量(0-100)
-function M:set_volume(player, volume)
+function M:设置音量(player, volume)
     GameAPI.set_sound_volume(player.handle, self.handle, volume)
 end
 

@@ -101,7 +101,7 @@
 ---@field cst_sound_effect any[]
 --描述
 --描述
----@field description number
+---@field description string
 --结束特效
 ---@field end_sfx_list any[]
 --结束音效

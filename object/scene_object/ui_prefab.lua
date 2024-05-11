@@ -49,13 +49,13 @@ end
 --获取 UIPrefab 的 UI 实例
 -->注意！这里的 path 是相对于 *节点第一层之后* 的（就是节点列表里有个默认不能删的节点，那个是第一层）
 ---@param child_path? string 路径，默认为根节点。
----@return UI
+---@return UI?
 function M:获取子控件(child_path)
     ---@diagnostic disable-next-line: param-type-mismatch
     local py_ui = GameAPI.get_ui_prefab_child_by_path(self.handle, '')
-    -- if not py_ui then
-    --     return nil
-    -- end
+    if not py_ui then
+        return nil
+    end
 
     local ui = y3.控件.获取于HD(self.player, py_ui)
     if child_path and #child_path > 0 then

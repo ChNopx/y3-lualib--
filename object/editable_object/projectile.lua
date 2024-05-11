@@ -14,7 +14,7 @@ Extends('Projectile', 'KV')
 ---@private
 function M:__tostring()
     return string.format('{projectile|%s|%s}'
-    , self:获取类型id()
+    , self:获取物编ID()
     , self.handle
     )
 end
@@ -47,7 +47,7 @@ end)
 
 ---@param py_projectile py.ProjectileEntity
 ---@return Projectile projectile
-function M.从handle获取(py_projectile)
+function M.获取于HD(py_projectile)
     local id = y3.py_proxy.wrap(py_projectile):api_get_id()
     local projectile = M.ref_manager:get(id)
     return projectile
@@ -55,16 +55,16 @@ end
 
 ---@param id py.ProjectileID
 ---@return Projectile
-function M.get_by_id(id)
+function M.获取于ID(id)
     local projectile = M.ref_manager:get(id)
     return projectile
 end
 
-y3.py_converter.register_py_to_lua('py.Projectile', M.从handle获取)
+y3.py_converter.register_py_to_lua('py.Projectile', M.获取于HD)
 y3.py_converter.register_lua_to_py('py.Projectile', function(lua_value)
     return lua_value.handle
 end)
-y3.py_converter.register_py_to_lua('py.ProjectileID', M.get_by_id)
+y3.py_converter.register_py_to_lua('py.ProjectileID', M.获取于ID)
 
 y3.游戏:事件('投射物-死亡', function(trg, data)
     data.projectile:移除()
@@ -72,7 +72,7 @@ end)
 
 ---获取投射物的类型ID
 ---@return py.ProjectileKey projectile_key
-function M:获取类型id()
+function M:获取物编ID()
     return self.phandle:api_get_key()
 end
 
@@ -97,7 +97,7 @@ end
 
 ---获取投射物的拥有者
 ---@return Unit unit 投射物的拥有者
-function M:获取拥有者()
+function M:获取拥有者_单位()
     local py_unit = self.phandle:api_get_owner()
     return y3.单位.从handle获取(py_unit)
 end
@@ -120,7 +120,7 @@ end
 ---是否拥有标签
 ---@param  tag string 标签
 ---@return boolean is_has_tag 是否拥有标签
-function M:是否拥有标签(tag)
+function M:获取是否存在标签(tag)
     return GlobalAPI.has_tag(self.handle, tag)
 end
 
@@ -173,7 +173,7 @@ function M.创建(data)
             data.remove_immediately or false,
             data.remove_immediately == nil and true or false
         )
-        return M.从handle获取(py_obj)
+        return M.获取于HD(py_obj)
     else
         ---@cast target Unit
         local py_obj = GameAPI.create_projectile_on_socket(
@@ -191,7 +191,7 @@ function M.创建(data)
             data.remove_immediately or false,
             data.remove_immediately == nil and true or false
         )
-        return M.从handle获取(py_obj)
+        return M.获取于HD(py_obj)
     end
 end
 
@@ -203,7 +203,7 @@ end
 
 ---设置关联技能
 ---@param ability Ability 关联技能
-function M:所在关联技能(ability)
+function M:设置关联技能(ability)
     GameAPI.change_projectile_ability(self.handle, ability.handle)
 end
 

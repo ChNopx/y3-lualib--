@@ -889,7 +889,7 @@ end
 
 ---设置模型缩放
 ---@param scale number 模型缩放
-function M:所在模型缩放(scale)
+function M:设置模型缩放(scale)
     self.phandle:api_set_scale(scale)
 end
 
@@ -897,7 +897,7 @@ end
 ---@param sx number X轴缩放
 ---@param sy number Y轴缩放
 ---@param sz number Z轴缩放
-function M:set_unit_scale(sx, sy, sz)
+function M:设置三轴缩放(sx, sy, sz)
     self.phandle:api_set_unit_scale(sx, sy, sz)
 end
 
@@ -909,7 +909,7 @@ end
 
 ---替换模型
 ---@param model_id py.ModelKey|integer 模型id
-function M:替换模型(model_id)
+function M:设置模型(model_id)
     self.phandle:api_replace_model(model_id)
 end
 

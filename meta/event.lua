@@ -5065,7 +5065,7 @@ event.ET_PRODUCE_PROJECTILE = {
         lua_desc = '投射物',
         lua_code = function(data)
             local py_proj = data._py_params['projectile']
-            local projectile = y3.投射物.从handle获取(py_proj)
+            local projectile = y3.投射物.获取于HD(py_proj)
             return projectile
         end,
     },
@@ -5084,7 +5084,7 @@ event.ET_DEATH_PROJECTILE = {
         lua_desc = '投射物',
         lua_code = function(data)
             local py_proj = data._py_params['projectile']
-            local projectile = y3.投射物.从handle获取(py_proj)
+            local projectile = y3.投射物.获取于HD(py_proj)
             return projectile
         end,
     },

@@ -26,12 +26,12 @@ end
 
 ---@param py_sfx py.Sfx
 ---@return Particle
-function M.从handle获取(py_sfx)
+function M.获取于HD(py_sfx)
     local particle = New "Particle" (py_sfx)
     return particle
 end
 
-y3.py_converter.register_py_to_lua("py.Sfx", M.从handle获取)
+y3.py_converter.register_py_to_lua("py.Sfx", M.获取于HD)
 y3.py_converter.register_lua_to_py("py.Sfx", function(lua_value)
     return lua_value.handle
 end)
@@ -45,7 +45,7 @@ end)
 ---创建屏幕特效
 ---@param data Particle.Param.Screen
 ---@return Particle
-function M.场景屏幕特效(data)
+function M.创建到屏幕(data)
     local py_player = data.target and data.target.handle
     local py_sfx = GameAPI.add_sfx_to_camera_with_return(data.type, data.time, py_player, data.is_on_fog)
     local ptc = New "Particle" (py_sfx)
@@ -137,12 +137,6 @@ function M.创建到单位或点(参数)
     end
 end
 
----@private
----@return py.Sfx
-function M:get_handle()
-    return self.handle
-end
-
 --删除粒子
 function M:移除()
     Delete(self)
@@ -201,13 +195,13 @@ end
 ---@param y number # y
 ---@param z number # z
 ---@param w number # w
-function M:set_color(x, y, z, w)
+function M:设置颜色(x, y, z, w)
     GameAPI.set_sfx_color(self.handle, x, y, z, w)
 end
 
 --设置特效显示
 ---@param visible boolean # 开关
-function M:set_visible(visible)
+function M:设置是否可见(visible)
     local role = GameAPI.get_client_role()
     GameAPI.enable_sfx_visible(self.handle, role, visible)
 end

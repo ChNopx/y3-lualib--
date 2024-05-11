@@ -99,7 +99,7 @@ M.UnitAttrType = {
     ['总加成'] = 'ATTR_ALL_RATIO', --百分比
 }
 
----@enum(key) y3.Const.PlayerAttr
+---@enum (key) y3.Const.PlayerAttr
 M.PlayerAttr = {}
 
 M.ModifyType = {
@@ -904,5 +904,8 @@ M.技能字符串属性 = {
     ['名称'] = 'name',
     ['描述'] = 'description',
 }
+
+---@enum (key) y3.Const.模型类型
+M.模型类型 = {}
 
 return M

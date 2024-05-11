@@ -78,7 +78,7 @@ end)
 ---是否具有标签
 ---@param tag string 标签
 ---@return boolean
-function M:是否具有标签(tag)
+function M:获取标签是否存在(tag)
     return GlobalAPI.has_tag(self.handle, tag)
 end
 
@@ -95,7 +95,7 @@ end
 
 ---是否存在
 ---@return boolean is_exist 是否存在
-function M:是否存在()
+function M:获取是否存在()
     return GameAPI.modifier_is_exist(self.handle)
 end
 
@@ -113,7 +113,7 @@ end
 
 ---设置剩余持续时间
 ---@param time number 剩余持续时间
-function M:设置剩余时间(time)
+function M:设置剩余持续时间(time)
     self.phandle:api_set_buff_residue_time(Fix32(time))
 end
 

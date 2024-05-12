@@ -908,4 +908,7 @@ M.技能字符串属性 = {
 ---@enum (key) y3.Const.模型类型
 M.模型类型 = {}
 
+
+---@alias y3.Const.动画名称 '攻击'|'技能'|'受击'|string
+
 return M

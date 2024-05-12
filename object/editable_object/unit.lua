@@ -994,15 +994,15 @@ end
 
 --*******************播放动画全局统一
 ---播放动画
----@param anim_name string 动画名
+---@param 动画名称 y3.Const.动画名称
 ---@param 速度? number 速度
 ---@param 开始时间? number 开始时间
 ---@param 结束时间? number 结束时间
 ---@param 循环? boolean 是否循环
 ---@param 返回默认状态? boolean 是否返回默认状态
-function M:动画_播放(anim_name, 速度, 开始时间, 结束时间, 循环, 返回默认状态)
+function M:动画_播放(动画名称, 速度, 开始时间, 结束时间, 循环, 返回默认状态)
     self.phandle:api_play_animation(
-        anim_name,
+        动画名称,
         速度,
         开始时间,
         结束时间,
@@ -1012,29 +1012,29 @@ function M:动画_播放(anim_name, 速度, 开始时间, 结束时间, 循环, 
 end
 
 ---停止动画
----@param anim_name string 动画名
+---@param anim_name y3.Const.动画名称 动画名
 function M:动画_停止(anim_name)
     self.phandle:api_stop_animation(anim_name)
 end
 
 ---替换动画
----@param replace_anim_name string 动画名
----@param bereplace_anim_name string 动画名
-function M:动画_替换(replace_anim_name, bereplace_anim_name)
-    self.phandle:api_change_animation(replace_anim_name, bereplace_anim_name)
+---@param 新名称 y3.Const.动画名称 动画名
+---@param 旧名称 y3.Const.动画名称 动画名
+function M:动画_替换(新名称, 旧名称)
+    self.phandle:api_change_animation(新名称, 旧名称)
 end
 
 ---取消动画替换
----@param replace_anim_name string 动画名
----@param bereplace_anim_name string 动画名
-function M:动画_取消替换(replace_anim_name, bereplace_anim_name)
-    self.phandle:api_cancel_change_animation(replace_anim_name, bereplace_anim_name)
+---@param 新名称 y3.Const.动画名称 动画名
+---@param 旧名称 y3.Const.动画名称 动画名
+function M:动画_取消替换(新名称, 旧名称)
+    self.phandle:api_cancel_change_animation(新名称, 旧名称)
 end
 
 ---重置动画替换
----@param anim_name string 动画名
-function M:动画_重置替换(anim_name)
-    self.phandle:api_clear_change_animation(anim_name)
+---@param 原始名称 y3.Const.动画名称 动画名
+function M:动画_取消所有替换(原始名称)
+    self.phandle:api_clear_change_animation(原始名称)
 end
 
 ---停止当前正在播放的动画
@@ -1044,7 +1044,7 @@ end
 
 ---设置动画播放速率
 ---@param speed number 速度
-function M:设置动画播放速度(speed)
+function M:动画_设置播放速度(speed)
     self.phandle:api_set_animation_speed(Fix32(speed))
 end
 

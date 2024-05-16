@@ -338,7 +338,7 @@ end
 function M.set_fog_attribute(fog, direction, pos_x, pos_y, pos_z, scale_x, scale_y, scale_z, red, green, blue,
                              concentration, speed)
     GameAPI.set_fog_attr(fog, 4095, direction, pos_x, pos_y, pos_z, scale_x, scale_y, scale_z, red, green, blue,
-                         concentration, speed)
+        concentration, speed)
 end
 
 ---设置雾效属性(新)

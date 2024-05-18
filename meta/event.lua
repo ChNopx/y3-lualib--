@@ -1546,11 +1546,11 @@ event.ET_BEFORE_UNIT_DIE = {
 }
 
 ---@class EventParam.ET_UNIT_DIE
----@field damage number # 受到的伤害值
----@field source_unit Unit # 施加伤害的单位
----@field target_unit Unit # 承受伤害的单位
----@field ability Ability # 当前伤害所属技能
----@field damage_type integer # 伤害类型
+---@field 受到的伤害值 number # 受到的伤害值
+---@field 施加伤害的单位 Unit # 施加伤害的单位
+---@field 承受伤害的单位 Unit # 承受伤害的单位
+---@field 当前伤害所属技能 Ability # 当前伤害所属技能
+---@field 伤害类型 integer # 伤害类型
 ---@field 触发单位 Unit # 无描述
 
 --单位死亡
@@ -1558,7 +1558,7 @@ event.ET_UNIT_DIE = {
     [1] = {
         name = '__damage',
         type = 'py.Fixed',
-        lua_name = 'damage',
+        lua_name = '受到的伤害值',
         lua_type = 'number',
         desc = '受到的伤害值',
         lua_desc = '受到的伤害值',
@@ -1566,7 +1566,7 @@ event.ET_UNIT_DIE = {
     [2] = {
         name = '__source_unit',
         type = 'py.Unit',
-        lua_name = 'source_unit',
+        lua_name = '施加伤害的单位',
         lua_type = 'Unit',
         desc = '施加伤害的单位',
         lua_desc = '施加伤害的单位',
@@ -1574,7 +1574,7 @@ event.ET_UNIT_DIE = {
     [3] = {
         name = '__target_unit',
         type = 'py.Unit',
-        lua_name = 'target_unit',
+        lua_name = '承受伤害的单位',
         lua_type = 'Unit',
         desc = '承受伤害的单位',
         lua_desc = '承受伤害的单位',
@@ -1582,7 +1582,7 @@ event.ET_UNIT_DIE = {
     [4] = {
         name = '__ability',
         type = 'py.Ability',
-        lua_name = 'ability',
+        lua_name = '当前伤害所属技能',
         lua_type = 'Ability',
         desc = '当前伤害所属技能',
         lua_desc = '当前伤害所属技能',
@@ -1590,7 +1590,7 @@ event.ET_UNIT_DIE = {
     [5] = {
         name = '__damage_type',
         type = 'integer',
-        lua_name = 'damage_type',
+        lua_name = '伤害类型',
         lua_type = 'integer',
         desc = '伤害类型',
         lua_desc = '伤害类型',
@@ -2694,8 +2694,8 @@ event.ET_UNIT_ON_COMMAND = {
 
 ---@class EventParam.ET_KILL_UNIT
 ---@field damage number # 伤害值
----@field source_unit Unit # 杀手单位
----@field target_unit Unit # 死亡单位
+---@field 凶手单位 Unit # 杀手单位
+---@field 死亡单位 Unit # 死亡单位
 ---@field ability Ability # 致命伤害所属技能
 ---@field damage_type integer # 致命伤害类型
 ---@field 触发单位 Unit # 无描述
@@ -2713,7 +2713,7 @@ event.ET_KILL_UNIT = {
     [2] = {
         name = '__source_unit',
         type = 'py.Unit',
-        lua_name = 'source_unit',
+        lua_name = '凶手单位',
         lua_type = 'Unit',
         desc = '杀手单位',
         lua_desc = '杀手单位',
@@ -2721,7 +2721,7 @@ event.ET_KILL_UNIT = {
     [3] = {
         name = '__target_unit',
         type = 'py.Unit',
-        lua_name = 'target_unit',
+        lua_name = '死亡单位',
         lua_type = 'Unit',
         desc = '死亡单位',
         lua_desc = '死亡单位',

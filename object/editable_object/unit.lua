@@ -572,10 +572,11 @@ function M:命令_使用物品(item, target, extra_target)
 end
 
 -- 命令跟随单位
----@param target Unit
+---@param 参数 {目标单位:Unit, 跟随距离?:number, 间隔?:number, 重新跟随距离?:number}
 ---@return py.UnitCommand
-function M:命令_跟随单位(target)
-    local command = GameAPI.create_unit_command_follow(target.handle)
+function M:命令_跟随单位(参数)
+    local command = GameAPI.create_unit_command_follow(参数.目标单位.handle, Fix32(参数.间隔 or 0.5), Fix32(参数.跟随距离 or 50),
+        Fix32(参数.重新跟随距离 or 50))
     self:命令_发布(command)
     return command
 end

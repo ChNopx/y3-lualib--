@@ -99,9 +99,9 @@ function M.单次执行(timeout, on_timer, desc)
     ---@type Timer
     local timer
     local py_timer = GameAPI.add_timer(Fix32(timeout), false, function()
-                                           timer:立即执行()
-                                           timer:移除()
-                                       end, desc)
+        timer:立即执行()
+        timer:移除()
+    end, desc)
     timer = New "Timer" (py_timer, on_timer, "second", desc)
     return timer
 end
@@ -135,9 +135,9 @@ function M.循环执行(timeout, on_timer, desc)
     local timer
     local count = 0
     local py_timer = GameAPI.add_timer(Fix32(timeout), true, function()
-                                           count = count + 1
-                                           timer:立即执行(count)
-                                       end, desc)
+        count = count + 1
+        timer:立即执行(count)
+    end, desc)
     timer = New "Timer" (py_timer, on_timer, "second", desc)
     return timer
 end
@@ -173,13 +173,13 @@ function M.计次执行(timeout, times, on_timer, desc)
     local timer
     local count = 0
     local py_timer = GameAPI.add_timer(Fix32(timeout), true, function()
-                                           count = count + 1
-                                           timer:立即执行(count)
+        count = count + 1
+        timer:立即执行(count)
 
-                                           if count >= times then
-                                               timer:移除()
-                                           end
-                                       end, desc)
+        if count >= times then
+            timer:移除()
+        end
+    end, desc)
     timer = New "Timer" (py_timer, on_timer, "second", desc)
     return timer
 end

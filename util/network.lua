@@ -33,13 +33,13 @@ function M:__init(ip, port, options)
     self.options.retry_interval = self.options.retry_interval or 5
 
     ---@private
-    self.update_timer = y3.ltimer.loop(self.options.update_interval, function ()
+    self.update_timer = y3.本地计时器.loop(self.options.update_interval, function()
         self:update()
     end)
-    y3.ltimer.wait(0, function ()
+    y3.本地计时器.wait(0, function()
         self:update()
     end)
-    self.retry_timer = y3.ltimer.loop(self.options.retry_interval, function (t)
+    self.retry_timer = y3.本地计时器.loop(self.options.retry_interval, function(t)
         if self.state ~= 'started' then
             t:remove()
             return
@@ -50,7 +50,7 @@ function M:__init(ip, port, options)
         self:update()
     end)
     if self.options.timeout and self.options.timeout > 0 then
-        y3.ltimer.wait(self.options.timeout, function ()
+        y3.本地计时器.wait(self.options.timeout, function()
             if self.state ~= 'started' then
                 return
             end
@@ -175,7 +175,7 @@ function M:data_reader(callback)
     local read_once
 
     ---@async
-    local co = coroutine.create(function (reader)
+    local co = coroutine.create(function(reader)
         while true do
             read_once = false
             xpcall(callback, log.error, reader)
@@ -190,7 +190,7 @@ function M:data_reader(callback)
         end
     end)
 
-    self:on_data(function (_, data)
+    self:on_data(function(_, data)
         buffer = buffer .. data
         coroutine.resume(co)
     end)

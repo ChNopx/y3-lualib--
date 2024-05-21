@@ -25,7 +25,7 @@ M.level = 'debug'
 M.clock = os.clock
 
 ---@private
-M.messageFormat = '[%s][%5s][%s]: %s\n'
+M.messageFormat = '[%s][%5s][%s]: \n%s\n'
 
 ---@enum (key) Log.Level
 M.logLevel = {

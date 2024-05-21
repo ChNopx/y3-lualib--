@@ -859,7 +859,7 @@ end
 ---@param body? string
 ---@param callback? fun(body?: string)
 ---@param options? HttpRequestOptions
-function M:request_url(url, body, callback, options)
+function M:发起HTTP请求(url, body, callback, options)
     request_url(url
     , options and options.post or false
     , body

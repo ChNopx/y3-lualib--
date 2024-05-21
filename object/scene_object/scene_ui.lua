@@ -54,9 +54,6 @@ end
 ---@param comp_path string # 控件路径 '' 为根
 ---@return UI # UI控件
 function M:获取子控件(player, comp_path)
-    if comp_path == nil then
-        error('场景UI获取子控件路径为nil, 如果获取根控件, 请使用 空引号 ')
-    end
     local temp_ui = GameAPI.get_ui_comp_in_scene_ui(self.handle, comp_path)
     return y3.控件.获取于HD(player, temp_ui)
 end

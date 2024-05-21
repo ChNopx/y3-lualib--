@@ -911,4 +911,22 @@ M.模型类型 = {}
 
 ---@alias y3.Const.动画名称 '攻击'|'技能'|'受击'|string
 
+---@enum(key) y3.Const.unitTypes
+M.unitTypes = {}
+
+---@enum(key) y3.Const.abilityType
+M.abilityType = {}
+
+
+---@enum(key) y3.Const.itemType
+M.itemType = {}
+
+
+---@enum(key) y3.Const.projectileType
+M.projectileType = {}
+
+
+---@enum(key) y3.Const.buffType
+M.buffType = {}
+
 return M

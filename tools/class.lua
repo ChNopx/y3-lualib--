@@ -37,12 +37,12 @@ local Config = {}
 function M.getConfig(name)
     if not M._classConfig[name] then
         M._classConfig[name] = setmetatable({
-                                                name         = name,
-                                                extendsMap   = {},
-                                                superCache   = {},
-                                                extendsCalls = {},
-                                                extendsKeys  = {},
-                                            }, { __index = Config })
+            name         = name,
+            extendsMap   = {},
+            superCache   = {},
+            extendsCalls = {},
+            extendsKeys  = {},
+        }, { __index = Config })
     end
     return M._classConfig[name]
 end
@@ -216,7 +216,7 @@ end
 ---@param obj table
 ---@return boolean
 function M.isValid(obj)
-    return obj.__class__
+    return obj and obj.__class__
         and not obj.__deleted__
 end
 
@@ -269,12 +269,12 @@ function M.runInit(obj, name, ...)
                         initCalls[#initCalls + 1] = function(cobj, ...)
                             local firstCall = true
                             call.init(cobj, function(...)
-                                          if firstCall then
-                                              firstCall = false
-                                              M.runInit(cobj, call.name, ...)
-                                          end
-                                          return M._classes[call.name]
-                                      end, ...)
+                                if firstCall then
+                                    firstCall = false
+                                    M.runInit(cobj, call.name, ...)
+                                end
+                                return M._classes[call.name]
+                            end, ...)
                         end
                     else
                         collectInitCalls(call.name)

@@ -344,7 +344,7 @@ end
 
 ---强制传送到点
 ---@param point Point 点
----@param isSmooth boolean 是否丝滑
+---@param isSmooth? boolean 是否丝滑
 function M:移动_强制传送到点(point, isSmooth)
     self.phandle:api_force_transmit_new(point.handle, isSmooth)
 end

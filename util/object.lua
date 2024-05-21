@@ -52,6 +52,9 @@ end)
 ---@field on_lose? fun(item: Item) # 物品失去后执行
 ---@field on_create? fun(item: Item) # 物品创建后执行
 ---@field on_remove? fun(item: Item) # 物品移除后执行
+---@field on_add_to_pkg? fun(item: Item) # 物品进入背包后执行
+---@field on_add_to_bar? fun(item: Item) # 物品进入装备栏后执行
+---@field on_use? fun(item: Item) # 物品使用时执行
 --物品的物编数据，你可以从里面读取或修改任意物编（部分字段无法修改）
 --> 警告：请确保数据类型正确，否则可能导致崩溃
 --> 警告：如果创建过此物品再修改数据，行为是未定义的
@@ -261,6 +264,24 @@ end)
 subscribe(Item, 'on_remove', function()
     y3.游戏:事件('物品-移除', function(trg, data)
         M.callMethod('item', 'on_remove', data.触发物品:获取物编ID(), data.触发物品, data.触发物品)
+    end)
+end)
+
+subscribe(Item, 'on_add_to_pkg', function()
+    y3.游戏:事件('物品-进入背包', function(trg, data)
+        M.callMethod('item', 'on_add_to_pkg', data.触发物品:获取物编ID(), data.触发物品, data.触发物品)
+    end)
+end)
+
+subscribe(Item, 'on_add_to_bar', function()
+    y3.游戏:事件('物品-进入物品栏', function(trg, data)
+        M.callMethod('item', 'on_add_to_bar', data.触发物品:获取物编ID(), data.触发物品, data.触发物品)
+    end)
+end)
+
+subscribe(Item, 'on_use', function()
+    y3.游戏:事件('物品-使用', function(trg, data)
+        M.callMethod('item', 'on_use', data.item:获取物编ID(), data.item, data.item)
     end)
 end)
 

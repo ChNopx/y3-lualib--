@@ -2,6 +2,7 @@
 ---@class Projectile
 ---@field handle py.ProjectileEntity
 ---@field phandle py.ProjectileEntity
+---@field package _removed_by_py? boolean
 ---@overload fun(id: integer, py_projectile: py.ProjectileEntity): self
 local M = Class 'Projectile'
 M.type = 'projectile'
@@ -33,6 +34,9 @@ end
 ---@private
 function M:__del()
     M.ref_manager:remove(self.id)
+    if self._removed_by_py then
+        return
+    end
     self.phandle:api_delete()
 end
 
@@ -67,6 +71,7 @@ end)
 y3.py_converter.register_py_to_lua('py.ProjectileID', M.获取于ID)
 
 y3.游戏:事件('投射物-死亡', function(trg, data)
+    data.projectile._removed_by_py = true
     data.projectile:移除()
 end)
 

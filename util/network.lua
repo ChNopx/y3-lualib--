@@ -33,13 +33,13 @@ function M:__init(ip, port, options)
     self.options.retry_interval = self.options.retry_interval or 5
 
     ---@private
-    self.update_timer = y3.本地计时器.loop(self.options.update_interval, function()
+    self.update_timer = y3.ctimer.loop(self.options.update_interval, function()
         self:update()
     end)
-    y3.本地计时器.wait(0, function()
+    y3.ctimer.wait(0, function()
         self:update()
     end)
-    self.retry_timer = y3.本地计时器.loop(self.options.retry_interval, function(t)
+    self.retry_timer = y3.ctimer.loop(self.options.retry_interval, function(t)
         if self.state ~= 'started' then
             t:remove()
             return
@@ -50,7 +50,7 @@ function M:__init(ip, port, options)
         self:update()
     end)
     if self.options.timeout and self.options.timeout > 0 then
-        y3.本地计时器.wait(self.options.timeout, function()
+        y3.ctimer.wait(self.options.timeout, function()
             if self.state ~= 'started' then
                 return
             end
@@ -151,9 +151,6 @@ function M:callback(key, ...)
 end
 
 --连接成功后的回调
---
---> TODO: 目前有bug，临时方案是连接成功后服务器第一次发送
---消息过来后触发。等待5月9号版本更新修复
 ---@param on_connected Network.OnConnected
 function M:on_connected(on_connected)
     ---@private
@@ -169,7 +166,20 @@ end
 
 --创建一个“阻塞”式的数据读取器，会循环执行 `callback`
 --> 与 `on_data` 互斥
----@param callback async fun(read: async fun(len: integer): string)
+--
+--回调里会给你一个读取函数 `read`，下面是它的说明：
+--
+--按照传入的规则读取数据，如果数据不满足规则，
+--那么读取器会休眠直到收到满足规则的数据再返回
+--* 如果不传入任何参数：
+--  读取所有已收到的数据，类似于 `on_data`
+--* 如果传入整数：
+--  读取指定字节数的数据。
+--* 如果传入 `'l'`：
+--  读取一行数据，不包括换行符。
+--* 如果传入 `'L'`：
+--  读取一行数据，包括换行符。
+---@param callback async fun(read: async fun(len: nil|integer|'l'|'L'): string)
 function M:data_reader(callback)
     local buffer = ''
     local read_once
@@ -192,33 +202,72 @@ function M:data_reader(callback)
 
     self:on_data(function(_, data)
         buffer = buffer .. data
+        if #buffer > self.options.buffer_size then
+            self:make_error('缓冲区溢出!')
+            return
+        end
         coroutine.resume(co)
     end)
 
-    --读取指定字节数的数据。如果缓冲区中的数据不足，
-    --读取器会休眠直到收到足够的数据
     ---@async
-    ---@param len integer # 要读取的字节数
+    ---@param what nil|integer|'l'|'L' # 要读取的内容
     ---@return string
-    local function read(len)
-        if len <= 0 then
-            return ''
+    local function read(what)
+        if what == nil then
+            if #buffer == 0 then
+                coroutine.yield()
+                --一定是收到数据后才被唤醒的，因此不用再判断缓存了
+            end
+            read_once = true
+            buffer = ''
+            return buffer
         end
-        while len > #buffer do
-            coroutine.yield()
+        if what == 'l'
+            or what == 'L' then
+            local pos
+            local init = 1
+            while true do
+                pos = buffer:find('\n', init, true)
+                if pos then
+                    break
+                end
+                init = #buffer + 1
+                coroutine.yield()
+            end
+            read_once = true
+            local data = buffer:sub(1, pos)
+            buffer = buffer:sub(pos + 1)
+            if what == 'l' then
+                if data:sub(-2) == '\r\n' then
+                    data = data:sub(1, -3)
+                else
+                    data = data:sub(1, -2)
+                end
+                return data
+            else
+                return data
+            end
         end
-        read_once = true
-        local data = buffer:sub(1, len)
-        buffer = buffer:sub(len + 1)
-        return data
+        if math.type(what) == 'integer' then
+            ---@cast what integer
+            if what <= 0 then
+                return ''
+            end
+            while what > #buffer do
+                coroutine.yield()
+            end
+            read_once = true
+            local data = buffer:sub(1, what)
+            buffer = buffer:sub(what + 1)
+            return data
+        end
+        error('无效的读取规则:' .. tostring(what))
     end
 
     coroutine.resume(co, read)
 end
 
 --断开连接后的回调
---
---> TODO: 目前有bug无法触发。等待5月9号版本更新修复
 ---@param on_disconnected Network.OnDisconnected
 function M:on_disconnected(on_disconnected)
     ---@private
@@ -232,22 +281,10 @@ function M:on_error(on_error)
     self._on_error = on_error
 end
 
---是否连接中
---
---> TODO: 目前有bug，需要连上后服务器主动发一个消息
---过来才能判断是否连接上。等5月9号版本更新修复。
+--是否已连接
 ---@return boolean
 function M:is_connecting()
-    if self._connected then
-        return true
-    end
-    local res = self.handle:peek(1)
-    if res ~= nil then
-        ---@private
-        self._connected = true
-        return true
-    end
-    return false
+    return self.handle:is_connecting()
 end
 
 ---@param data string

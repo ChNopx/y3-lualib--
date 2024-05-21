@@ -38,7 +38,7 @@ Obj:event_notify_with_args('输入', {'123', '666'}, 4) -- 可以触发事件
 ---@overload fun(self: self, event_name:string, callback:Trigger.CallBack):Trigger
 ---@overload fun(self: self, event_name:string, args:any[], callback:Trigger.CallBack):Trigger
 function M:自定义事件(...)
-    if not self.custom_event_manager then
+    if not rawget(self, 'custom_event_manager') then
         self.custom_event_manager = New "EventManager" (self)
     end
     local event_name, args, callback = ...
@@ -147,6 +147,11 @@ function M:发起带参数自定义事件dis(event_name, args, ...)
         return
     end
     return self.custom_event_manager:dispatch(event_name, args, ...)
+end
+
+---@return EventManager?
+function M:get_custom_event_manager()
+    return self.custom_event_manager
 end
 
 return M

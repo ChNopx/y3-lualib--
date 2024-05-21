@@ -3,6 +3,7 @@
 ---@field handle py.Unit # py层的单位对象
 ---@field phandle py.Unit # 代理的对象，用这个调用引擎的方法会快得多
 ---@field id integer
+---@field package _removed_by_py? boolean
 ---@overload fun(py_unit_id: py.UnitID, py_unit: py.Unit): self
 local M = Class 'Unit'
 
@@ -39,6 +40,9 @@ end
 ---@private
 function M:__del()
     M.ref_manager:remove(self.id)
+    if self._removed_by_py then
+        return
+    end
     self.phandle:api_delete()
 end
 
@@ -103,8 +107,10 @@ end
 y3.py_converter.register_py_to_lua('py.UnitID', M.从唯一id获取)
 
 y3.游戏:事件('单位-移除后', function(trg, data)
+    data.触发单位._removed_by_py = true
     data.触发单位:移除()
 end)
+
 
 ---是否存在
 ---@return boolean is_exist 是否存在
@@ -119,7 +125,7 @@ function M:获取_唯一id()
 end
 
 ---移除技能(指定类型)
----@param type y3.Const.技能分类 技能类型
+---@param type y3.Const.技能分类
 ---@param ability_key py.AbilityKey 物编id
 function M:移除_指定类型技能(type, ability_key)
     self.phandle:api_remove_abilities_in_type(y3.const.技能分类[type], ability_key)
@@ -127,17 +133,18 @@ end
 
 ---单位添加物品
 ---@param item_id py.ItemKey 物品id
+---@param slot_type? y3.Const.物品槽位类型
 ---@return Item
-function M:添加物品(item_id)
-    local py_item = self.phandle:api_add_item(item_id)
+function M:添加物品(item_id, slot_type)
+    local py_item = self.phandle:api_add_item(item_id, y3.const.背包槽位类型[slot_type])
     return y3.物品.获取于hd(py_item)
 end
 
 ---单位移除物品
 ---@param item_id py.ItemKey 物品id
----@param num integer 数量
+---@param num? integer 数量
 function M:移除物品(item_id, num)
-    self.phandle:api_delete_item(item_id, num)
+    self.phandle:api_delete_item(item_id, num or 1)
 end
 
 ---移动物品
@@ -326,9 +333,15 @@ end
 ---@param point Point 点
 ---@param direction number 方向
 ---@param clone_hp_mp boolean 复制当前的生命值和魔法值
+---@return Unit?
 function M.创建幻象(illusion_unit, call_unit, player, point, direction, clone_hp_mp)
-    GameAPI.create_illusion(illusion_unit.handle, call_unit.handle, player.handle, point.handle, Fix32(direction),
+    local py_unit = GameAPI.create_illusion(illusion_unit.handle, call_unit.handle, player.handle, point.handle,
+        Fix32(direction),
         clone_hp_mp)
+    if not py_unit then
+        return nil
+    end
+    return y3.单位.从handle获取(py_unit)
 end
 
 ---删除单位
@@ -606,6 +619,12 @@ end
 ---@param attr_type?  y3.Const.UnitAttrType 属性类型，默认为“基础”
 function M:设置属性(attr_name, value, attr_type)
     attr_name = y3.const.UnitAttr[attr_name] or attr_name
+    if attr_name == 'main' then
+        attr_name = self:获取_主属性()
+        if not attr_name then
+            error('此单位主属性为空')
+        end
+    end
     if attr_name == 'hp_cur' then
         self:设置当前生命值(value)
         return
@@ -627,6 +646,12 @@ end
 ---@param attr_type?  y3.Const.UnitAttrType 属性类型，默认为“增益”
 function M:增加属性(attr_name, value, attr_type)
     attr_name = y3.const.UnitAttr[attr_name] or attr_name
+    if attr_name == 'main' then
+        attr_name = self:获取_主属性()
+        if not attr_name then
+            error('此单位主属性为空')
+        end
+    end
     if attr_name == 'hp_cur' then
         self:增加当前生命值(value)
         return
@@ -900,6 +925,20 @@ end
 ---@param sz number Z轴缩放
 function M:设置三轴缩放(sx, sy, sz)
     self.phandle:api_set_unit_scale(sx, sy, sz)
+end
+
+---设置单位描边开启
+---@param bool boolean # 布尔值
+function M:set_outline_visible(bool)
+    self.phandle:set_unit_outlined_enable(bool)
+end
+
+---设置单位描边颜色
+---@param color_r number # R
+---@param color_g number # G
+---@param color_b number # B
+function M:set_outlined_color(color_r, color_g, color_b)
+    self.phandle:set_unit_outlined_color(color_r, color_g, color_b)
 end
 
 ---设置转身速度
@@ -1244,6 +1283,12 @@ end
 ---@param attr_type? '实际' | '额外' | y3.Const.UnitAttrType
 ---@return number
 function M:获取属性(attr_name, attr_type)
+    if attr_name == '主属性' then
+        attr_name = self:获取_主属性()
+        if not attr_name then
+            error('此单位主属性为空')
+        end
+    end
     if attr_type == '实际'
         or attr_type == nil then
         return self:get_final_attr(attr_name)
@@ -1372,7 +1417,7 @@ function M:get_shop_range()
 end
 
 ---获取单位等级
----@return number unit_level 单位等级
+---@return integer unit_level 单位等级
 function M:获取等级()
     return self.phandle:api_get_level()
 end
@@ -1771,17 +1816,17 @@ function M:can_walk_to(start_point, end_point)
 end
 
 ---是否拥有指定碰撞类型
----@param collision_type integer 碰撞类型
+---@param collision_layer integer | y3.Const.CollisionLayers 碰撞类型
 ---@return boolean # 是否拥有指定碰撞类型
-function M:has_move_collision(collision_type)
-    return self.phandle:api_get_move_collision(collision_type)
+function M:has_move_collision(collision_layer)
+    return self.phandle:api_get_move_collision(y3.const.CollisionLayers[collision_layer] or collision_layer)
 end
 
 ---设置单位是否计算某种碰撞类型
----@param collision_layer integer # 碰撞mask
+---@param collision_layer integer | y3.Const.CollisionLayers # 碰撞mask
 ---@param enable boolean # 开启状态
 function M:set_move_collision(collision_layer, enable)
-    self.phandle:api_set_move_collision(collision_layer, enable)
+    self.phandle:api_set_move_collision(y3.const.CollisionLayers[collision_layer] or collision_layer, enable)
 end
 
 -- 获取所属玩家

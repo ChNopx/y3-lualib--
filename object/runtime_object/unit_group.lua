@@ -108,9 +108,12 @@ function M:获取指定单位类型单位数量(unit_key)
     return GameAPI.get_num_of_unit_key_in_group(self.handle, unit_key)
 end
 
----@return Unit unit 单位组内第一个单位
+---@return Unit? unit 单位组内第一个单位
 function M:获取第一个单位()
     local py_unit = GameAPI.get_first_unit_in_group(self.handle)
+    if not py_unit then
+        return nil
+    end
     return y3.单位.从handle获取(py_unit)
 end
 

@@ -3,6 +3,7 @@
 ---@field handle py.Item
 ---@field phandle py.Item
 ---@field id py.ItemID
+---@field package _removed_by_py? boolean
 ---@overload fun(id: py.ItemID, py_item: py.Item): self
 local M = Class 'Item'
 
@@ -38,6 +39,9 @@ end
 
 function M:__del()
     M.ref_manager:remove(self.id)
+    if self._removed_by_py then
+        return
+    end
     self.phandle:api_remove()
 end
 
@@ -76,6 +80,7 @@ end
 y3.py_converter.register_py_to_lua('py.ItemID', M.获取于id)
 
 y3.游戏:事件('物品-移除', function(trg, data)
+    data.item._removed_by_py = true
     data.触发物品:移除()
 end)
 
@@ -355,6 +360,9 @@ end
 ---物品持有者
 ---@return Unit? owner 持有者
 function M:获取拥有者_单位()
+    if not IsValid(self) then
+        return nil
+    end
     local py_owner = self.phandle:api_get_owner()
     if not py_owner then
         return nil
@@ -456,9 +464,15 @@ function M:获取槽位索引()
 end
 
 ---获取物品的拥有玩家
----@return Player player 玩家
+---@return Player? player 玩家
 function M:获取拥有者_玩家()
+    if not IsValid(self) then
+        return nil
+    end
     local py_player = self.phandle:api_get_creator()
+    if not py_player then
+        return nil
+    end
     return y3.玩家.从句柄获取(py_player)
 end
 
@@ -496,17 +510,21 @@ end
 
 ---获取物品购买售价
 ---@param item_key py.ItemKey 类型
----@param key py.RoleResKey 玩家属性
+---@param key y3.Const.PlayerAttr | string # 玩家属性
 ---@return number price 价格
 function M.获取购买价格(item_key, key)
+    key = y3.const.PlayerAttr[key] or key
+    ---@cast key py.RoleResKey
     return GameAPI.get_item_buy_price(item_key, key):float()
 end
 
 ---获取物品出售售价
 ---@param item_key py.ItemKey 类型
----@param key py.RoleResKey 玩家属性
+---@param key y3.Const.PlayerAttr | string # 玩家属性
 ---@return number price 价格
 function M.获取出售价格(item_key, key)
+    key = y3.const.PlayerAttr[key] or key
+    ---@cast key py.RoleResKey
     return GameAPI.get_item_sell_price(item_key, key):float()
 end
 

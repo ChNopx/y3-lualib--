@@ -874,6 +874,7 @@ _G["OnTick"] = function()
     if M._client_tick_callback then
         y3.玩家.执行本地代码(M._client_tick_callback)
     end
+    y3.ctimer.update_frame()
 end
 
 return M

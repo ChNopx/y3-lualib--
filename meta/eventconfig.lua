@@ -934,9 +934,10 @@ M.config['单位-即将死亡'] = {
     dispatch = true,
     extraArgs = {
     },
-    key = 'ET_BEFORE_UNIT_DIE',
-    name = '单位-即将死亡',
-    object = 'Unit',
+    key = "ET_BEFORE_UNIT_DIE",
+    master = "target_unit",
+    name = "单位-即将死亡",
+    object = "Unit",
     params = {
     },
 }
@@ -3000,9 +3001,9 @@ M.config['选中-取消'] = {
 }
 
 ---@alias EventParam.本地-选中-取消 EventParam.ET_ASYNC_CANCEL_SELECT_UNIT
-M.config['本地-选中-取消'] = {
-    __class__ = 'EventConfigBuilder',
-    desc = '玩家选中单位时触发',
+M.config["本地-选中-取消"] = {
+    __class__ = "EventConfigBuilder",
+    desc = "玩家的选中状态被取消时触发",
     extraArgs = {
     },
     key = 'ET_ASYNC_CANCEL_SELECT_UNIT',
@@ -3114,34 +3115,6 @@ end\
     },
     key = 'ET_START_SKILL_POINTER',
     name = '技能-打开指示器',
-    object = 'Ability',
-    params = {
-    },
-}
-
----@alias EventParam.技能-建造指示器检查通过 EventParam.ET_BUILD_SKILL_POINTER_CHECK_PASS
-M.config['技能-建造指示器检查通过'] = {
-    __class__ = 'EventConfigBuilder',
-    desc = '建造技能的指示器检查通过时触发',
-    extraArgs = {
-        [1] = {
-            code = 'function (data)\
-    return data.unit:get_ability_by_seq(data.ability_seq)\
-end\
-',
-            desc = '技能',
-            name = 'ability',
-            type = 'Ability',
-        },
-    },
-    extraObjs = {
-        [1] = {
-            getter = function(self) return self:get_owner() end,
-            luaType = 'Unit',
-        },
-    },
-    key = 'ET_BUILD_SKILL_POINTER_CHECK_PASS',
-    name = '技能-建造指示器检查通过',
     object = 'Ability',
     params = {
     },
@@ -3672,7 +3645,6 @@ M.config['对话框-点击按钮'] = {
 ---@field 事件 fun(self: self, event: "选中-单位组", callback: fun(trg: Trigger, data: EventParam.选中-单位组)): Trigger
 ---@field 事件 fun(self: self, event: "本地-选中-单位组", callback: fun(trg: Trigger, data: EventParam.本地-选中-单位组)): Trigger
 ---@field 事件 fun(self: self, event: "技能-打开指示器", callback: fun(trg: Trigger, data: EventParam.技能-打开指示器)): Trigger
----@field 事件 fun(self: self, event: "技能-建造指示器检查通过", callback: fun(trg: Trigger, data: EventParam.技能-建造指示器检查通过)): Trigger
 ---@field 事件 fun(self: self, event: "技能-关闭指示器", callback: fun(trg: Trigger, data: EventParam.技能-关闭指示器)): Trigger
 ---@field 事件 fun(self: self, event: "物品-获得", callback: fun(trg: Trigger, data: EventParam.物品-获得)): Trigger
 ---@field 事件 fun(self: self, event: "物品-进入物品栏", callback: fun(trg: Trigger, data: EventParam.物品-进入物品栏)): Trigger
@@ -3727,7 +3699,6 @@ M.config['对话框-点击按钮'] = {
 ---@field 事件 fun(self: Ability, event: "技能-启用", callback: fun(trg: Trigger, data: EventParam.技能-启用)): Trigger
 ---@field 事件 fun(self: Ability, event: "技能-冷却结束", callback: fun(trg: Trigger, data: EventParam.技能-冷却结束)): Trigger
 ---@field 事件 fun(self: Ability, event: "技能-打开指示器", callback: fun(trg: Trigger, data: EventParam.技能-打开指示器)): Trigger
----@field 事件 fun(self: Ability, event: "技能-建造指示器检查通过", callback: fun(trg: Trigger, data: EventParam.技能-建造指示器检查通过)): Trigger
 ---@field 事件 fun(self: Ability, event: "技能-关闭指示器", callback: fun(trg: Trigger, data: EventParam.技能-关闭指示器)): Trigger
 
 ---@class Area
@@ -3910,7 +3881,6 @@ M.config['对话框-点击按钮'] = {
 ---@field 事件 fun(self: Unit, event: "效果-即将获得", callback: fun(trg: Trigger, data: EventParam.效果-即将获得)): Trigger
 ---@field 事件 fun(self: Unit, event: "效果-覆盖", callback: fun(trg: Trigger, data: EventParam.效果-覆盖)): Trigger
 ---@field 事件 fun(self: Unit, event: "技能-打开指示器", callback: fun(trg: Trigger, data: EventParam.技能-打开指示器)): Trigger
----@field 事件 fun(self: Unit, event: "技能-建造指示器检查通过", callback: fun(trg: Trigger, data: EventParam.技能-建造指示器检查通过)): Trigger
 ---@field 事件 fun(self: Unit, event: "技能-关闭指示器", callback: fun(trg: Trigger, data: EventParam.技能-关闭指示器)): Trigger
 ---@field 事件 fun(self: Unit, event: "单位-寻路开始", callback: fun(trg: Trigger, data: EventParam.单位-寻路开始)): Trigger
 ---@field 事件 fun(self: Unit, event: "单位-寻路结束", callback: fun(trg: Trigger, data: EventParam.单位-寻路结束)): Trigger

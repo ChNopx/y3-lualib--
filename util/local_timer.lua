@@ -1,6 +1,7 @@
 --本地计时器
 --
 --支持异步创建或回调（只要你自己保证不会引发其他不同步的问题）
+--如果是同步执行的，那么会确保同步回调
 ---@class LocalTimer
 ---@field private include_name? string
 ---@field package id integer

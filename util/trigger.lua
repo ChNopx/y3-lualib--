@@ -7,10 +7,12 @@ local counter = y3.util.counter()
 ---@field private _event_args? any[]
 ---@field private _include_name? string | false
 ---@field private _on_remove? function
+---@field private _disable_once? boolean
+---@field event_manager EventManager?
 ---@overload fun(event: Event, event_args: any[], callback: Trigger.CallBack): self
 local M = Class "Trigger"
 
----@alias Trigger.CallBack fun(...): any, any, any, any
+---@alias Trigger.CallBack fun(trg: Trigger, ...): any, any, any, any
 
 ---@param event Event
 ---@param event_args? any[]
@@ -56,6 +58,18 @@ function M:是否已启用()
     return self._enable
 end
 
+--在本次事件中禁用此触发器
+function M:disable_once()
+    self._disable_once = true
+    if self.event_manager then
+        self.event_manager:disable_trigger_once(self)
+    end
+end
+
+function M:recover_disable_once()
+    self._disable_once = nil
+end
+
 -- 检查事件的参数与触发器的参数是否匹配，
 -- 允许事件的参数数量多余触发器的参数数量。
 ---@param fire_args any[]?
@@ -96,11 +110,13 @@ function M:execute(...)
     if not IsValid(self) then
         return
     end
-    if self._enable then
-        local suc, a, b, c, d = xpcall(self._callback, log.error, self, ...)
-        if suc then
-            return a, b, c, d
-        end
+    if not self._enable
+        or self._disable_once then
+        return
+    end
+    local suc, a, b, c, d = xpcall(self._callback, log.error, self, ...)
+    if suc then
+        return a, b, c, d
     end
 end
 
@@ -109,7 +125,7 @@ function M:移除()
 end
 
 ---@return string?
-function M:获取载入名称()
+function M:get_include_name()
     if not self._include_name then
         self._include_name = y3.reload.getIncludeName(self._callback) or false
     end
@@ -120,3 +136,5 @@ end
 function M:on_remove(callback)
     self._on_remove = callback
 end
+
+return M

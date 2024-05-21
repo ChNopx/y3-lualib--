@@ -42,6 +42,8 @@ require 'y3.util.ref'
 require 'y3.util.storage'
 require 'y3.util.gc_buffer'
 
+print = log.debug
+
 
 y3.const = require 'y3.game.const'
 y3.数学 = require 'y3.game.math'
@@ -92,10 +94,14 @@ y3.形状 = require 'y3.object.scene_object.shape'
 
 y3.物编 = require 'y3.util.object'
 y3.本地计时器 = require 'y3.util.local_timer'
+y3.ctimer = require 'y3.util.client_timer'
 y3.存档 = require 'y3.util.save_data'
 y3.dump = require 'y3.util.dump'
 y3.sync = require 'y3.util.sync'
 y3.network = require 'y3.util.network'
+y3.eca = require 'y3.util.eca_helper'
+y3.base64 = require 'y3.util.base64'
+y3.aes = require 'y3.util.aes'
 
 require 'y3.util.local_ui_logic'
 
@@ -114,17 +120,7 @@ pcall(function()
     end
 end)
 
--- TODO 给目前的Lua垃圾回收过慢的问题打个临时补丁
-local function fixGC()
-    local mem = collectgarbage 'count'
-    y3.本地计时器.loop_frame(10, function()
-        local new_mem = collectgarbage 'count'
-        local delta = new_mem - mem
-        mem = new_mem
-        if delta > 0 then
-            collectgarbage 'restart'
-            collectgarbage('step', math.ceil(delta))
-        end
-    end)
-end
-fixGC()
+--使用分代垃圾回收
+GlobalAPI.api_stop_luagc_control()
+collectgarbage 'restart'
+collectgarbage 'generational'

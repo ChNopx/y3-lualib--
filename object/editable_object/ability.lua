@@ -2,6 +2,7 @@
 ---@class Ability
 ---@field handle py.Ability
 ---@field phandle py.Ability
+---@field package _removed_by_py? boolean
 ---@overload fun(id: integer, py_ability: py.Ability): self
 local M = Class 'Ability'
 
@@ -38,7 +39,21 @@ end
 
 function M:__del()
     M.ref_manager:remove(self.id)
+    if self._removed_by_py then
+        return
+    end
     self.phandle:api_remove()
+    --TODO
+    --技能正在放的时候删不掉，需要不停尝试删除
+    if GameAPI.ability_is_exist(self.handle) then
+        y3.本地计时器.loop_frame(1, function(timer, count)
+            if not GameAPI.ability_is_exist(self.handle)
+                or self._removed_by_py then
+                return
+            end
+            self.phandle:api_remove()
+        end)
+    end
 end
 
 ---@private
@@ -69,6 +84,7 @@ y3.py_converter.register_lua_to_py('py.Ability', function(lua_value)
 end)
 
 y3.游戏:事件('技能-失去', function(trg, data)
+    data.ability._removed_by_py = true
     data.ability:移除()
 end)
 
@@ -98,27 +114,19 @@ end
 ---@param tag 技能.标签 标签
 ---@return boolean
 function M:是否_具有_标签(tag)
-    local 标签组 = self:获取存储值('@标签') or self:设置存储值('@标签', {}) or self:获取存储值('@标签')
-    return 标签组[tag]
-    -- return GlobalAPI.has_tag(self.handle, 标签)
+    return GlobalAPI.has_tag(self.handle, tag)
 end
 
 --添加标签
----5月30日版本更新后可用
 ---@param tag 技能.标签 标签
 function M:添加_标签(tag)
-    -- self.phandle:api_add_tag(标签)
-    local 标签组 = self:获取存储值('@标签') or self:设置存储值('@标签', {}) or self:获取存储值('@标签')
-    标签组[tag] = true
+    self.phandle:api_add_tag(tag)
 end
 
 ---移除标签
----5月30日版本更新后可用
 ---@param tag 技能.标签 标签
 function M:移除_标签(tag)
-    -- self.phandle:api_remove_tag(tag)
-    local 标签组 = self:获取存储值('@标签') or self:设置存储值('@标签', {}) or self:获取存储值('@标签')
-    标签组[tag] = nil
+    self.phandle:api_remove_tag(tag)
 end
 
 ---启用技能

@@ -551,6 +551,19 @@ function M:播放移动动画(start_x, start_y, end_x, end_y, duration, ease_typ
     return self
 end
 
+--播放UI缩放动画
+---@param start_x number # 开始x
+---@param start_y number # 开始y
+---@param end_x number # 结束x
+---@param end_y number # 结束y
+---@param duration number # 持续时间
+---@param ease_type? integer # 曲线类型
+---@return self
+function M:set_anim_scale(start_x, start_y, end_x, end_y, duration, ease_type)
+    GameAPI.set_ui_comp_anim_scale(self.player.handle, self.handle, start_x, start_y, end_x, end_y, duration, ease_type)
+    return self
+end
+
 --设置模型控件观察点
 ---@param x number x轴
 ---@param y number y轴
@@ -861,23 +874,35 @@ function M:获取_高度()
 end
 
 --获得控件真实宽度
+--> 注意：该结果是不同步的
 ---@return number width 控件真实宽度
 function M:获取_真实宽度()
     if self.player:获取_游戏_状态() ~= 1 then
         return 0
     end
-    ---@diagnostic disable-next-line: return-type-mismatch
-    return GameAPI.get_role_ui_comp_real_width(self.player.handle, self.handle)
+    local r = GameAPI.get_role_ui_comp_real_width(self.player.handle, self.handle)
+    if type(r) == 'number' then
+        return r
+    else
+        ---@cast r py.Fixed
+        return r:float()
+    end
 end
 
 --获得控件真实高度
+--> 注意：该结果是不同步的
 ---@return number height 控件真实高度
 function M:获取_真实高度()
     if self.player:获取_游戏_状态() ~= 1 then
         return 0
     end
-    ---@diagnostic disable-next-line: return-type-mismatch
-    return GameAPI.get_role_ui_comp_real_height(self.player.handle, self.handle)
+    local r = GameAPI.get_role_ui_comp_real_height(self.player.handle, self.handle)
+    if type(r) == 'number' then
+        return r
+    else
+        ---@cast r py.Fixed
+        return r:float()
+    end
 end
 
 --获得界面控件的父控件

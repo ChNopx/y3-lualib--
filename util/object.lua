@@ -16,7 +16,7 @@ end
 ---@field on_create? fun(unit: Unit) # 单位创建后执行
 ---@field on_remove? fun(unit: Unit) # 单位移除后执行
 ---@field on_dead? fun(unit: Unit) # 单位死亡后执行
---单位的物编数据，你可以从里面读取或修改任意物编
+--单位的物编数据，你可以从里面读取或修改任意物编（部分字段无法修改）
 --> 警告：请确保数据类型正确，否则可能导致崩溃
 --> 警告：如果创建过此单位再修改数据，行为是未定义的
 ---@field data Object.Unit
@@ -52,7 +52,7 @@ end)
 ---@field on_lose? fun(item: Item) # 物品失去后执行
 ---@field on_create? fun(item: Item) # 物品创建后执行
 ---@field on_remove? fun(item: Item) # 物品移除后执行
---物品的物编数据，你可以从里面读取或修改任意物编
+--物品的物编数据，你可以从里面读取或修改任意物编（部分字段无法修改）
 --> 警告：请确保数据类型正确，否则可能导致崩溃
 --> 警告：如果创建过此物品再修改数据，行为是未定义的
 ---@field data Object.Item
@@ -88,7 +88,8 @@ end)
 ---@field on_add? fun(buff: Buff) # 效果获得后执行
 ---@field on_lose? fun(buff: Buff) # 效果失去后执行
 ---@field on_pulse? fun(buff: Buff) # 效果心跳后执行
---魔法效果的物编数据，你可以从里面读取或修改任意物编
+---@field on_stack_change? fun(buff: Buff) # 效果层数变化后执行
+--魔法效果的物编数据，你可以从里面读取或修改任意物编（部分字段无法修改）
 --> 警告：请确保数据类型正确，否则可能导致崩溃
 --> 警告：如果创建过此魔法效果再修改数据，行为是未定义的
 ---@field data Object.Buff
@@ -130,7 +131,7 @@ end)
 ---@field on_cast_shot? fun(ability: Ability, cast: Cast) # 技能出手施法时执行
 ---@field on_cast_finish? fun(ability: Ability, cast: Cast) # 技能完成施法时执行
 ---@field on_cast_stop? fun(ability: Ability, cast: Cast) # 技能停止施法时执行
---技能的物编数据，你可以从里面读取或修改任意物编
+--技能的物编数据，你可以从里面读取或修改任意物编（部分字段无法修改）
 --> 警告：请确保数据类型正确，否则可能导致崩溃
 --> 警告：如果创建过此技能再修改数据，行为是未定义的
 ---@field data Object.Ability
@@ -175,6 +176,15 @@ M.call_stack_map = setmetatable({}, {
     end,
 })
 
+local function applyMethod(stack, key, func, arg1, arg2)
+    M.lock_count_map[key] = M.lock_count_map[key] + 1
+    xpcall(func, log.error, arg1, arg2)
+    M.lock_count_map[key] = M.lock_count_map[key] - 1
+    if #stack > 0 and M.lock_count_map[key] == 0 then
+        table.remove(stack, 1)()
+    end
+end
+
 ---@param otype string
 ---@param mname string
 ---@param key any
@@ -194,16 +204,11 @@ function M.callMethod(otype, mname, key, lock_obj, arg1, arg2)
     local stack = M.call_stack_map[lock_obj]
     if M.lock_count_map[key] > 0 then
         stack[#stack + 1] = function()
-            M.callMethod(otype, mname, key, lock_obj, arg1, arg2)
+            applyMethod(stack, key, func, arg1, arg2)
         end
         return
     end
-    M.lock_count_map[key] = M.lock_count_map[key] + 1
-    xpcall(func, log.error, arg1, arg2)
-    M.lock_count_map[key] = M.lock_count_map[key] - 1
-    if #stack > 0 and M.lock_count_map[key] == 0 then
-        table.remove(stack, 1)()
-    end
+    applyMethod(stack, key, func, arg1, arg2)
 end
 
 local function subscribe(class, method, callback)
@@ -280,6 +285,12 @@ end)
 subscribe(Buff, 'on_pulse', function()
     y3.游戏:事件('效果-心跳', function(trg, data)
         M.callMethod('buff', 'on_pulse', data.buff:获取物编ID(), data.buff, data.buff)
+    end)
+end)
+
+subscribe(Buff, 'on_stack_change', function()
+    y3.游戏:事件('效果-层数变化', function(trg, data)
+        M.callMethod('buff', 'on_stack_change', data.buff:获取物编ID(), data.buff, data.buff)
     end)
 end)
 

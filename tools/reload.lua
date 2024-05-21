@@ -121,6 +121,7 @@ M.modNameMap = {}
 M.includeStack = {}
 
 -- 类似于 `require` ，但是会在重载时重新加载文件。
+-- 加载文件时遇到错误会返回false而不是抛出异常。
 ---@param modname string
 ---@return any
 ---@return unknown loaderdata
@@ -146,7 +147,7 @@ end
 ---@return unknown loaderdata
 function require(modname)
     M.includeStack[#M.includeStack + 1] = false
-    local suc, result, loaderdata = xpcall(originRequire, log.error, modname)
+    local suc, result, loaderdata = xpcall(originRequire, debug.traceback, modname)
     M.includeStack[#M.includeStack] = nil
     if not suc then
         error(result)

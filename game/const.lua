@@ -905,6 +905,13 @@ M.技能字符串属性 = {
     ['描述'] = 'description',
 }
 
+---@enum(key) y3.Const.CollisionLayers
+M.CollisionLayers = {
+    ['地面'] = 1 << 5,
+    ['空中'] = 1 << 6,
+    ['水面'] = 1 << 7,
+    ['物件'] = 1 << 8,
+}
 ---@enum (key) y3.Const.模型类型
 M.模型类型 = {}
 

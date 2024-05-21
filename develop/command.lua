@@ -2,7 +2,7 @@
 --
 --该功能仅在开发模式有效
 ---@class Develop.Command
-local M = Class "Develop.Command"
+local M = Class 'Develop.Command'
 
 ---@class Develop.Command.InfoParam
 ---@field onCommand fun(...)
@@ -24,7 +24,7 @@ M.commands = {}
 ---@param info Develop.Command.InfoParam|function
 function M.register(command, info)
     local lname = command:lower()
-    if type(info) == "function" then
+    if type(info) == 'function' then
         info = {
             onCommand = info,
         }
@@ -39,10 +39,8 @@ end
 local function remove_all_triggers_in_include(reload)
     local event_manager = y3.游戏:get_event_manager()
     for trigger in event_manager:pairs() do
-        local name = trigger:获取载入名称()
-        -- 调试输出(name, reload:isValidName(name))
+        local name = trigger:get_include_name()
         if reload:isValidName(name) then
-            -- 调试输出("remove", trigger)
             trigger:移除()
         end
     end
@@ -50,25 +48,20 @@ end
 
 ---@param reload Reload
 local function remove_all_custom_triggers_in_include(reload)
-    ---@diagnostic disable-next-line: invisible
-    local event_manager = y3.游戏.custom_event_manager
-    if event_manager then
-        for trigger in event_manager:pairs() do
-            local name = trigger:获取载入名称()
-            -- 调试输出(name, reload:isValidName(name))
-            if reload:isValidName(name) then
-                -- 调试输出("remove", trigger)
-                trigger:移除()
-            end
+    local event_manager = y3.游戏:get_custom_event_manager()
+    if not event_manager then
+        return
+    end
+    for trigger in event_manager:pairs() do
+        local name = trigger:get_include_name()
+        if reload:isValidName(name) then
+            trigger:移除()
         end
     end
 end
 
-
-
 ---@param reload Reload
 local function remove_all_timers_in_include(reload)
-    ---@diagnostic disable-next-line: invisible
     for timer in y3.计时器.pairs() do
         local name = timer:get_include_name()
         if reload:isValidName(name) then
@@ -87,53 +80,62 @@ local function remove_all_local_timers_in_include(reload)
     end
 end
 
-M.register("RD", {
+---@param reload Reload
+local function remove_all_client_timers_in_include(reload)
+    for timer in y3.ctimer.pairs() do
+        local name = timer:get_include_name()
+        if reload:isValidName(name) then
+            timer:remove()
+        end
+    end
+end
+
+M.register('RD', {
     needSync = true,
     priority = 100,
-    desc = "重载所有使用 `include` 加载的脚本文件，并清理他们的全局计时器和触发器。",
+    desc = '重载所有使用 `include` 加载的脚本文件，并清理他们的全局计时器和触发器。',
     onCommand = function()
-        y3.游戏.开启新一轮游戏(false)
+        y3.reload.reload()
     end,
 })
 
-M.register("SS", {
-    desc = "生成内存快照",
+M.register('SS', {
+    desc = '生成内存快照',
     onCommand = function()
         collectgarbage()
         collectgarbage()
         local reports = y3.doctor.report()
         local lines = {}
         for _, report in ipairs(reports) do
-            lines[#lines + 1] = string.format("%16s(%d): %s"
+            lines[#lines + 1] = string.format('%16s(%d): %s'
             , report.point
             , report.count
             , report.name
             )
         end
-        local content = table.concat(lines, "\n")
+        local content = table.concat(lines, '\n')
         ---@diagnostic disable-next-line: undefined-global
-        py_write_file(lua_script_path .. "/log/snapshot.txt", "w", content)
-        log.debug("快照已保存到 script/log/snapshot.txt")
-    end,
+        py_write_file(lua_script_path .. '/log/snapshot.txt', 'w', content)
+        log.debug('快照已保存到 script/log/snapshot.txt')
+    end
 })
 
-
-M.register("CT", {
-    desc = "查询某个对象的引用",
+M.register('CT', {
+    desc = '查询某个对象的引用',
     onCommand = function(...)
         collectgarbage()
         collectgarbage()
         local results = y3.doctor.catch(...)
         local lines = {}
         for _, result in ipairs(results) do
-            result[1] = "root"
-            lines[#lines + 1] = table.concat(result, "->")
+            result[1] = 'root'
+            lines[#lines + 1] = table.concat(result, '->')
         end
-        local content = table.concat(lines, "\n")
+        local content = table.concat(lines, '\n')
         ---@diagnostic disable-next-line: undefined-global
-        py_write_file(lua_script_path .. "/log/catch.txt", "w", content)
-        log.debug("快照已保存到 script/log/catch.txt")
-    end,
+        py_write_file(lua_script_path .. '/log/catch.txt', 'w', content)
+        log.debug('快照已保存到 script/log/catch.txt')
+    end
 })
 
 y3.reload.onBeforeReload(function(reload, willReload)
@@ -141,20 +143,25 @@ y3.reload.onBeforeReload(function(reload, willReload)
     remove_all_custom_triggers_in_include(reload)
     remove_all_timers_in_include(reload)
     remove_all_local_timers_in_include(reload)
+    remove_all_client_timers_in_include(reload)
 end)
 
-y3.游戏:事件("玩家-发送消息", function(trg, data)
+y3.游戏:事件('玩家-发送消息', function(trg, data)
     if not y3.游戏.是否为调试模式() then
         return
     end
-    if not y3.util.stringStartWith(data.str1, ".") then
+    if not y3.util.stringStartWith(data.str1, '.') then
         return
     end
 
     local content = data.str1:sub(2)
     local strs = {}
-    for str in content:gmatch("[^%s]+") do
+    for str in content:gmatch('[^%s]+') do
         strs[#strs + 1] = str
+    end
+
+    if #strs == 0 then
+        return
     end
 
     local command = table.remove(strs, 1):lower()
@@ -171,7 +178,7 @@ end)
 function M.execute(command, ...)
     command = command:lower()
     local info = M.commands[command]
-    assert(info, "作弊指令不存在: " .. command)
+    assert(info, '作弊指令不存在: ' .. command)
     info.onCommand(...)
 end
 

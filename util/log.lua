@@ -53,7 +53,7 @@ local function print_to_game(message)
         table.remove(log_cache, 1)
     end
     ---@diagnostic disable-next-line: deprecated
-    y3.ui.display_message(y3.player.get_local(), remove_bad_utf8(table.concat(log_cache, '\n')), 60)
+    y3.控件.display_message(y3.玩家.获取本地玩家(), remove_bad_utf8(table.concat(log_cache, '\n')), 60)
 end
 
 ---@diagnostic disable-next-line: lowercase-global
@@ -107,7 +107,7 @@ log = New 'Log' {
 ---@param ... any
 function print(...)
     local message = log.debug(...)
-    if y3.游戏.is_debug_mode()
+    if y3.游戏.是否为调试模式()
         and not y3.config.log.toGame then
         print_to_game(message)
     end

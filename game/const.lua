@@ -936,4 +936,7 @@ M.projectileType = {}
 ---@enum(key) y3.Const.buffType
 M.buffType = {}
 
+---@enum(key) y3.Const.SceneUI
+M.SceneUI = {}
+
 return M

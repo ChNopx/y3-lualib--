@@ -10,10 +10,6 @@ function M:__init(py_unit_group)
     return self
 end
 
-function M:__tostring()
-    return string.format("{单位组|%d}", self:获取单位数量())
-end
-
 function M:__len()
     return self:获取单位数量()
 end

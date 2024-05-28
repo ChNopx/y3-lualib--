@@ -86,12 +86,12 @@ function M:set_time_out()
 
     if self.mode == 'second' then
         self.target_ms = self.init_ms
-                       + self.time * (self.runned_count + 1) * 1000.0
-                       + self.total_paused_ms
+            + self.time * (self.runned_count + 1) * 1000.0
+            + self.total_paused_ms
     else
         self.target_frame = self.init_frame
-                          + math.floor(self.time) * (self.runned_count + 1)
-                          + self.total_paused_frame
+            + math.floor(self.time) * (self.runned_count + 1)
+            + self.total_paused_frame
     end
 
     self:push()
@@ -121,11 +121,11 @@ end
 -- 立即执行
 function M:execute(...)
     xpcall(self.on_timer, log.error
-        , self
-        , self.runned_count
-        ---@diagnostic disable-next-line: deprecated
-        , y3.player.get_local()
-        , ...
+    , self
+    , self.runned_count
+    ---@diagnostic disable-next-line: deprecated
+    , y3.玩家.获取本地玩家()
+    , ...
     )
 end
 
@@ -149,7 +149,7 @@ function M:push()
             queue = {}
             ms_queues[ms] = queue
         end
-        queue[#queue+1] = self
+        queue[#queue + 1] = self
     else
         local frame = self.target_frame
         if frame <= cur_frame then
@@ -161,7 +161,7 @@ function M:push()
             queue = {}
             frame_queues[frame] = queue
         end
-        queue[#queue+1] = self
+        queue[#queue + 1] = self
     end
 end
 
@@ -224,7 +224,7 @@ end
 
 -- 是否正在运行
 function M:is_running()
-    return  not self.removed
+    return not self.removed
         and not self.pausing
 end
 
@@ -375,10 +375,10 @@ end
 function M.pairs()
     local timers = {}
     for _, timer in y3.util.sortPairs(M.all_timers) do
-        timers[#timers+1] = timer
+        timers[#timers + 1] = timer
     end
     local i = 0
-    return function ()
+    return function()
         i = i + 1
         return timers[i]
     end
@@ -388,7 +388,7 @@ end
 local desk = {}
 
 local function update_queue(queue)
-    table.sort(queue, function (a, b)
+    table.sort(queue, function(a, b)
         return a.id < b.id
     end)
     for i = 1, #queue do

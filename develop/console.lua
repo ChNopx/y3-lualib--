@@ -2,80 +2,95 @@
 local console_tips_match = console_tips_match
 
 ---@class Develop.Console
-local M = Class "Develop.Console"
+local M = Class 'Develop.Console'
 
-local function getHelpInfo()
+function M.getHelpInfo()
     local info = {}
 
-    info[#info + 1] = "指令列表:"
+    info[#info + 1] = '指令列表:'
     local commands = y3.develop.command.getAllCommands()
     for _, command in ipairs(commands) do
         local commandInfo = y3.develop.command.getCommandInfo(command)
         if commandInfo then
-            info[#info + 1] = ("  .%s - %s"):format(command, commandInfo.desc)
+            info[#info + 1] = ('  .%s - %s'):format(command, commandInfo.desc)
         end
     end
-    info[#info + 1] = ""
-    info[#info + 1] = "可以直接输入代码运行，以 `!` 开头的代码会在同步后运行："
-    info[#info + 1] = "  1 + 2 --> 当前控制台打印3"
-    info[#info + 1] = "  !y3.player(1):get_name() --> 多开测试时所有控制台都会打印玩家1的名字"
-    info[#info + 1] = ""
-    info[#info + 1] = "输入 `?` 查看此帮助"
+    info[#info + 1] = ''
+    info[#info + 1] = '可以直接输入代码运行，以 `!` 开头的代码会在同步后运行：'
+    info[#info + 1] = '  1 + 2 --> 当前控制台打印3'
+    info[#info + 1] = '  !y3.player(1):get_name() --> 多开测试时所有控制台都会打印玩家1的名字'
+    info[#info + 1] = ''
+    info[#info + 1] = '输入 `?` 查看此帮助'
 
-    return table.concat(info, "\n")
+    return table.concat(info, '\n')
+end
+
+---@param message string
+local function print_to_console(message)
+    consoleprint(message)
+    y3.develop.helper.requestPrint(message)
 end
 
 ---@param code string
 ---@return any
 local function runCode(code)
-    local returnedCode = "return " .. code
-    local f, err = load(returnedCode, "=console")
+    local returnedCode = 'return ' .. code
+    local f, err = load(returnedCode, '=console')
     if not f then
-        f, err = load(code, "=console")
+        f, err = load(code, '=console')
     end
     if not f then
         assert(err)
-        consoleprint((err:gsub("console:1:", "Error: ")))
+        print_to_console((err:gsub('console:1:', 'Error: ')))
         return
     end
     local ok, result = pcall(f)
     if not ok then
-        consoleprint(result)
+        print_to_console(result)
+        return
+    end
+    if getmetatable(result) and getmetatable(result).__tostring then
+        print_to_console(tostring(result))
         return
     end
     local view = y3.inspect(result)
     if #view > 10000 then
-        view = view:sub(1, 10000) .. "..."
+        view = view:sub(1, 10000) .. '...'
     end
-    consoleprint(view)
+    print_to_console(view)
 end
 
-y3.游戏:事件("控制台-输入", function(trg, data)
-    if not y3.游戏.是否为调试模式() then
-        return
-    end
-    local input = data.str1
-
-    if input == "?" then
-        consoleprint(getHelpInfo())
+--控制台输入
+---@param input string
+function M.input(input)
+    if input == '?' then
+        consoleprint(M.getHelpInfo())
         return
     end
 
-    if input:sub(1, 1) == "." then
-        y3.sync.send("$console", input)
+    if input:sub(1, 1) == '.' then
+        y3.sync.send('$console', input)
         return
     end
 
-    if input:sub(1, 1) == "!" then
+    if input:sub(1, 1) == '!' then
         local code = input:sub(2)
-        y3.sync.send("$run", code)
+        y3.sync.send('$run', code)
         return
     end
 
     runCode(input)
+end
+
+y3.游戏:事件('控制台-输入', function(trg, data)
+    if not y3.游戏.是否为调试模式() then
+        return
+    end
+    local input = data.str1
+    M.input(input)
 end)
 
-y3.sync.onSync("$console", function(input)
+y3.sync.onSync('$console', function(input)
     if not y3.游戏.是否为调试模式() then
         return
     end
@@ -84,7 +99,7 @@ y3.sync.onSync("$console", function(input)
     end
     local content = input:sub(2)
     local strs = {}
-    for str in content:gmatch("[^%s]+") do
+    for str in content:gmatch('[^%s]+') do
         strs[#strs + 1] = str
     end
 
@@ -92,11 +107,11 @@ y3.sync.onSync("$console", function(input)
     y3.develop.command.execute(command, table.unpack(strs))
 end)
 
-y3.sync.onSync("$run", function(code)
+y3.sync.onSync('$run', function(code)
     if not y3.游戏.是否为调试模式() then
         return
     end
-    if type(code) ~= "string" then
+    if type(code) ~= 'string' then
         return
     end
     runCode(code)
@@ -190,7 +205,7 @@ end
 local function getFieldsOf(t)
     local fields = {}
     for k in pairs(t) do
-        if type(k) == "string" then
+        if type(k) == 'string' then
             fields[k] = true
         end
     end
@@ -200,9 +215,9 @@ local function getFieldsOf(t)
         if mtMark[mt] then
             return
         end
-        if type(mt) == "table" and type(mt.__index) == "table" then
+        if type(mt) == 'table' and type(mt.__index) == 'table' then
             for k in pairs(mt.__index) do
-                if type(k) == "string" then
+                if type(k) == 'string' then
                     fields[k] = true
                 end
             end
@@ -219,7 +234,7 @@ local function requestWordsByField(words)
     local current = _G
     for i = 1, #words - 1 do
         current = current[words[i]]
-        if type(current) ~= "table" then
+        if type(current) ~= 'table' then
             return {}
         end
     end
@@ -231,8 +246,8 @@ local function requestWordsByKeyWord(words)
     if #words > 1 then
         return {}
     end
-    return { "if", "else", "elseif", "for", "while", "repeat", "until", "function", "local", "return", "break", "do",
-        "end", "then", "in", "nil", "true", "false", "and", "or", "not" }
+    return { 'if', 'else', 'elseif', 'for', 'while', 'repeat', 'until', 'function', 'local', 'return', 'break', 'do',
+        'end', 'then', 'in', 'nil', 'true', 'false', 'and', 'or', 'not' }
 end
 
 local function mergeAndRemoveDuplicate(...)
@@ -252,23 +267,23 @@ end
 ---@param input string
 ---@return string[]
 local function parseWords(input)
-    local nearestTokens = input:match "[%w_%.%:%s]*$"
-    if nearestTokens:match "^%s*[%.%:]" then
+    local nearestTokens = input:match '[%w_%.%:%s]*$'
+    if nearestTokens:match '^%s*[%.%:]' then
         return {}
     end
     local tokens = {}
     local pos = 1
     for _ = 1, 10000 do
-        pos = nearestTokens:match("()%S", pos) or pos
+        pos = nearestTokens:match('()%S', pos) or pos
         if pos > #nearestTokens then
             break
         end
-        local word, newPos = nearestTokens:match("([%a_][%w_]*)()", pos)
+        local word, newPos = nearestTokens:match('([%a_][%w_]*)()', pos)
         if word then
             tokens[#tokens + 1] = word
             pos = newPos
         end
-        local symbol, newPos = nearestTokens:match("([%.%:])()", pos)
+        local symbol, newPos = nearestTokens:match('([%.%:])()', pos)
         if symbol then
             tokens[#tokens + 1] = symbol
             pos = newPos
@@ -280,17 +295,17 @@ local function parseWords(input)
     local words = {}
     local expectSymbol, expectWord
     for i = #tokens, 1, -1 do
-        if tokens[i] == "."
-            or tokens[i] == ":" then
+        if tokens[i] == '.'
+            or tokens[i] == ':' then
             if expectWord then
                 break
             end
             expectSymbol = false
             expectWord = true
             if i == #tokens then
-                words[#words + 1] = ""
+                words[#words + 1] = ''
             end
-        elseif tokens[i]:match "[%w_]+" then
+        elseif tokens[i]:match '[%w_]+' then
             if expectSymbol then
                 break
             end
@@ -320,31 +335,31 @@ local function requestWords(inputed)
     return completes
 end
 
-y3.游戏:事件("控制台-请求补全", function(trg, data)
+y3.游戏:事件('控制台-请求补全', function(trg, data)
     if not y3.游戏.是否为调试模式() then
         return
     end
     local input = data.str1
 
-    if input == "?" then
+    if input == '?' then
         return
     end
 
-    if input:sub(1, 1) == "." then
+    if input:sub(1, 1) == '.' then
         local commands = y3.develop.command.getAllCommands()
         local words = {}
         for _, comman in ipairs(commands) do
-            words[#words + 1] = "." .. comman
+            words[#words + 1] = '.' .. comman
         end
         local completes = filterOut(input, words)
-        console_tips_match(table.concat(completes, "\x01"))
+        console_tips_match(table.concat(completes, '\x01'))
         return
     end
 
     local completes = requestWords(input)
-    console_tips_match(table.concat(completes, "\x01"))
+    console_tips_match(table.concat(completes, '\x01'))
 end)
 
-consoleprint(getHelpInfo())
+consoleprint(M.getHelpInfo())
 
 return M

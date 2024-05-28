@@ -32,6 +32,7 @@ include = y3.reload.include
 require 'y3.tools.linked_table'
 y3.随机池 = require 'y3.tools.pool'
 require 'y3.tools.gc'
+require 'y3.tools.synthesis'
 
 require 'y3.util.eca_function'
 require 'y3.util.trigger'
@@ -113,6 +114,7 @@ y3.develop = {}
 y3.develop.command = include 'y3.develop.command'
 y3.develop.arg = require 'y3.develop.arg'
 y3.develop.console = include 'y3.develop.console'
+y3.develop.helper  = require 'y3.develop.helper'
 
 pcall(function()
     if LDBG and y3.develop.arg['lua_wait_debugger'] == 'true' then

@@ -22,3 +22,8 @@ y3.游戏:事件('选中-单位组', function(trg, data)
     data.触发玩家._selecting_unit = data.unit_group_id_list:获取第一个单位()
     data.触发玩家._selecting_group = data.unit_group_id_list
 end)
+
+y3.游戏:事件('选中-取消', function(trg, data)
+    data.player._selecting_unit = nil
+    data.player._selecting_group = nil
+end)

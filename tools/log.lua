@@ -25,7 +25,7 @@ M.level = 'debug'
 M.clock = os.clock
 
 ---@private
-M.messageFormat = '[%s][%5s][%s]: \n%s\n'
+M.messageFormat = '[%s][%5s][%s]: %s\n'
 
 ---@enum (key) Log.Level
 M.logLevel = {
@@ -99,6 +99,8 @@ function M:__init(option)
     self.maxSize = option.maxSize
     self.level   = option.level
     self.clock   = option.clock
+    ---@private
+    self.option  = option
     if option.file then
         self.file = option.file
     else
@@ -108,14 +110,10 @@ function M:__init(option)
                 self.file = file
                 self.file:setvbuf 'no'
             elseif err then
-                if option.print then
-                    pcall(option.print, 'warn', err)
-                end
+                self:applyPrint('warn', err, self:getTimeStamp())
             end
         end
     end
-    ---@private
-    self.option = option
     ---@private
     self.logLevel = merge(M.logLevel, option.logLevel)
     ---@private
@@ -143,7 +141,24 @@ function M:getTimeStamp()
     return timeStamp
 end
 
---- 标签 日志输出方式
+---@private
+M.lockPrint = false
+
+---@private
+---@param level string
+---@param message string
+---@param timeStamp string
+function M:applyPrint(level, message, timeStamp)
+    if self.option.print then
+        if M.lockPrint then
+            return
+        end
+        M.lockPrint = true
+        pcall(self.option.print, level, message, timeStamp)
+        M.lockPrint = false
+    end
+end
+
 ---@private
 ---@param level string
 ---@param ... any
@@ -152,16 +167,12 @@ end
 function M:build(level, ...)
     local t = table.pack(...)
     for i = 1, t.n do
-        if type(t[i]) == 'table' and t[i]['__class__'] == nil then
-            t[i] = y3.util.dump(t[i], { y3tostring = true })
-        else
-            t[i] = tostring(t[i])
-        end
+        t[i] = tostring(t[i])
     end
     local message = table.concat(t, '\t', 1, t.n)
 
     if self.needTraceBack[level] then
-        if debug.getinfo(1, 't').istailcall then
+        if debug.getinfo(1, "t").istailcall then
             message = (self.option.traceback or debug.traceback)(message, 2)
         else
             message = (self.option.traceback or debug.traceback)(message, 3)
@@ -174,9 +185,7 @@ function M:build(level, ...)
         return message, timeStamp
     end
 
-    if self.option.print then
-        pcall(self.option.print, level, message, timeStamp)
-    end
+    self:applyPrint(level, message, timeStamp)
 
     if not self.file then
         return message, timeStamp

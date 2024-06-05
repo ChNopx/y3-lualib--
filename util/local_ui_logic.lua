@@ -44,7 +44,7 @@ function M:__init(main_name)
     ---@type LocalUILogic.OnInitInfo[]
     self._on_inits = {}
 
-    y3.本地计时器.wait(0, function()
+    y3.l计时器.wait(0, function()
         self._main = y3.控件.获取于HD(local_player, self._main_name)
         assert(self._main)
         for _, v in ipairs(self._bind_unit_attr) do

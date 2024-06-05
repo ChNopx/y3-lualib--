@@ -43,7 +43,6 @@ local function remove_bad_utf8(text)
         buf[#buf + 1] = text:sub(cur, errpos - 1)
         cur = errpos + 1
     end
-
     return table.concat(buf)
 end
 
@@ -89,7 +88,7 @@ log = New 'Log' {
             print_to_game(message)
         end
         if y3.config.log.toHelper then
-            y3.develop.helper.requestPrint(message)
+            y3.develop.helper.print(message)
         end
     end,
     traceback = function(message, level)

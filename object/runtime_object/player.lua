@@ -281,6 +281,12 @@ function M:use_store_item(count, item_id)
     self.phandle:api_use_store_item(count, item_id)
 end
 
+---请求购买平台道具
+---@param id py.StoreKey 平台道具id
+function M:open_platform_shop(id)
+    GameAPI.open_platform_shop(self.handle, id)
+end
+
 ---玩家是否可以看到某个位置
 ---@param point Point 点
 ---@return boolean visible 点对于玩家可见
@@ -413,6 +419,13 @@ function M:get_store_item_number(id)
     return self.phandle:get_store_item_cnt(id)
 end
 
+---玩家平台道具到期时间戳
+---@param id py.StoreKey 平台道具id
+---@return integer store_item_end_time 平台道具到期时间戳
+function M:get_store_item_end_time(id)
+    return self.phandle:get_store_item_expired_time(id)
+end
+
 ---获取玩家平台等级
 ---@return integer map_level 平台等级
 function M:get_platform_level()
@@ -520,7 +533,21 @@ end
 ---获取玩家唯一名称
 ---@return string name 属性名称
 function M:get_platform_name()
-    return self.handle:get_role__unique_name()
+    return self.phandle:get_role__unique_name()
+end
+
+---获取玩家加密UUID
+---@return string
+function M:获取加密UUID()
+    ---@diagnostic disable-next-line: return-type-mismatch
+    return self.phandle:get_encry_uuid()
+end
+
+---向玩家发送提示
+---@param msg string 消息
+---@param localize? boolean 是否支持语言环境
+function M:display_info(msg, localize)
+    GameAPI.show_msg_to_role(self.handle, msg, localize)
 end
 
 ---获取玩家属性的货币图标

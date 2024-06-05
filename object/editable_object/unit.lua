@@ -1308,7 +1308,8 @@ function M:获取属性(attr_name, attr_type)
     if attr_type == '增益加成' then
         return self:get_attr_bonus_ratio(attr_name)
     end
-    if attr_type == '最终加成' then
+    if attr_type == '最终加成'
+        or attr_type == '总加成' then
         return self:get_attr_all_ratio(attr_name)
     end
     error('未知的属性类型:' .. tostring(attr_type))

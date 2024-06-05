@@ -88,9 +88,7 @@ end
 ---@param t table
 function M.保存玩家表格数据(player, slot, t)
     assert(type(t) == 'table', '数据类型必须是表！')
-    if y3.proxy.raw(t) then
-        t = y3.proxy.raw(t)
-    end
+    t = y3.proxy.rawRecusive(t)
     player.handle:set_save_data_table_value(slot, t)
     M.upload_save_data(player)
 end
@@ -106,7 +104,7 @@ function M.upload_save_data(player)
     if timer then
         return
     end
-    M.timer_map[player] = y3.本地计时器.wait(0.1, function()
+    M.timer_map[player] = y3.l计时器.wait(0.1, function()
         M.timer_map[player] = nil
         player.handle:upload_save_data()
         -- log.info('自动保存存档：', player)
@@ -184,7 +182,7 @@ function M.load_table_with_cover_disable(player, slot)
         if update_timer then
             return
         end
-        update_timer = y3.本地计时器.wait(update_delay, function()
+        update_timer = y3.l计时器.wait(update_delay, function()
             update_timer = nil
             player.handle:upload_save_data()
             log.info('自动保存存档：', player, slot)

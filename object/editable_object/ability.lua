@@ -46,7 +46,7 @@ function M:__del()
     --TODO
     --技能正在放的时候删不掉，需要不停尝试删除
     if GameAPI.ability_is_exist(self.handle) then
-        y3.本地计时器.loop_frame(1, function(timer, count)
+        y3.l计时器.loop_frame(1, function(timer, count)
             if not GameAPI.ability_is_exist(self.handle)
                 or self._removed_by_py then
                 return
@@ -183,17 +183,17 @@ function M:获取_名称()
 end
 
 ---设置实数属性
----@param key string 属性key
+---@param key y3.Const.AbilityFloatAttr | string 属性key
 ---@param value number 属性值
 function M:设置_实数_属性(key, value)
-    self.phandle:api_set_float_attr(key, Fix32(value))
+    self.phandle:api_set_float_attr(y3.const.AbilityFloatAttr[key] or key, Fix32(value))
 end
 
 ---设置整数属性
----@param key string 属性key
+---@param key y3.Const.技能整数属性
 ---@param value integer 属性值
 function M:设置_整数_属性(key, value)
-    self.phandle:api_set_int_attr(key, value)
+    self.phandle:api_set_int_attr(y3.const.技能整数属性[key] or key, value)
 end
 
 ---设置剩余冷却时间
@@ -391,10 +391,10 @@ function M:get_formula_kv(key)
 end
 
 ---获取实数属性
----@param key string 键值key
+---@param key y3.Const.AbilityFloatAttr | string 键值key
 ---@return number value 值
 function M:get_float_attr(key)
-    return self.phandle:api_get_float_attr(key):float()
+    return self.phandle:api_get_float_attr(y3.const.AbilityFloatAttr[key] or key):float()
 end
 
 ---获取整数属性
@@ -486,7 +486,9 @@ function M.is_cd_reduce_by_key(ability_key)
     return GameAPI.api_get_influenced_by_cd_reduce(ability_key)
 end
 
----获取技能类型实数属性
+--获取技能类型实数属性
+--> 请使用 `y3.object.ability[ability_key].data` 代替
+---@deprecated
 ---@param ability_key py.AbilityKey 技能类型id (物编id)
 ---@param key string 键值key
 ---@return number value 值
@@ -494,7 +496,9 @@ function M.get_float_attr_by_key(ability_key, key)
     return GameAPI.get_ability_conf_float_attr(ability_key, key):float()
 end
 
----获取技能类型整数属性
+--获取技能类型整数属性
+--> 请使用 `y3.object.ability[ability_key].data` 代替
+---@deprecated
 ---@param ability_key py.AbilityKey 技能类型id (物编id)
 ---@param key string 键值key
 ---@return integer value 值
@@ -548,12 +552,30 @@ function M.get_formula_attr_by_key(ability_id, attr_name, level, stack_count, un
         Fix32(unit_hp_cur)):float()
 end
 
----获取技能类型字符串属性
+--获取技能类型字符串属性
+--> 请改用 `y3.object.ability[ability_key].data` 代替
+---@deprecated
 ---@param ability_key py.AbilityKey 技能类型id (物编id)
 ---@param key py.AbilityStrAttr 键值key
 ---@return string str 值
 function M.get_str_attr_by_key(ability_key, key)
     return GameAPI.get_ability_conf_str_attr(ability_key, key)
+end
+
+--根据技能的key获取技能名字
+---@param ability_key py.AbilityKey
+---@return string name 技能名字
+function M.get_name_by_key(ability_key)
+    ---@diagnostic disable-next-line: param-type-mismatch
+    return GameAPI.get_ability_conf_str_attr(ability_key, 'name')
+end
+
+--根据技能的key获取技能描述
+---@param ability_key py.AbilityKey
+---@return string des 描述
+function M.get_description_by_key(ability_key)
+    ---@diagnostic disable-next-line: param-type-mismatch
+    return GameAPI.get_ability_conf_str_attr(ability_key, 'description')
 end
 
 ---设置技能图标
@@ -587,10 +609,26 @@ function M:设置_最大_冷却(value)
     self:设置_实数_属性('cold_down_time', value)
 end
 
+--获取技能最大CD
+---@return number
+function M:获取技能最大CD()
+    return self:get_float_attr("cold_down_time")
+end
+
 ---进入技能准备施法状态
 ---@param player Player 玩家
 function M:进入_技能_准备_施法_状态(player)
     GameAPI.start_skill_pointer(player.handle, self.handle)
+end
+
+--获取技能绑定的物品（技能对象在哪个物品对象上）
+---@return Item?
+function M:获取技能绑定物品()
+    local py_item = self.phandle:api_get_item()
+    if not py_item then
+        return nil
+    end
+    return y3.物品.获取于hd(py_item)
 end
 
 return M

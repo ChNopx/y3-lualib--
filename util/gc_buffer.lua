@@ -28,7 +28,7 @@ function M.startTimer()
     ---@package
     M.queue = {}
     ---@private
-    M.timer = y3.本地计时器.loop(1, function()
+    M.timer = y3.l计时器.loop(1, function()
         for i, buffer in pairs(M.queue) do
             buffer.passedTime = buffer.passedTime + 1
             if buffer.passedTime > buffer.atLeast then

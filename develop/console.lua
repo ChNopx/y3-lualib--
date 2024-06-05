@@ -28,7 +28,7 @@ end
 ---@param message string
 local function print_to_console(message)
     consoleprint(message)
-    y3.develop.helper.requestPrint(message)
+    y3.develop.helper.print(message)
 end
 
 ---@param code string
@@ -360,6 +360,8 @@ y3.游戏:事件('控制台-请求补全', function(trg, data)
     console_tips_match(table.concat(completes, '\x01'))
 end)
 
-consoleprint(M.getHelpInfo())
+y3.游戏:自定义事件('$Y3-初始化', function()
+    consoleprint(M.getHelpInfo())
+end)
 
 return M

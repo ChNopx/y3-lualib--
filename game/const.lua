@@ -96,7 +96,34 @@ M.UnitAttrType = {
     ['基础加成'] = 'ATTR_BASE_RATIO', --百分比
     ['增益'] = 'ATTR_BONUS',
     ['增益加成'] = 'ATTR_BONUS_RATIO', --百分比
-    ['总加成'] = 'ATTR_ALL_RATIO', --百分比
+    ['最终加成'] = 'ATTR_ALL_RATIO', --百分比
+}
+
+---@enum(key) y3.Const.UnitEnumState
+M.UnitEnumState = {
+    ['禁止普攻'] = 2,
+    ['禁止施法'] = 4,
+    ['禁止移动'] = 8,
+    ['禁止转向'] = 16,
+    ['动画定帧'] = 32,
+    ['无法施加运动'] = 64,
+    ['无法被技能指示器锁定'] = 128,
+    ['无法被选中'] = 256,
+    ['隐身'] = 512,
+    ['无视静态碰撞'] = 1024,
+    ['无视动态碰撞'] = 2048,
+    ['不会死亡'] = 4096,
+    ['无敌'] = 8192,
+    ['无法控制'] = 16384,
+    ['无法被攻击'] = 32768,
+    ['AI无视'] = 65536,
+    ['物理伤害免疫'] = 131072,
+    ['魔法伤害免疫'] = 262144,
+    ['负面魔法效果免疫'] = 524288,
+    ['隐藏'] = 1048576,
+    ['无法被筛选器选中'] = 2097152,
+    ['真实伤害免疫'] = 4194304,
+    ['禁止使用道具'] = 8388608,
 }
 
 ---@enum (key) y3.Const.PlayerAttr
@@ -864,7 +891,7 @@ M.控件属性 = {
     ['当前值'] = 'current_value_bind',
 }
 
----@enum (key) y3.Const.单位状态
+---@enum(key) y3.Const.单位状态
 M.单位状态 = {
     ['禁止普攻'] = 2,
     ['禁止施法'] = 4,
@@ -905,6 +932,21 @@ M.技能字符串属性 = {
     ['描述'] = 'description',
 }
 
+---@enum(key) y3.Const.AbilityFloatAttr
+M.AbilityFloatAttr = {
+    ['技能消耗'] = 'ability_cost',
+    ['生命值消耗'] = 'ability_hp_cost',
+    ['冷却时间'] = 'cold_down_time',
+    ['技能伤害值'] = 'ability_damage',
+    ['释放范围'] = 'ability_cast_range',
+    ['施法开始'] = 'ability_cast_point',
+    ['施法完成'] = 'ability_bw_point',
+    ['施法出手'] = 'ability_channel_time',
+    ['施法引导'] = 'ability_prepare_time',
+    ['技能影响范围'] = 'ability_damage_range',
+    ['充能时间'] = 'ability_stack_cd',
+}
+
 ---@enum(key) y3.Const.CollisionLayers
 M.CollisionLayers = {
     ['地面'] = 1 << 5,
@@ -918,23 +960,23 @@ M.模型类型 = {}
 
 ---@alias y3.Const.动画名称 '攻击'|'技能'|'受击'|string
 
----@enum(key) y3.Const.unitTypes
-M.unitTypes = {}
+---@enum(key) y3.Const.unitKeys
+M.unitKeys = {}
 
----@enum(key) y3.Const.abilityType
-M.abilityType = {}
-
-
----@enum(key) y3.Const.itemType
-M.itemType = {}
+---@enum(key) y3.Const.abilityKeys
+M.abilityKeys = {}
 
 
----@enum(key) y3.Const.projectileType
-M.projectileType = {}
+---@enum(key) y3.Const.itemKeys
+M.itemKeys = {}
 
 
----@enum(key) y3.Const.buffType
-M.buffType = {}
+---@enum(key) y3.Const.projectileKeys
+M.projectileKeys = {}
+
+
+---@enum(key) y3.Const.buffKeys
+M.buffKeys = {}
 
 ---@enum(key) y3.Const.SceneUI
 M.SceneUI = {}

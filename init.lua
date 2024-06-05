@@ -6,6 +6,8 @@ end)
 ---@class Y3
 y3         = {}
 
+y3.version = 240604
+
 y3.proxy   = require 'y3.tools.proxy'
 y3.class   = require 'y3.tools.class'
 y3.util    = require 'y3.tools.utility'
@@ -94,7 +96,7 @@ y3.元件 = require 'y3.object.scene_object.ui_prefab'
 y3.形状 = require 'y3.object.scene_object.shape'
 
 y3.物编 = require 'y3.util.object'
-y3.本地计时器 = require 'y3.util.local_timer'
+y3.l计时器 = require 'y3.util.local_timer'
 y3.ctimer = require 'y3.util.client_timer'
 y3.存档 = require 'y3.util.save_data'
 y3.dump = require 'y3.util.dump'
@@ -110,9 +112,9 @@ pcall(function()
     require 'y3-helper.meta'
 end)
 
-y3.develop = {}
+y3.develop         = {}
 y3.develop.command = include 'y3.develop.command'
-y3.develop.arg = require 'y3.develop.arg'
+y3.develop.arg     = require 'y3.develop.arg'
 y3.develop.console = include 'y3.develop.console'
 y3.develop.helper  = require 'y3.develop.helper'
 
@@ -126,3 +128,7 @@ end)
 GlobalAPI.api_stop_luagc_control()
 collectgarbage 'restart'
 collectgarbage 'generational'
+
+log.info('LuaLib版本：', y3.version)
+
+y3.游戏:发起自定义事件('$Y3-初始化')

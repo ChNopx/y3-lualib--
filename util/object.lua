@@ -218,6 +218,48 @@ M.ability = y3.util.defaultTable(function(key)
     return New 'EditorObject.Ability' (key)
 end)
 
+---@class EditorObject.Projectile: EditorObject.DataModule
+---@field key py.ProjectileKey
+---@field on_create? fun(projectile: Projectile) # 投射物创建时执行
+---@field on_remove? fun(projectile: Projectile) # 投射物销毁时执行
+--投射物的物编数据，你可以从里面读取或修改任意物编（部分字段无法修改）
+--> 警告：请确保数据类型正确，否则可能导致崩溃
+--> 警告：如果创建过此投射物再修改数据，行为是未定义的
+---@field data Object.Projectile
+local Projectile = Class 'EditorObject.Projectile'
+
+Extends('EditorObject.Projectile', 'EditorObject.DataModule')
+---@class EditorObject.Projectile: EditorObject.Event
+Extends('EditorObject.Projectile', 'EditorObject.Event')
+---@class EditorObject.Projectile: KV
+Extends('EditorObject.Projectile', 'KV')
+Projectile.kv_key = 'projectile_key'
+
+---@private
+Projectile.data_key = 'projectile_all'
+
+Projectile.type = 'projectile'
+
+function Projectile:__init(key)
+    self.key = key
+end
+
+--以此投射物为模板创建新的投射物
+---@return EditorObject.Projectile
+function Projectile:new()
+    local new_key = GameAPI.create_projectile_editor_data(self.key)
+    return M.projectile[new_key]
+end
+
+---@type table<integer, EditorObject.Projectile>
+M.projectile = y3.util.defaultTable(function(key)
+    return New 'EditorObject.Projectile' (key)
+end)
+
+--TODO:临时meta整理
+require 'y3.util.object_temp_meta'
+
+
 --废弃了
 do
     M.lock_count_map = setmetatable({}, {
@@ -428,6 +470,18 @@ do
     subscribe(Ability, 'on_cast_stop', function()
         y3.游戏:事件('施法-停止', function(trg, data)
             M.callMethod('ability', 'on_cast_stop', data.ability:获取物编ID(), nil, data.ability, data.cast)
+        end)
+    end)
+
+    subscribe(Projectile, 'on_create', function()
+        y3.游戏:事件('投射物-创建', function(trg, data)
+            M.callMethod('projectile', 'on_create', data.projectile:获取物编ID(), data.projectile, data.projectile)
+        end)
+    end)
+
+    subscribe(Projectile, 'on_remove', function()
+        y3.游戏:事件('投射物-死亡', function(trg, data)
+            M.callMethod('projectile', 'on_remove', data.projectile:获取物编ID(), data.projectile, data.projectile)
         end)
     end)
 end

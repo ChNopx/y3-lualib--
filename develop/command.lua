@@ -72,7 +72,7 @@ end
 
 ---@param reload Reload
 local function remove_all_local_timers_in_include(reload)
-    for timer in y3.本地计时器.pairs() do
+    for timer in y3.l计时器.pairs() do
         local name = timer:get_include_name()
         if reload:isValidName(name) then
             timer:remove()

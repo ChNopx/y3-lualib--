@@ -37,6 +37,7 @@ end)
 ---@field target_height? number 高度（只在目标是点时生效）
 ---@field source_socket? string 挂接点（只在目标是单位时生效）
 ---@field target_socket? string 挂接点（只在目标是单位时生效）
+---@field follow_scale? boolean 是否跟随缩放（只在起点是单位时生效）
 ---@field immediate? boolean 销毁时，是否有过度
 
 ---@class Beam.CreateDataCn
@@ -74,8 +75,9 @@ function M.创建(参数)
     local time          = data.time or -1
     local source_height = data.source_height or 0
     local target_height = data.target_height or 0
-    local source_socket = data.source_socket or "origin"
-    local target_socket = data.target_socket or "origin"
+    local source_socket = data.source_socket or 'origin'
+    local target_socket = data.target_socket or 'origin'
+    local follow_scale  = data.follow_scale
     local immediate     = data.immediate
     if source.type == "unit" then
         ---@cast source Unit
@@ -89,7 +91,8 @@ function M.创建(参数)
                 Fix32(target_height),
                 time,
                 immediate,
-                immediate == nil
+                immediate == nil,
+                follow_scale
             )
         else
             ---@cast target Unit
@@ -101,7 +104,8 @@ function M.创建(参数)
                 target_socket,
                 time,
                 immediate,
-                immediate == nil
+                immediate == nil,
+                follow_scale
             )
         end
     else

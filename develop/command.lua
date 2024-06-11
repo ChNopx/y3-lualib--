@@ -4,8 +4,14 @@
 ---@class Develop.Command
 local M = Class 'Develop.Command'
 
+---@class Develop.Command.ExecuteParam
+---@field command string # 输入的命令（和输入一致，不保证大小写状态）
+---@field args string[] # 命令参数
+---@field player? Player # 调用命令的玩家
+
 ---@class Develop.Command.InfoParam
----@field onCommand fun(...)
+---@field onCommand? fun(...)
+---@field onCommandEX? fun(param: Develop.Command.ExecuteParam)
 ---@field needSync? boolean
 ---@field priority? number
 ---@field desc? string
@@ -138,6 +144,16 @@ M.register('CT', {
     end
 })
 
+M.register('RR', {
+    desc = '重启游戏',
+    onCommand = function()
+        y3.develop.helper.prepareForRestart {
+            debugger = y3.develop.wait_debugger,
+        }
+        y3.游戏.开启新一轮游戏(true)
+    end
+})
+
 y3.reload.onBeforeReload(function(reload, willReload)
     remove_all_triggers_in_include(reload)
     remove_all_custom_triggers_in_include(reload)
@@ -147,14 +163,22 @@ y3.reload.onBeforeReload(function(reload, willReload)
 end)
 
 y3.游戏:事件('玩家-发送消息', function(trg, data)
+    M.input('.', data.str1, data.触发玩家)
+end)
+
+-- 输入作弊指令
+---@param prefix string
+---@param input string
+---@param player? Player
+function M.input(prefix, input, player)
     if not y3.游戏.是否为调试模式() then
         return
     end
-    if not y3.util.stringStartWith(data.str1, '.') then
+    if not y3.util.stringStartWith(input, prefix) then
         return
     end
 
-    local content = data.str1:sub(2)
+    local content = input:sub(1 + #prefix)
     local strs = {}
     for str in content:gmatch('[^%s]+') do
         strs[#strs + 1] = str
@@ -169,17 +193,35 @@ y3.游戏:事件('玩家-发送消息', function(trg, data)
     if not info then
         return
     end
-    info.onCommand(table.unpack(strs))
-end)
+    M.executeEX {
+        command = command,
+        args = strs,
+        player = player,
+    }
+end
 
 -- 执行作弊指令
 ---@param command string
 ---@param ... any
 function M.execute(command, ...)
-    command = command:lower()
+    M.executeEX {
+        command = command,
+        args = { ... },
+    }
+end
+
+-- 执行作弊指令
+---@param param Develop.Command.ExecuteParam
+function M.executeEX(param)
+    local command = param.command:lower()
     local info = M.commands[command]
-    assert(info, '作弊指令不存在: ' .. command)
-    info.onCommand(...)
+    assert(info, '作弊指令不存在: ' .. param.command)
+    if info.onCommand then
+        info.onCommand(table.unpack(param.args))
+    end
+    if info.onCommandEX then
+        info.onCommandEX(param)
+    end
 end
 
 ---@param command string

@@ -6,7 +6,7 @@ end)
 ---@class Y3
 y3         = {}
 
-y3.version = 240604
+y3.version = 240611
 
 y3.proxy   = require 'y3.tools.proxy'
 y3.class   = require 'y3.tools.class'
@@ -120,6 +120,7 @@ y3.develop.helper  = require 'y3.develop.helper'
 
 pcall(function()
     if LDBG and y3.develop.arg['lua_wait_debugger'] == 'true' then
+        y3.develop.wait_debugger = true
         LDBG:event 'wait'
     end
 end)

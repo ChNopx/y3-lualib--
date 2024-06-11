@@ -77,9 +77,15 @@ function Unit:__init(key)
 end
 
 --以此单位为模板创建新的单位物编
+---@param new_default_key? py.UnitKey
+---@param data? table
 ---@return EditorObject.Unit
-function Unit:new()
-    local new_key = GameAPI.create_unit_editor_data(self.key)
+function Unit:new(new_default_key, data)
+    ---@diagnostic disable: undefined-field
+    local new_key = GameAPI.create_unit_editor_data_lua
+                and GameAPI.create_unit_editor_data_lua(self.key, new_default_key, data)
+                 or GameAPI.create_unit_editor_data(self.key)
+    ---@diagnostic enable: undefined-field
     return M.unit[new_key]
 end
 
@@ -207,9 +213,15 @@ function Ability:__init(key)
 end
 
 --以此技能为模板创建新的技能物编
+---@param new_default_key? py.AbilityKey
+---@param data? table
 ---@return EditorObject.Ability
-function Ability:new()
-    local new_key = GameAPI.create_ability_editor_data(self.key)
+function Ability:new(new_default_key, data)
+    ---@diagnostic disable: undefined-field
+    local new_key = GameAPI.create_ability_editor_data_lua
+                and GameAPI.create_ability_editor_data_lua(self.key, new_default_key, data)
+                 or GameAPI.create_ability_editor_data(self.key)
+    ---@diagnostic enable: undefined-field
     return M.ability[new_key]
 end
 
@@ -256,12 +268,9 @@ M.projectile = y3.util.defaultTable(function(key)
     return New 'EditorObject.Projectile' (key)
 end)
 
---TODO:临时meta整理
-require 'y3.util.object_temp_meta'
-
-
 --废弃了
 do
+    ---@package
     M.lock_count_map = setmetatable({}, {
         __mode = 'k',
         __index = function(t, k)
@@ -269,6 +278,7 @@ do
             return 0
         end,
     })
+    ---@package
     M.call_stack_map = setmetatable({}, {
         __mode = 'k',
         __index = function(t, k)
@@ -286,6 +296,7 @@ do
         end
     end
 
+    ---@package
     ---@param otype string
     ---@param mname string
     ---@param key any

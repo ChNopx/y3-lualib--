@@ -208,3 +208,9 @@ os = {}
 
 ---@return number
 function os.clock_banned() end
+
+---@class py.Dict
+---@field [any] any
+
+---@param message string
+function upload_traceback(message) end

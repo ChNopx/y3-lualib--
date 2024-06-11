@@ -22,8 +22,29 @@ function M:在区域内(pos, shape)
     return self
 end
 
+-- 形状 - 在圆形区域内
+---@param cent Point | Unit | Item
+---@param radius number
+---@return self
+function M:in_range(cent, radius)
+    if cent.type == 'unit' then
+        ---@cast cent Unit
+        self._pos = cent:get_point()
+    elseif cent.type == 'item' then
+        ---@cast cent Item
+        self._pos = cent:get_point()
+    else
+        ---@cast cent Point
+        ---@private
+        self._pos = cent
+    end
+    ---@private
+    self._shape = y3.shape.create_circular_shape(radius)
+    return self
+end
+
 -- 条件 - 属于某个玩家
----@param p Player
+---@param p Player?
 ---@return self
 function M:属于玩家(p)
     ---@private
@@ -68,7 +89,7 @@ function M:拥有标签(tag)
 end
 
 -- 条件 - 不拥有特定标签
----@param tag 单位.标签
+---@param tag 单位.标签?
 ---@return self
 function M:排除标签(tag)
     ---@private
@@ -86,20 +107,20 @@ function M:排除特定单位(u)
 end
 
 -- 条件 - 拥有某个特定的状态
----@param state integer
+---@param state integer | y3.Const.UnitEnumState
 ---@return self
 function M:拥有状态(state)
     ---@private
-    self._in_state = state
+    self._in_state = state | (y3.const.UnitEnumState[state] or state)
     return self
 end
 
 -- 条件 - 不拥有某个特定的状态
----@param state integer
+---@param state integer | y3.Const.UnitEnumState
 ---@return self
 function M:排除状态(state)
     ---@private
-    self._not_in_state = state
+    self._not_in_state = state | (y3.const.UnitEnumState[state] or state)
     return self
 end
 
@@ -139,26 +160,25 @@ function M:选取数量(count)
     return self
 end
 
----@alias y3.Const.选择器筛选方式 "由近到远"|"由远到近"|"随机筛选"
-
-local 选择器筛选方式 = {
-    由近到远 = 0,
-    由远到近 = 1,
-    随机筛选 = 2,
+---@enum(key) Selector.SortType
+local sort_type = {
+    ['由近到远'] = 0,
+    ['由远到近'] = 1,
+    ['随机'] = 2,
 }
 
-
----@param 筛选方式 y3.Const.选择器筛选方式
----@return self
-function M:筛选方式(筛选方式)
+-- 排序 - 按照某种方式排序
+---@param st Selector.SortType
+---@return Selector
+function M:筛选方式(st)
     ---@private
-    self.sort_type = 选择器筛选方式[筛选方式]
+    self._sort_type = sort_type[st]
     return self
 end
 
 -- 进行选取
 ---@return UnitGroup
-function M:获取()
+function M:获取单位组()
     local pos = self._pos
     local shape = self._shape
     assert(pos, "必须设置中心点！")
@@ -181,9 +201,21 @@ function M:获取()
         self._not_in_state or 0,
         self._include_dead,
         self._count or -1,
-        self.sort_type or 2
+        self._sort_type
     )
     return New "UnitGroup" (py_unit_group)
+end
+
+-- 进行选取
+---@return Unit[]
+function M:获取单位数组()
+    local ug = self:获取单位组()
+    return ug:到单位数组()
+end
+
+-- 进行遍历
+function M:遍历()
+    return ipairs(self:获取单位数组())
 end
 
 -- 创建选取器

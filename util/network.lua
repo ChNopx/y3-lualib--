@@ -50,7 +50,7 @@ function M:__init(ip, port, options)
         self:update()
     end)
     if self.options.timeout and self.options.timeout > 0 then
-        y3.ctimer.wait(self.options.timeout, function()
+        y3.l计时器.wait(self.options.timeout, function()
             if self.state ~= 'started' then
                 return
             end
@@ -77,7 +77,6 @@ function M:make_error(err)
     self:remove()
 end
 
----@private
 function M:update()
     if self.state == 'error' or self.state == 'dead' then
         self:remove()

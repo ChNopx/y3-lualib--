@@ -64,6 +64,10 @@ y3.py_converter.register_py_to_lua("py.Point", M.从handle获取)
 y3.py_converter.register_lua_to_py("py.Point", function(lua_value)
     return lua_value.handle
 end)
+y3.py_converter.register_py_to_lua('py.Vector3', M.从handle获取)
+y3.py_converter.register_lua_to_py('py.Vector3', function(lua_value)
+    return lua_value.handle
+end)
 
 ---点的x坐标
 ---@return number
@@ -153,6 +157,13 @@ function M:获取与点的距离(other)
     -- TODO 见问题2
     ---@diagnostic disable-next-line: param-type-mismatch
     return GameAPI.get_points_dis(self.handle, other.handle):float()
+end
+
+--获取圆形范围内的随机点
+function M:get_random_point(radius)
+    local p = GameAPI.get_random_point_in_circular(self.handle, Fix32(radius))
+    ---@diagnostic disable-next-line: param-type-mismatch
+    return M.从handle获取(p)
 end
 
 return M

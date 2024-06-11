@@ -314,6 +314,16 @@ function M:设置模型控件模型(modelid)
     return self
 end
 
+--设置UI模型控件的单位
+---@param model_unit Unit 单位
+---@param clone_effect? boolean # 继承特效
+---@param clone_attach? boolean # 继承挂接模型
+---@param clone_material? boolean # 继承材质变化
+function M:设置模型控件单位(model_unit, clone_effect, clone_attach, clone_material)
+    GameAPI.set_ui_model_unit(self.player.handle, self.handle, model_unit.handle, clone_effect, clone_attach,
+        clone_material)
+end
+
 --改变小地图图片
 ---@param player Player 玩家
 ---@param img py.Texture 图片id
@@ -402,8 +412,17 @@ end
 ---@param b number 蓝色
 ---@param a number 透明度
 ---@return self
-function M:设置_文本颜色(r, g, b, a)
+function M:设置_文本颜色_RGB(r, g, b, a)
     GameAPI.set_ui_comp_font_color(self.player.handle, self.handle, r, g, b, a)
+    return self
+end
+
+--设置文本颜色(HEX)
+---@param color string # hex
+---@param a number 透明度
+---@return self
+function M:设置_文本颜色_HEX(color, a)
+    GameAPI.set_ui_comp_font_color_hex(self.player.handle, self.handle, color, a)
     return self
 end
 

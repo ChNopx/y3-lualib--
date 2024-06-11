@@ -584,6 +584,7 @@ M.config["技能-建造完成"] = {
 ---@alias EventParam.单位-普攻命中 EventParam.ET_ATTACK_HIT_TARGET
 M.config["单位-普攻命中"] = {
     __class__ = "EventConfigBuilder",
+    _deprecated = true,
     desc = "",
     extraArgs = {
     },
@@ -597,6 +598,7 @@ M.config["单位-普攻命中"] = {
 ---@alias EventParam.单位-普攻造成伤害 EventParam.ET_ATTACK_HURT
 M.config["单位-普攻造成伤害"] = {
     __class__ = "EventConfigBuilder",
+    _deprecated = true,
     desc = "",
     extraArgs = {
     },
@@ -1380,6 +1382,18 @@ M.config["未知-ET_UNIT_CREATE_SLAVE"] = {
     },
     key = "ET_UNIT_CREATE_SLAVE",
     name = "未知-ET_UNIT_CREATE_SLAVE",
+    params = {
+    },
+}
+
+---@alias EventParam.本地-骨骼碰撞 EventParam.ET_DETECT_BONE_COLLISON
+M.config["本地-骨骼碰撞"] = {
+    __class__ = "EventConfigBuilder",
+    desc = "骨骼碰撞时触发",
+    extraArgs = {
+    },
+    key = "ET_DETECT_BONE_COLLISON",
+    name = "本地-骨骼碰撞",
     params = {
     },
 }
@@ -3038,6 +3052,19 @@ M.config["本地-选中-物品"] = {
     },
 }
 
+---@alias EventParam.玩家-检测到作弊 EventParam.ET_ATTR_CHEATING_DETECTED
+M.config["玩家-检测到作弊"] = {
+    __class__ = "EventConfigBuilder",
+    desc = "",
+    extraArgs = {
+    },
+    key = "ET_ATTR_CHEATING_DETECTED",
+    name = "玩家-检测到作弊",
+    object = "Player",
+    params = {
+    },
+}
+
 ---@alias EventParam.鼠标-双击物品 EventParam.ET_DOUBLE_CLICK_ITEM
 M.config["鼠标-双击物品"] = {
     __class__ = "EventConfigBuilder",
@@ -3114,6 +3141,25 @@ end\
     },
     key = "ET_START_SKILL_POINTER",
     name = "技能-打开指示器",
+    object = "Ability",
+    params = {
+    },
+}
+
+---@alias EventParam.技能-建造技能释放前 EventParam.ET_BUILD_SKILL_BEFORE_RELEASE
+M.config["技能-建造技能释放前"] = {
+    __class__ = "EventConfigBuilder",
+    desc = "建造技能释放前触发",
+    extraArgs = {
+    },
+    extraObjs = {
+        [1] = {
+            getter = function(self) return self:get_owner() end,
+            luaType = "Unit",
+        },
+    },
+    key = "ET_BUILD_SKILL_BEFORE_RELEASE",
+    name = "技能-建造技能释放前",
     object = "Ability",
     params = {
     },
@@ -3438,6 +3484,32 @@ M.config["未知-ET_UNIT_3D_ACTIVE"] = {
     },
 }
 
+---@alias EventParam.玩家-平台道具变化 EventParam.ET_ROLE_STORE_ITEM_CHANGED
+M.config["玩家-平台道具变化"] = {
+    __class__ = "EventConfigBuilder",
+    desc = "玩家平台道具变化时触发",
+    extraArgs = {
+    },
+    key = "ET_ROLE_STORE_ITEM_CHANGED",
+    name = "玩家-平台道具变化",
+    object = "Player",
+    params = {
+    },
+}
+
+---@alias EventParam.玩家-平台商城窗口变化 EventParam.ET_ROLE_STORE_PAGE_STATE_CHANGED
+M.config["玩家-平台商城窗口变化"] = {
+    __class__ = "EventConfigBuilder",
+    desc = "平台商城窗口变化事件",
+    extraArgs = {
+    },
+    key = "ET_ROLE_STORE_PAGE_STATE_CHANGED",
+    name = "玩家-平台商城窗口变化",
+    object = "Player",
+    params = {
+    },
+}
+
 ---@alias EventParam.控制台-输入 EventParam.ET_LUA_CONSOLE_COMMAND
 M.config["控制台-输入"] = {
     __class__ = "EventConfigBuilder",
@@ -3556,6 +3628,7 @@ M.config["对话框-点击按钮"] = {
 ---@field 事件 fun(self: self, event: "单位-创建", callback: fun(trg: Trigger, data: EventParam.单位-创建)): Trigger
 ---@field 事件 fun(self: self, event: "单位-进入战斗", callback: fun(trg: Trigger, data: EventParam.单位-进入战斗)): Trigger
 ---@field 事件 fun(self: self, event: "单位-脱离战斗", callback: fun(trg: Trigger, data: EventParam.单位-脱离战斗)): Trigger
+---@field 事件 fun(self: self, event: "本地-骨骼碰撞", callback: fun(trg: Trigger, data: EventParam.本地-骨骼碰撞)): Trigger
 ---@field 事件 fun(self: self, event: "单位-购买物品", callback: fun(trg: Trigger, data: EventParam.单位-购买物品)): Trigger
 ---@field 事件 fun(self: self, event: "单位-购买单位", callback: fun(trg: Trigger, data: EventParam.单位-购买单位)): Trigger
 ---@field 事件 fun(self: self, event: "单位-出售物品", callback: fun(trg: Trigger, data: EventParam.单位-出售物品)): Trigger
@@ -3639,11 +3712,13 @@ M.config["对话框-点击按钮"] = {
 ---@field 事件 fun(self: self, event: "本地-选中-取消", callback: fun(trg: Trigger, data: EventParam.本地-选中-取消)): Trigger
 ---@field 事件 fun(self: self, event: "选中-物品", callback: fun(trg: Trigger, data: EventParam.选中-物品)): Trigger
 ---@field 事件 fun(self: self, event: "本地-选中-物品", callback: fun(trg: Trigger, data: EventParam.本地-选中-物品)): Trigger
+---@field 事件 fun(self: self, event: "玩家-检测到作弊", callback: fun(trg: Trigger, data: EventParam.玩家-检测到作弊)): Trigger
 ---@field 事件 fun(self: self, event: "鼠标-双击物品", callback: fun(trg: Trigger, data: EventParam.鼠标-双击物品)): Trigger
 ---@field 事件 fun(self: self, event: "鼠标-双击可破坏物", callback: fun(trg: Trigger, data: EventParam.鼠标-双击可破坏物)): Trigger
 ---@field 事件 fun(self: self, event: "选中-单位组", callback: fun(trg: Trigger, data: EventParam.选中-单位组)): Trigger
 ---@field 事件 fun(self: self, event: "本地-选中-单位组", callback: fun(trg: Trigger, data: EventParam.本地-选中-单位组)): Trigger
 ---@field 事件 fun(self: self, event: "技能-打开指示器", callback: fun(trg: Trigger, data: EventParam.技能-打开指示器)): Trigger
+---@field 事件 fun(self: self, event: "技能-建造技能释放前", callback: fun(trg: Trigger, data: EventParam.技能-建造技能释放前)): Trigger
 ---@field 事件 fun(self: self, event: "技能-关闭指示器", callback: fun(trg: Trigger, data: EventParam.技能-关闭指示器)): Trigger
 ---@field 事件 fun(self: self, event: "物品-获得", callback: fun(trg: Trigger, data: EventParam.物品-获得)): Trigger
 ---@field 事件 fun(self: self, event: "物品-进入物品栏", callback: fun(trg: Trigger, data: EventParam.物品-进入物品栏)): Trigger
@@ -3666,6 +3741,8 @@ M.config["对话框-点击按钮"] = {
 ---@field 事件 fun(self: self, event: "玩家-发送消息", callback: fun(trg: Trigger, data: EventParam.玩家-发送消息)): Trigger
 ---@field 事件 fun(self: self, event: "游戏-消息", event_id: integer, callback: fun(trg: Trigger, data: EventParam.游戏-消息)): Trigger
 ---@field 事件 fun(self: self, event: "玩家-语音发言", callback: fun(trg: Trigger, data: EventParam.玩家-语音发言)): Trigger
+---@field 事件 fun(self: self, event: "玩家-平台道具变化", callback: fun(trg: Trigger, data: EventParam.玩家-平台道具变化)): Trigger
+---@field 事件 fun(self: self, event: "玩家-平台商城窗口变化", callback: fun(trg: Trigger, data: EventParam.玩家-平台商城窗口变化)): Trigger
 ---@field 事件 fun(self: self, event: "控制台-输入", callback: fun(trg: Trigger, data: EventParam.控制台-输入)): Trigger
 ---@field 事件 fun(self: self, event: "控制台-请求补全", callback: fun(trg: Trigger, data: EventParam.控制台-请求补全)): Trigger
 ---@field 事件 fun(self: self, event: "对话框-点击", callback: fun(trg: Trigger, data: EventParam.对话框-点击)): Trigger
@@ -3698,6 +3775,7 @@ M.config["对话框-点击按钮"] = {
 ---@field 事件 fun(self: Ability, event: "技能-启用", callback: fun(trg: Trigger, data: EventParam.技能-启用)): Trigger
 ---@field 事件 fun(self: Ability, event: "技能-冷却结束", callback: fun(trg: Trigger, data: EventParam.技能-冷却结束)): Trigger
 ---@field 事件 fun(self: Ability, event: "技能-打开指示器", callback: fun(trg: Trigger, data: EventParam.技能-打开指示器)): Trigger
+---@field 事件 fun(self: Ability, event: "技能-建造技能释放前", callback: fun(trg: Trigger, data: EventParam.技能-建造技能释放前)): Trigger
 ---@field 事件 fun(self: Ability, event: "技能-关闭指示器", callback: fun(trg: Trigger, data: EventParam.技能-关闭指示器)): Trigger
 
 ---@class Area
@@ -3780,6 +3858,7 @@ M.config["对话框-点击按钮"] = {
 ---@field 事件 fun(self: Player, event: "本地-选中-取消", callback: fun(trg: Trigger, data: EventParam.本地-选中-取消)): Trigger
 ---@field 事件 fun(self: Player, event: "选中-物品", callback: fun(trg: Trigger, data: EventParam.选中-物品)): Trigger
 ---@field 事件 fun(self: Player, event: "本地-选中-物品", callback: fun(trg: Trigger, data: EventParam.本地-选中-物品)): Trigger
+---@field 事件 fun(self: Player, event: "玩家-检测到作弊", callback: fun(trg: Trigger, data: EventParam.玩家-检测到作弊)): Trigger
 ---@field 事件 fun(self: Player, event: "鼠标-双击物品", callback: fun(trg: Trigger, data: EventParam.鼠标-双击物品)): Trigger
 ---@field 事件 fun(self: Player, event: "鼠标-双击可破坏物", callback: fun(trg: Trigger, data: EventParam.鼠标-双击可破坏物)): Trigger
 ---@field 事件 fun(self: Player, event: "选中-单位组", callback: fun(trg: Trigger, data: EventParam.选中-单位组)): Trigger
@@ -3788,6 +3867,8 @@ M.config["对话框-点击按钮"] = {
 ---@field 事件 fun(self: Player, event: "本地-鼠标-悬停", callback: fun(trg: Trigger, data: EventParam.本地-鼠标-悬停)): Trigger
 ---@field 事件 fun(self: Player, event: "玩家-发送消息", callback: fun(trg: Trigger, data: EventParam.玩家-发送消息)): Trigger
 ---@field 事件 fun(self: Player, event: "玩家-语音发言", callback: fun(trg: Trigger, data: EventParam.玩家-语音发言)): Trigger
+---@field 事件 fun(self: Player, event: "玩家-平台道具变化", callback: fun(trg: Trigger, data: EventParam.玩家-平台道具变化)): Trigger
+---@field 事件 fun(self: Player, event: "玩家-平台商城窗口变化", callback: fun(trg: Trigger, data: EventParam.玩家-平台商城窗口变化)): Trigger
 
 ---@class Projectile
 ---@field 事件 fun(self: Projectile, event: "投射物-创建", callback: fun(trg: Trigger, data: EventParam.投射物-创建)): Trigger
@@ -3880,6 +3961,7 @@ M.config["对话框-点击按钮"] = {
 ---@field 事件 fun(self: Unit, event: "效果-即将获得", callback: fun(trg: Trigger, data: EventParam.效果-即将获得)): Trigger
 ---@field 事件 fun(self: Unit, event: "效果-覆盖", callback: fun(trg: Trigger, data: EventParam.效果-覆盖)): Trigger
 ---@field 事件 fun(self: Unit, event: "技能-打开指示器", callback: fun(trg: Trigger, data: EventParam.技能-打开指示器)): Trigger
+---@field 事件 fun(self: Unit, event: "技能-建造技能释放前", callback: fun(trg: Trigger, data: EventParam.技能-建造技能释放前)): Trigger
 ---@field 事件 fun(self: Unit, event: "技能-关闭指示器", callback: fun(trg: Trigger, data: EventParam.技能-关闭指示器)): Trigger
 ---@field 事件 fun(self: Unit, event: "单位-寻路开始", callback: fun(trg: Trigger, data: EventParam.单位-寻路开始)): Trigger
 ---@field 事件 fun(self: Unit, event: "单位-寻路结束", callback: fun(trg: Trigger, data: EventParam.单位-寻路结束)): Trigger
@@ -3937,6 +4019,10 @@ M.config["对话框-点击按钮"] = {
 ---@field 事件 fun(self: EditorObject.Item, event: "物品-出售", callback: fun(trg: Trigger, data: EventParam.物品-出售)): Trigger
 ---@field 事件 fun(self: EditorObject.Item, event: "物品-死亡", callback: fun(trg: Trigger, data: EventParam.物品-死亡)): Trigger
 ---@field 事件 fun(self: EditorObject.Item, event: "物品-采集创建", callback: fun(trg: Trigger, data: EventParam.物品-采集创建)): Trigger
+
+---@class EditorObject.Projectile
+---@field 事件 fun(self: EditorObject.Projectile, event: "投射物-创建", callback: fun(trg: Trigger, data: EventParam.投射物-创建)): Trigger
+---@field 事件 fun(self: EditorObject.Projectile, event: "投射物-死亡", callback: fun(trg: Trigger, data: EventParam.投射物-死亡)): Trigger
 
 ---@class EditorObject.Unit
 ---@field 事件 fun(self: EditorObject.Unit, event: "单位-研发科技", callback: fun(trg: Trigger, data: EventParam.单位-研发科技)): Trigger

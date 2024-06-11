@@ -166,17 +166,23 @@ function M.getIncludeName(func)
     end
     local info = debug.getinfo(func, 'S')
     local source = info.source
-    -- if source:sub(1, 1) ~= "@" then
-    --     return nil
-    -- end
-    -- local path = source:sub(2)
-    -- local modName = M.modNameMap[path]
-    local modName = source:match('/script/(.*)%.') --[[@as string]]
-    modName = modName:gsub('\\', '.')
-    -- if not M.includedNameMap[modName] then
-    --     return nil
-    -- end
+    if source:sub(1, 1) ~= '@' then
+        return nil
+    end
+    local path = source:sub(2)
+    local modName = M.modNameMap[path]
+    if not M.includedNameMap[modName] then
+        return nil
+    end
     return modName
+    -- if not debug or not debug.getinfo then
+    --     return nil
+    -- end
+    -- local info = debug.getinfo(func, 'S')
+    -- local source = info.source
+    -- local modName = source:match('/script/(.*)%.') --[[@as string]]
+    -- modName = modName:gsub('\\', '.')
+    -- return modName
 end
 
 ---@return string?
@@ -224,15 +230,15 @@ end
 function M.newLife(callback)
     local trashList = {}
     local function trash(obj)
-        trashList[#trashList+1] = obj
+        trashList[#trashList + 1] = obj
     end
-    M.onBeforeReload(function ()
+    M.onBeforeReload(function()
         for _, obj in ipairs(trashList) do
             Delete(obj)
         end
         trashList = {}
     end)
-    M.onAfterReload(function ()
+    M.onAfterReload(function()
         callback(trash)
     end)
     return callback(trash)

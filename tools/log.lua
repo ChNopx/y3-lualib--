@@ -167,7 +167,11 @@ end
 function M:build(level, ...)
     local t = table.pack(...)
     for i = 1, t.n do
-        t[i] = tostring(t[i])
+        if type(t[i]) == "table" and t[i]["__class__"] == nil then
+            t[i] = y3.util.dump(t[i], { y3tostring = true })
+        else
+            t[i] = tostring(t[i])
+        end
     end
     local message = table.concat(t, '\t', 1, t.n)
 

@@ -23,7 +23,7 @@ function M:__init(py_player_group)
 end
 
 function M:__len()
-    return self:count()
+    return self:获取玩家数量()
 end
 
 ---@param py_role_group py.RoleGroup

@@ -52,7 +52,7 @@ local function print_to_game(message)
         table.remove(log_cache, 1)
     end
     ---@diagnostic disable-next-line: deprecated
-    y3.控件.display_message(y3.玩家.获取本地玩家(), remove_bad_utf8(table.concat(log_cache, '\n')), 60)
+    y3.控件.发送系统消息提示(y3.玩家.获取本地玩家(), remove_bad_utf8(table.concat(log_cache, '\n')), 60)
 end
 
 ---@diagnostic disable-next-line: lowercase-global

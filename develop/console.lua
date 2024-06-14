@@ -69,7 +69,7 @@ function M.input(input)
     end
 
     if input:sub(1, 1) == '.' then
-        y3.player.with_local(function(local_player)
+        y3.玩家.执行本地代码(function(local_player)
             y3.sync.send('$console', {
                 input = input,
                 player = local_player,

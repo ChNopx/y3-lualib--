@@ -141,7 +141,7 @@ function M.循环执行(timeout, on_timer, desc, immediate)
     timer = New "Timer" (py_timer, on_timer, "second", desc)
     if immediate then
         count = count + 1
-        timer:execute(count)
+        timer:立即执行(count)
     end
     return timer
 end

@@ -29,17 +29,17 @@ end
 function M:in_range(cent, radius)
     if cent.type == 'unit' then
         ---@cast cent Unit
-        self._pos = cent:get_point()
+        self._pos = cent:获取当前所在点()
     elseif cent.type == 'item' then
         ---@cast cent Item
-        self._pos = cent:get_point()
+        self._pos = cent:获取所在点()
     else
         ---@cast cent Point
         ---@private
         self._pos = cent
     end
     ---@private
-    self._shape = y3.shape.create_circular_shape(radius)
+    self._shape = y3.形状.创建圆形(radius)
     return self
 end
 

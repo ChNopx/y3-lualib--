@@ -459,7 +459,7 @@ end
 ---@param msg string 消息
 ---@param time number 持续时间
 ---@param isSupportLanguage? boolean 是否支持语言环境
-function M.display_message(player, msg, time, isSupportLanguage)
+function M.发送系统消息提示(player, msg, time, isSupportLanguage)
     GameAPI.show_tips_text(player.handle, msg, Fix32(time), isSupportLanguage)
 end
 

@@ -986,8 +986,8 @@ M.CollisionLayers = {
     ['水面'] = 1 << 7,
     ['物件'] = 1 << 8,
 }
----@enum (key) y3.Const.模型类型
-M.模型类型 = {}
+---@enum (key) y3.Const.ModelKey
+M.modelKey = {}
 
 
 ---@alias y3.Const.动画名称 '攻击'|'技能'|'受击'|string

@@ -389,13 +389,13 @@ function M.wrap_round_args(args)
         if target.type == 'unit' then
             ---@cast target Unit
             builder.is_to_unit = true
-            builder.target_unit_id = target:get_id()
+            builder.target_unit_id = target:获取_唯一id()
         else
             ---@cast target Point
             builder.is_to_unit = false
             -- TODO 见问题2
             ---@diagnostic disable-next-line: param-type-mismatch
-            local x, y = target:get_x(), target:get_y()
+            local x, y = target:获取x(), target:获取y()
             builder.target_pos = Fix32Vec2(x / 100.0, y / 100.0)
         end
         builder.circle_radius        = Fix32(args.radius or 0.0)
@@ -415,13 +415,13 @@ function M.wrap_round_args(args)
         if target.type == 'unit' then
             ---@cast target Unit
             builder.set_is_to_unit(true)
-            builder.set_target_unit_id(target:get_id())
+            builder.set_target_unit_id(target:获取_唯一id())
         else
             ---@cast target Point
             builder.set_is_to_unit(false)
             -- TODO 见问题2
             ---@diagnostic disable-next-line: param-type-mismatch
-            local x, y = target:get_x(), target:get_y()
+            local x, y = target:获取x(), target:获取y()
             builder.set_target_pos(Fix32Vec2(x / 100.0, y / 100.0))
         end
         builder.set_circle_radius(Fix32(args.radius or 0.0))

@@ -130,20 +130,20 @@ end
 
 ---给区域添加标签
 ---@param tag string tag
-function M:提交标签(tag)
+function M:添加_标签(tag)
     GameAPI.add_area_tag(self.handle, tag)
 end
 
 ---给区域移除标签
 ---@param tag string tag
-function M:移除标签(tag)
+function M:移除_标签(tag)
     GameAPI.remove_area_tag(self.handle, tag)
 end
 
 ---区域是否有tag
 ---@param tag string tag
 ---@return boolean 区域是否有tag
-function M:是否存在标签(tag)
+function M:判断_是否具有标签(tag)
     if M.SHAPE == M.SHAPE.CIRCLE then
         return GameAPI.if_cir_area_has_tag(self.handle, tag)
     elseif M.SHAPE == M.SHAPE.RECTANGLE then
@@ -331,7 +331,7 @@ end
 -- 点是否在区域内
 ---@param point Point 点
 ---@return boolean
-function M:是否包含点(point)
+function M:判断_是否包含点(point)
     return GameAPI.judge_point_in_area(point.handle, self.handle)
 end
 

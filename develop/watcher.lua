@@ -73,7 +73,7 @@ local TRGI = Class 'Develop.TriggerWatcherInstance'
 function TRGI:__init()
     local triggerModule   = require 'y3.util.trigger'
     --开始时间（毫秒）
-    self.startTime        = y3.ltimer.clock()
+    self.startTime        = y3.l计时器.clock()
     self.originalExecute  = triggerModule.execute
 
     local index           = 0
@@ -85,7 +85,7 @@ function TRGI:__init()
     self.runnedCost       = runnedCost
     self.runnedCallback   = runnedCallback
 
-    local ltimerClock     = y3.ltimer.clock
+    local ltimerClock     = y3.l计时器.clock
     local osClock         = os.clock_banned
 
     ---@diagnostic disable-next-line: duplicate-set-field
@@ -102,7 +102,7 @@ end
 
 function TRGI:__del()
     --结束时间（毫秒）
-    self.endTime = y3.ltimer.clock()
+    self.endTime = y3.l计时器.clock()
     local triggerModule = require 'y3.util.trigger'
     triggerModule.execute = self.originalExecute
 end

@@ -277,7 +277,7 @@ function M:get_common_attack()
     local py_ability = self.handle:api_get_common_atk_ability()
 
     if py_ability then
-        return y3.ability.get_by_handle(py_ability)
+        return y3.技能.获取于HD(py_ability)
     end
 end
 
@@ -414,6 +414,7 @@ end
 function M:移除状态(状态)
     self.phandle:api_remove_state(y3.const.单位状态[状态])
 end
+
 ---添加多个状态
 ---@param state_enum integer 状态
 function M:add_multi_state(state_enum)
@@ -425,7 +426,6 @@ end
 function M:remove_multi_state(state_enum)
     self.handle:api_remove_multi_state(state_enum)
 end
-
 
 ---添加状态
 ---@param state_enum y3.Const.单位状态
@@ -1382,7 +1382,7 @@ function M:获取碰撞半径()
 end
 
 ---comment 设置单位碰撞半径
----@param radius number 
+---@param radius number
 function M:set_collision_radius(radius)
     ---@diagnostic disable-next-line: undefined-field
     self.handle:api_set_unit_collision_radius(radius)

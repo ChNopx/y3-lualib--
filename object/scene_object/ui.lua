@@ -306,7 +306,7 @@ function M.设置默认游戏界面开关(player, visible)
 end
 
 --设置模型控件的模型
----@param modelid py.ModelKey 模型id
+---@param modelid py.ModelKey|integer 模型id
 ---@return self
 function M:设置模型控件模型(modelid)
     ---@diagnostic disable-next-line: param-type-mismatch

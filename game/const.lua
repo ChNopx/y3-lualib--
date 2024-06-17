@@ -10,27 +10,27 @@ M.EaseType = {
 }
 
 M.IterKey = {
-    ['ITER_INT'] = '__iter_int',
-    ['ITER_INDEX'] = '__iter_index',
+    ['ITER_INT'] = "__iter_int",
+    ['ITER_INDEX'] = "__iter_index",
     ['ITER_UNIT'] = 'pick_unit_id',
     ['ITER_ITEM'] = 'item_iter',
     ['ITER_ITEM_NO'] = '__iter_item_no',
-    ['ITER_ABILITY'] = 'ability_iter',
-    ['ITER_MODIFIER'] = 'modifier_iter',
-    ['ITER_PROJECTILE'] = 'pick_projectile_id',
-    ['ITER_TECH'] = '__tech_iter',
-    ['ITER_DEST'] = 'destructible_iter',
-    ['ITER_SHOP_ITEM'] = 'shop_item_iter',
-    ['ITER_UI_COMP'] = 'ui_comp_iter',
-    ['ITER_RECT_AREA'] = 'rect_area_iter',
-    ['ITER_CIRCLE_AREA'] = 'circle_area_iter',
-    ['ITER_POLY_AREA'] = 'polygon_area_iter',
-    ['ITER_POLY_AREA_POINT'] = 'poly_area_point_iter',
-    ['ITER_ROAD'] = 'iter_road',
-    ['ITER_RANDOM_POOL'] = 'random_pool_iter',
-    ['ITER_ROLE'] = 'role_iter',
-    ['ITER_ROLE_RES'] = '__role_res_key',
-    ['ITER_TABLE_ITEM'] = '__ITER_TABLE_ITEM',
+    ['ITER_ABILITY'] = "ability_iter",
+    ['ITER_MODIFIER'] = "modifier_iter",
+    ['ITER_PROJECTILE'] = "pick_projectile_id",
+    ['ITER_TECH'] = "__tech_iter",
+    ['ITER_DEST'] = "destructible_iter",
+    ['ITER_SHOP_ITEM'] = "shop_item_iter",
+    ['ITER_UI_COMP'] = "ui_comp_iter",
+    ['ITER_RECT_AREA'] = "rect_area_iter",
+    ['ITER_CIRCLE_AREA'] = "circle_area_iter",
+    ['ITER_POLY_AREA'] = "polygon_area_iter",
+    ['ITER_POLY_AREA_POINT'] = "poly_area_point_iter",
+    ['ITER_ROAD'] = "iter_road",
+    ['ITER_RANDOM_POOL'] = "random_pool_iter",
+    ['ITER_ROLE'] = "role_iter",
+    ['ITER_ROLE_RES'] = "__role_res_key",
+    ['ITER_TABLE_ITEM'] = "__ITER_TABLE_ITEM",
 }
 
 M.UnitCategory = {
@@ -44,6 +44,7 @@ M.PatrolType = {
     BACK_AND_FORTH = 1,
     LOOP = 2,
 }
+
 ---@enum (key) y3.Const.单位存活状态
 M.单位存活状态 = {
     存活 = 'Alive',
@@ -51,7 +52,7 @@ M.单位存活状态 = {
     消散 = 'Dissolve',
 }
 
----@enum (key) y3.Const.UnitAttr
+---@enum(key) y3.Const.UnitAttr
 M.UnitAttr = {
     ['生命'] = 'hp_cur',
     ['魔法'] = 'mp_cur',
@@ -123,14 +124,14 @@ M.UnitKeyFloatAttr = {
 
 ---@enum(key) y3.Const.UnitAttrType
 M.UnitAttrType = {
-    ['基础'] = 'ATTR_BASE',
-    ['基础加成'] = 'ATTR_BASE_RATIO', --百分比
-    ['增益'] = 'ATTR_BONUS',
-    ['增益加成'] = 'ATTR_BONUS_RATIO', --百分比
-    ['最终加成'] = 'ATTR_ALL_RATIO', --百分比
+    ["基础"] = "ATTR_BASE",
+    ["基础加成"] = "ATTR_BASE_RATIO", --百分比
+    ["增益"] = "ATTR_BONUS",
+    ["增益加成"] = "ATTR_BONUS_RATIO", --百分比
+    ["最终加成"] = "ATTR_ALL_RATIO", --百分比
 }
 
----@enum(key) y3.Const.UnitEnumState
+---@enum(key) y3.Const.单位状态
 M.UnitEnumState = {
     ["禁止普攻"] = 1 << 1,
     ["禁止施法"] = 1 << 2,
@@ -157,7 +158,7 @@ M.UnitEnumState = {
     ["禁止使用道具"] = 1 << 23,
 }
 
----@enum (key) y3.Const.PlayerAttr
+---@enum(key) y3.Const.PlayerAttr
 M.PlayerAttr = {}
 
 M.ModifyType = {
@@ -191,10 +192,18 @@ M.AbilityCategory = {
     PASSIVE_ABILITY = 0,
 }
 
-
+---@alias y3.Const.AbilityTypeAlias
+---| '隐藏'
+---| '普通'
+---| '命令'
+---| '英雄'
 
 ---@enum (key) y3.Const.技能分类
-M.技能分类 = {
+M.AbilityType = {
+    HIDE = 0,
+    NORMAL = 1,
+    COMMON = 2,
+    HERO = 3,
     ['隐藏'] = 0,
     ['普通'] = 1,
     ['命令'] = 2,
@@ -230,6 +239,7 @@ M.AbilityIndex = {
 
 ---@enum y3.Const.RoleType
 M.RoleType = {
+    NONE = 0,
     USER = 1,
     COMPUTER = 2,
     AI_EASY = 5,
@@ -237,13 +247,13 @@ M.RoleType = {
     OBSERVER = 10,
 }
 
----@enum y3.Const.玩家状态
-M.玩家状态 = {
-    游戏中 = 1,
-    不存在 = 2,
+---@enum y3.Const.玩家游戏状态
+M.玩家游戏状态 = {
+    ['游戏中'] = 1,
+    ['不存在'] = 2,
     ['LOST'] = 3,
     ['LEFT'] = 4,
-    观战 = 5,
+    ['观战'] = 5,
 }
 
 M.MovementObstacleProcessType = {
@@ -373,7 +383,6 @@ M.KeyboardKey = {
     ['APPS'] = 0xDD,        -- 应用
 }
 
-
 M.GameResult = {
     ['VICTORY'] = 'victory',
     ['DEFEAT'] = 'defeat',
@@ -421,39 +430,38 @@ M.SfxRotateType = {
     ['不跟随'] = 2,
 }
 
----@alias y3.Const.物品槽位类型 '物品栏'|'背包栏'|'栏位外'
-M.背包槽位类型 = {
-    ['物品栏'] = 1,
-    ['背包栏'] = 0,
-    ['栏位外'] = -1,
+---@enum y3.Const.SlotType
+M.SlotType = {
+    ['NOT_IN_BAG'] = -1,
+    ['PKG'] = 0,
+    ['BAR'] = 1,
 }
 
----@enum (key) y3.Const.魔法影响类型 "普通"|"正面"|"负面"
-M.魔法效果影类型 = {
+---@alias y3.Const.物品槽位类型Alias
+---| '物品栏'
+---| '背包栏'
+
+---@enum (key) y3.Const.物品槽位类型
+M.ShiftSlotType = {
+    ['物品栏'] = 1,
+    ['背包栏'] = 0,
+}
+
+---@enum (key) y3.Const.魔法影响类型
+M.ModifierEffectType = {
+    ['NONE'] = 0,
     ['普通'] = 1,
     ['正面'] = 2,
     ['负面'] = 3,
 }
 
-M.魔法效果影类型映射 = {
-    [1] = '普通',
-    [2] = '正面',
-    [3] = '负面',
-}
-
----@enum (key) y3.Const.魔法效果类别 "普通"|"光环"|"光环效果"|"护盾"
-M.魔法效果类别 = {
+---@enum (key) y3.Const.魔法效果类别
+M.ModifierType = {
+    ['NONE'] = 0,
     ['普通'] = 1,
     ['光环'] = 2,
     ['光环效果'] = 3,
     ['护盾'] = 4,
-}
-
-M.魔法效果类别映射 = {
-    [1] = '普通',
-    [2] = '光环',
-    [3] = '光环效果',
-    [4] = '护盾',
 }
 
 ---@enum y3.Const.AbilityPointerType
@@ -499,172 +507,172 @@ M.SignalType = {
 
 ---@enum y3.Const.GlobalEventType
 M.GlobalEventType = {
-    ['GAME_INIT'] = 'ET_GAME_INIT',
-    ['GAME_PAUSE'] = 'ET_GAME_PAUSE',
-    ['GAME_RESUME'] = 'ET_GAME_RESUME',
-    ['GAME_ELAPSE_ONCE'] = 'ET_TIMEOUT',
-    ['GAME_ELAPSE_REPEAT'] = 'ET_REPEAT_TIMEOUT',
-    ['BUILD_SUCCESS'] = 'ET_ABILITY_BUILD_FINISH',
-    ['START_SKILL_POINTER'] = 'ET_START_SKILL_POINTER',
-    ['STOP_SKILL_POINTER'] = 'ET_STOP_SKILL_POINTER',
-    ['CUSTOM_EVENT'] = 'ET_EVENT_CUSTOM',
-    ['UI_EVENT'] = 'ET_TRIGGER_COMPONENT_EVENT',
-    ['UNIT_ATTR_CHANGE'] = 'ET_UNIT_ATTR_CHANGE',
-    ['UNIT_START_NAVI'] = 'ET_UNIT_START_NAV_EVENT',
-    ['UNIT_END_NAVI'] = 'ET_UNIT_END_NAV_EVENT',
-    ['ITEM_BROKEN'] = 'ET_ITEM_BROKEN',
-    ['ITEM_SOLD'] = 'ET_ITEM_SOLD',
-    ['AREA_ENTER'] = 'ET_AREA_ENTER',
-    ['AREA_LEAVE'] = 'ET_AREA_LEAVE',
-    ['UNIT_PRECONDITION_MEET'] = 'ET_UNIT_PRECONDITION_SUCCEED',
-    ['UNIT_PRECONDITION_FAILED'] = 'ET_UNIT_PRECONDITION_FAILED',
-    ['ITEM_PRECONDITION_MEET'] = 'ET_ITEM_PRECONDITION_SUCCEED',
-    ['ITEM_PRECONDITION_FAILED'] = 'ET_ITEM_PRECONDITION_FAILED',
-    ['ABILITY_PRECONDITION_MEET'] = 'ET_ABILITY_PRECONDITION_SUCCEED',
-    ['ABILITY_PRECONDITION_FAILED'] = 'ET_ABILITY_PRECONDITION_FAILED',
-    ['TECH_PRECONDITION_MEET'] = 'ET_TECH_PRECONDITION_SUCCEED',
-    ['TECH_PRECONDITION_FAILED'] = 'ET_TECH_PRECONDITION_FAILED',
-    ['KEYBOARD_DOWN'] = 'ET_KEYBOARD_KEY_DOWN_EVENT',
-    ['KEYBOARD_UP'] = 'ET_KEYBOARD_KEY_UP_EVENT',
-    ['MOUSE_DOWN'] = 'ET_MOUSE_KEY_DOWN_EVENT',
-    ['MOUSE_UP'] = 'ET_MOUSE_KEY_UP_EVENT',
-    ['MOUSE_D_CLICK'] = 'MOUSE_KEY_DB_CLICK_EVENT',
-    ['MOUSE_MOVE'] = 'MOUSE_MOVE_EVENT',
-    ['MOUSE_WHEEL'] = 'ET_MOUSE_WHEEL_EVENT',
-    ['MOUSE_DOWN_UNIT'] = 'MOUSE_KEY_DOWN_UNIT_EVENT',
-    ['MOUSE_UP_UNIT'] = 'MOUSE_KEY_UP_UNIT_EVENT',
-    ['MOUSE_D_CLICK_UNIT'] = 'MOUSE_KEY_DB_CLICK_UNIT_EVENT',
-    ['MOUSE_HOVER'] = 'ET_MOUSE_HOVER_EVENT',
-    ['SELECT_UNIT'] = 'ET_SELECT_UNIT',
-    ['SELECT_UNIT_GROUP'] = 'ET_SELECT_UNIT_GROUP',
-    ['SELECT_ITEM'] = 'ET_SELECT_ITEM',
-    ['D_CLICK_ITEM'] = 'ET_DOUBLE_CLICK_ITEM',
-    ['SELECT_DEST'] = 'ET_SELECT_DEST',
-    ['D_CLICK_DEST'] = 'ET_DOUBLE_CLICK_DEST',
-    ['PLAYER_JOIN'] = 'ET_ROLE_JOIN_BATTLE',
-    ['PLAYER_EXIT'] = 'ET_ROLE_ACTIVE_EXIT_GAME_EVENT',
-    ['PLAYER_LOSE_CONNECT'] = 'ET_ROLE_LOSE_CONNECT',
-    ['PLAYER_RESOURCE_CHANGED'] = 'ET_ROLE_RESOURCE_CHANGED',
-    ['PLAYER_SEND_STRING'] = 'ET_ROLE_INPUT_MSG',
-    ['PLAYER_SEND_ANY'] = 'ET_CHAT_SEND_GM',
-    ['PLAYER_UPGRADE_TECH'] = 'ET_ROLE_TECH_UPGRADE',
-    ['PLAYER_DOWNGRADE_TECH'] = 'ET_ROLE_TECH_DOWNGRADE',
-    ['PLAYER_CHANGE_TECH'] = 'ET_ROLE_TECH_CHANGED',
+    ['GAME_INIT'] = "ET_GAME_INIT",
+    ['GAME_PAUSE'] = "ET_GAME_PAUSE",
+    ['GAME_RESUME'] = "ET_GAME_RESUME",
+    ['GAME_ELAPSE_ONCE'] = "ET_TIMEOUT",
+    ['GAME_ELAPSE_REPEAT'] = "ET_REPEAT_TIMEOUT",
+    ['BUILD_SUCCESS'] = "ET_ABILITY_BUILD_FINISH",
+    ['START_SKILL_POINTER'] = "ET_START_SKILL_POINTER",
+    ['STOP_SKILL_POINTER'] = "ET_STOP_SKILL_POINTER",
+    ['CUSTOM_EVENT'] = "ET_EVENT_CUSTOM",
+    ['UI_EVENT'] = "ET_TRIGGER_COMPONENT_EVENT",
+    ['UNIT_ATTR_CHANGE'] = "ET_UNIT_ATTR_CHANGE",
+    ['UNIT_START_NAVI'] = "ET_UNIT_START_NAV_EVENT",
+    ['UNIT_END_NAVI'] = "ET_UNIT_END_NAV_EVENT",
+    ['ITEM_BROKEN'] = "ET_ITEM_BROKEN",
+    ['ITEM_SOLD'] = "ET_ITEM_SOLD",
+    ['AREA_ENTER'] = "ET_AREA_ENTER",
+    ['AREA_LEAVE'] = "ET_AREA_LEAVE",
+    ['UNIT_PRECONDITION_MEET'] = "ET_UNIT_PRECONDITION_SUCCEED",
+    ['UNIT_PRECONDITION_FAILED'] = "ET_UNIT_PRECONDITION_FAILED",
+    ['ITEM_PRECONDITION_MEET'] = "ET_ITEM_PRECONDITION_SUCCEED",
+    ['ITEM_PRECONDITION_FAILED'] = "ET_ITEM_PRECONDITION_FAILED",
+    ['ABILITY_PRECONDITION_MEET'] = "ET_ABILITY_PRECONDITION_SUCCEED",
+    ['ABILITY_PRECONDITION_FAILED'] = "ET_ABILITY_PRECONDITION_FAILED",
+    ['TECH_PRECONDITION_MEET'] = "ET_TECH_PRECONDITION_SUCCEED",
+    ['TECH_PRECONDITION_FAILED'] = "ET_TECH_PRECONDITION_FAILED",
+    ['KEYBOARD_DOWN'] = "ET_KEYBOARD_KEY_DOWN_EVENT",
+    ['KEYBOARD_UP'] = "ET_KEYBOARD_KEY_UP_EVENT",
+    ['MOUSE_DOWN'] = "ET_MOUSE_KEY_DOWN_EVENT",
+    ['MOUSE_UP'] = "ET_MOUSE_KEY_UP_EVENT",
+    ['MOUSE_D_CLICK'] = "MOUSE_KEY_DB_CLICK_EVENT",
+    ['MOUSE_MOVE'] = "MOUSE_MOVE_EVENT",
+    ['MOUSE_WHEEL'] = "ET_MOUSE_WHEEL_EVENT",
+    ['MOUSE_DOWN_UNIT'] = "MOUSE_KEY_DOWN_UNIT_EVENT",
+    ['MOUSE_UP_UNIT'] = "MOUSE_KEY_UP_UNIT_EVENT",
+    ['MOUSE_D_CLICK_UNIT'] = "MOUSE_KEY_DB_CLICK_UNIT_EVENT",
+    ['MOUSE_HOVER'] = "ET_MOUSE_HOVER_EVENT",
+    ['SELECT_UNIT'] = "ET_SELECT_UNIT",
+    ['SELECT_UNIT_GROUP'] = "ET_SELECT_UNIT_GROUP",
+    ['SELECT_ITEM'] = "ET_SELECT_ITEM",
+    ['D_CLICK_ITEM'] = "ET_DOUBLE_CLICK_ITEM",
+    ['SELECT_DEST'] = "ET_SELECT_DEST",
+    ['D_CLICK_DEST'] = "ET_DOUBLE_CLICK_DEST",
+    ['PLAYER_JOIN'] = "ET_ROLE_JOIN_BATTLE",
+    ['PLAYER_EXIT'] = "ET_ROLE_ACTIVE_EXIT_GAME_EVENT",
+    ['PLAYER_LOSE_CONNECT'] = "ET_ROLE_LOSE_CONNECT",
+    ['PLAYER_RESOURCE_CHANGED'] = "ET_ROLE_RESOURCE_CHANGED",
+    ['PLAYER_SEND_STRING'] = "ET_ROLE_INPUT_MSG",
+    ['PLAYER_SEND_ANY'] = "ET_CHAT_SEND_GM",
+    ['PLAYER_UPGRADE_TECH'] = "ET_ROLE_TECH_UPGRADE",
+    ['PLAYER_DOWNGRADE_TECH'] = "ET_ROLE_TECH_DOWNGRADE",
+    ['PLAYER_CHANGE_TECH'] = "ET_ROLE_TECH_CHANGED",
 }
 
 ---@enum y3.Const.UIEventType
 M.UIEventType = {
-    ['UI_CREATE'] = 'ET_UI_PREFAB_CREATE_EVENT',
-    ['UI_DELETE'] = 'ET_UI_PREFAB_DEL_EVENT',
+    ['UI_CREATE'] = "ET_UI_PREFAB_CREATE_EVENT",
+    ['UI_DELETE'] = "ET_UI_PREFAB_DEL_EVENT",
 }
 
 ---@enum y3.Const.UnitEventType
 M.UnitEventType = {
-    ['BEFORE_UNIT_DIE'] = 'ET_BEFORE_UNIT_DIE',
-    ['UNIT_DIE'] = 'ET_UNIT_DIE',
-    ['KILL_UNIT'] = 'ET_KILL_UNIT',
-    ['UNIT_BORN'] = 'ET_UNIT_BORN',
-    ['REVIVE_UNIT'] = 'ET_REVIVE_UNIT',
-    ['UPGRADE_UNIT'] = 'ET_UPGRADE_UNIT',
-    ['UNIT_PRE_ADD_EXP'] = 'ET_UNIT_PRE_ADD_EXP',
-    ['UNIT_ON_ADD_EXP'] = 'ET_UNIT_ON_ADD_EXP',
-    ['UNIT_BE_HURT'] = 'ET_UNIT_BE_HURT',
-    ['UNIT_HURT_OTHER'] = 'ET_UNIT_HURT_OTHER',
-    ['UNIT_BE_HURT_BEFORE_APPLY'] = 'ET_UNIT_BE_HURT_BEFORE_APPLY',
-    ['UNIT_HURT_OTHER_BEFORE_APPLY'] = 'ET_UNIT_HURT_OTHER_BEFORE_APPLY',
-    ['UNIT_BE_HURT_COMPLETE'] = 'ET_UNIT_BE_HURT_COMPLETE',
-    ['UNIT_HURT_OTHER_COMPLETE'] = 'ET_UNIT_HURT_OTHER_FINISH',
-    ['UNIT_GET_CURE_BEFORE_APPLY'] = 'ET_UNIT_GET_CURE_BEFORE_APPLY',
-    ['UNIT_GET_CURE_FINISH'] = 'ET_UNIT_GET_CURE_FINISH',
-    ['UNIT_GET_CURE'] = 'ET_UNIT_GET_CURE',
-    ['UNIT_RELEASE_ABILITY'] = 'ET_UNIT_RELEASE_ABILITY',
-    ['UNIT_START_MOVE'] = 'ET_UNIT_START_MOVE',
-    ['UNIT_ENTER_BATTLE'] = 'ET_UNIT_ENTER_BATTLE',
-    ['UNIT_EXIT_BATTLE'] = 'ET_UNIT_EXIT_BATTLE',
-    ['UNIT_ENTER_GRASS'] = 'ET_UNIT_ENTER_GRASS',
-    ['UNIT_LEAVE_GRASS'] = 'ET_UNIT_LEAVE_GRASS',
-    ['UNIT_ON_COMMAND'] = 'ET_UNIT_ON_COMMAND',
-    ['UNIT_ABILITY_UPGRADE'] = 'ET_ABILITY_PLUS_POINT',
-    ['UNIT_REMOVE'] = 'ET_UNIT_REMOVE',
-    ['UNIT_SHOP_BUY_UNIT'] = 'ET_UNIT_SHOP_BUY_UNIT',
-    ['UNIT_SHOP_BUY_ITEM'] = 'ET_UNIT_SHOP_BUY_ITEM',
-    ['UNIT_ITEM_SELL'] = 'ET_UNIT_ITEM_SELL',
-    ['UNIT_ITEM_COMPOSE'] = 'ET_UNIT_ITEM_COMPOSE',
-    ['UNIT_SHOP_BUY_WITH_COMPOSE'] = 'ET_UNIT_SHOP_BUY_WITH_COMPOSE',
-    ['UNIT_UPGRADE_TECH'] = 'ET_UNIT_UPGRADE_TECH',
-    ['UNIT_ADD_TECH'] = 'ET_UNIT_ADD_TECH',
-    ['UNIT_REMOVE_TECH'] = 'ET_UNIT_REMOVE_TECH',
-    ['UNIT_ROLE_CHANGED'] = 'ET_UNIT_ROLE_CHANGED',
+    ['BEFORE_UNIT_DIE'] = "ET_BEFORE_UNIT_DIE",
+    ['UNIT_DIE'] = "ET_UNIT_DIE",
+    ['KILL_UNIT'] = "ET_KILL_UNIT",
+    ['UNIT_BORN'] = "ET_UNIT_BORN",
+    ['REVIVE_UNIT'] = "ET_REVIVE_UNIT",
+    ['UPGRADE_UNIT'] = "ET_UPGRADE_UNIT",
+    ['UNIT_PRE_ADD_EXP'] = "ET_UNIT_PRE_ADD_EXP",
+    ['UNIT_ON_ADD_EXP'] = "ET_UNIT_ON_ADD_EXP",
+    ['UNIT_BE_HURT'] = "ET_UNIT_BE_HURT",
+    ['UNIT_HURT_OTHER'] = "ET_UNIT_HURT_OTHER",
+    ['UNIT_BE_HURT_BEFORE_APPLY'] = "ET_UNIT_BE_HURT_BEFORE_APPLY",
+    ['UNIT_HURT_OTHER_BEFORE_APPLY'] = "ET_UNIT_HURT_OTHER_BEFORE_APPLY",
+    ['UNIT_BE_HURT_COMPLETE'] = "ET_UNIT_BE_HURT_COMPLETE",
+    ['UNIT_HURT_OTHER_COMPLETE'] = "ET_UNIT_HURT_OTHER_FINISH",
+    ['UNIT_GET_CURE_BEFORE_APPLY'] = "ET_UNIT_GET_CURE_BEFORE_APPLY",
+    ['UNIT_GET_CURE_FINISH'] = "ET_UNIT_GET_CURE_FINISH",
+    ['UNIT_GET_CURE'] = "ET_UNIT_GET_CURE",
+    ['UNIT_RELEASE_ABILITY'] = "ET_UNIT_RELEASE_ABILITY",
+    ['UNIT_START_MOVE'] = "ET_UNIT_START_MOVE",
+    ['UNIT_ENTER_BATTLE'] = "ET_UNIT_ENTER_BATTLE",
+    ['UNIT_EXIT_BATTLE'] = "ET_UNIT_EXIT_BATTLE",
+    ['UNIT_ENTER_GRASS'] = "ET_UNIT_ENTER_GRASS",
+    ['UNIT_LEAVE_GRASS'] = "ET_UNIT_LEAVE_GRASS",
+    ['UNIT_ON_COMMAND'] = "ET_UNIT_ON_COMMAND",
+    ['UNIT_ABILITY_UPGRADE'] = "ET_ABILITY_PLUS_POINT",
+    ['UNIT_REMOVE'] = "ET_UNIT_REMOVE",
+    ['UNIT_SHOP_BUY_UNIT'] = "ET_UNIT_SHOP_BUY_UNIT",
+    ['UNIT_SHOP_BUY_ITEM'] = "ET_UNIT_SHOP_BUY_ITEM",
+    ['UNIT_ITEM_SELL'] = "ET_UNIT_ITEM_SELL",
+    ['UNIT_ITEM_COMPOSE'] = "ET_UNIT_ITEM_COMPOSE",
+    ['UNIT_SHOP_BUY_WITH_COMPOSE'] = "ET_UNIT_SHOP_BUY_WITH_COMPOSE",
+    ['UNIT_UPGRADE_TECH'] = "ET_UNIT_UPGRADE_TECH",
+    ['UNIT_ADD_TECH'] = "ET_UNIT_ADD_TECH",
+    ['UNIT_REMOVE_TECH'] = "ET_UNIT_REMOVE_TECH",
+    ['UNIT_ROLE_CHANGED'] = "ET_UNIT_ROLE_CHANGED",
 }
 
 ---@enum y3.Const.ItemEventType
 M.ItemEventType = {
-    ['ITEM_CREATE'] = 'ET_ITEM_ON_CREATE',
-    ['ITEM_ADD'] = 'ET_UNIT_ADD_ITEM',
-    ['ITEM_ADD_TO_PKG'] = 'ET_UNIT_ADD_ITEM_TO_PKG',
+    ['ITEM_CREATE'] = "ET_ITEM_ON_CREATE",
+    ['ITEM_ADD'] = "ET_UNIT_ADD_ITEM",
+    ['ITEM_ADD_TO_PKG'] = "ET_UNIT_ADD_ITEM_TO_PKG",
     ['ITEM_ADD_TO_BAR'] = 'ET_UNIT_ADD_ITEM_TO_BAR',
     ['ITEM_REMOVE'] = 'ET_UNIT_REMOVE_ITEM',
     ['ITEM_REMOVE_FROM_PKG'] = 'ET_UNIT_REMOVE_ITEM_FROM_PKG',
     ['ITEM_REMOVE_FROM_BAR'] = 'ET_UNIT_REMOVE_ITEM_FROM_BAR',
     ['ITEM_USE'] = 'ET_UNIT_USE_ITEM',
-    ['ITEM_CHANGE_STACK'] = 'ET_ITEM_STACK_CHANGED',
-    ['ITEM_CHANGE_CHARGE'] = 'ET_ITEM_CHARGE_CHANGED',
-    ['ITEM_DESTROY'] = 'ET_ITEM_ON_DESTROY',
-    ['ITEM_CREATE_ON_DEST_COLLECTED'] = 'ET_ITEM_CREATE_ON_DEST_COLLECTED',
+    ['ITEM_CHANGE_STACK'] = "ET_ITEM_STACK_CHANGED",
+    ['ITEM_CHANGE_CHARGE'] = "ET_ITEM_CHARGE_CHANGED",
+    ['ITEM_DESTROY'] = "ET_ITEM_ON_DESTROY",
+    ['ITEM_CREATE_ON_DEST_COLLECTED'] = "ET_ITEM_CREATE_ON_DEST_COLLECTED",
 }
 
 ---@enum y3.Const.AbilityEventType
 M.AbilityEventType = {
-    ['ABILITY_CS_START'] = 'ET_ABILITY_CS_START',
-    ['ABILITY_PS_START'] = 'ET_ABILITY_PS_START',
-    ['ABILITY_PS_END'] = 'ET_ABILITY_PS_END',
-    ['ABILITY_SP_END'] = 'ET_ABILITY_SP_END',
-    ['ABILITY_CST_END'] = 'ET_ABILITY_CST_END',
-    ['ABILITY_BS_END'] = 'ET_ABILITY_BS_END',
-    ['ABILITY_PS_INTERRUPT'] = 'ET_ABILITY_PS_INTERRUPT',
-    ['ABILITY_SP_INTERRUPT'] = 'ET_ABILITY_SP_INTERRUPT',
-    ['ABILITY_CST_INTERRUPT'] = 'ET_ABILITY_CST_INTERRUPT',
-    ['ABILITY_END'] = 'ET_ABILITY_END',
-    ['ABILITY_OBTAIN'] = 'ET_ABILITY_OBTAIN',
-    ['ABILITY_LOSE'] = 'ET_ABILITY_LOSE',
-    ['ABILITY_UPGRADE'] = 'ET_ABILITY_PLUS_POINT',
-    ['ABILITY_LEVEL_CHANGED'] = 'ET_ABILITY_UPGRADE',
-    ['ABILITY_CD_END'] = 'ET_ABILITY_CD_END',
-    ['ABILITY_SWITCH'] = 'ET_ABILITY_SWITCH',
+    ['ABILITY_CS_START'] = "ET_ABILITY_CS_START",
+    ['ABILITY_PS_START'] = "ET_ABILITY_PS_START",
+    ['ABILITY_PS_END'] = "ET_ABILITY_PS_END",
+    ['ABILITY_SP_END'] = "ET_ABILITY_SP_END",
+    ['ABILITY_CST_END'] = "ET_ABILITY_CST_END",
+    ['ABILITY_BS_END'] = "ET_ABILITY_BS_END",
+    ['ABILITY_PS_INTERRUPT'] = "ET_ABILITY_PS_INTERRUPT",
+    ['ABILITY_SP_INTERRUPT'] = "ET_ABILITY_SP_INTERRUPT",
+    ['ABILITY_CST_INTERRUPT'] = "ET_ABILITY_CST_INTERRUPT",
+    ['ABILITY_END'] = "ET_ABILITY_END",
+    ['ABILITY_OBTAIN'] = "ET_ABILITY_OBTAIN",
+    ['ABILITY_LOSE'] = "ET_ABILITY_LOSE",
+    ['ABILITY_UPGRADE'] = "ET_ABILITY_PLUS_POINT",
+    ['ABILITY_LEVEL_CHANGED'] = "ET_ABILITY_UPGRADE",
+    ['ABILITY_CD_END'] = "ET_ABILITY_CD_END",
+    ['ABILITY_SWITCH'] = "ET_ABILITY_SWITCH",
 }
 
 ---@enum y3.Const.ModifierEventType
 M.ModifierEventType = {
-    ['OBTAIN_MODIFIER'] = 'ET_OBTAIN_MODIFIER',
-    ['LOSS_MODIFIER'] = 'ET_LOSS_MODIFIER',
-    ['MODIFIER_CYCLE_TRIGGER'] = 'ET_MODIFIER_CYCLE_TRIGGER',
-    ['MODIFIER_LAYER_CHANGE'] = 'ET_MODIFIER_LAYER_CHANGE',
-    ['MODIFIER_GET_BEFORE_CREATE'] = 'ET_MODIFIER_GET_BEFORE_CREATE',
-    ['MODIFIER_BE_COVERED'] = 'ET_MODIFIER_BE_COVERED',
-    ['MODIFIER_ADDTION'] = 'ET_MODIFIER_ADDTION',
+    ['OBTAIN_MODIFIER'] = "ET_OBTAIN_MODIFIER",
+    ['LOSS_MODIFIER'] = "ET_LOSS_MODIFIER",
+    ['MODIFIER_CYCLE_TRIGGER'] = "ET_MODIFIER_CYCLE_TRIGGER",
+    ['MODIFIER_LAYER_CHANGE'] = "ET_MODIFIER_LAYER_CHANGE",
+    ['MODIFIER_GET_BEFORE_CREATE'] = "ET_MODIFIER_GET_BEFORE_CREATE",
+    ['MODIFIER_BE_COVERED'] = "ET_MODIFIER_BE_COVERED",
+    ['MODIFIER_ADDTION'] = "ET_MODIFIER_ADDTION",
 }
 
 ---@enum y3.Const.ProjectileEventType
 M.ProjectileEventType = {
-    ['PROJECTILE_PRODUCE'] = 'ET_PRODUCE_PROJECTILE',
-    ['PROJECTILE_END'] = 'ET_DEATH_PROJECTILE',
+    ['PROJECTILE_PRODUCE'] = "ET_PRODUCE_PROJECTILE",
+    ['PROJECTILE_END'] = "ET_DEATH_PROJECTILE",
 }
 
 ---@enum y3.Const.PlatformEventType
 M.PlatformEventType = {
-    ['HOLD_STORE_ITEM'] = 'ET_ROLE_HOLD_STORE_ITEM',
-    ['USE_STORE_ITEM_END'] = 'ET_ROLE_USE_STORE_ITEM_END',
+    ['HOLD_STORE_ITEM'] = "ET_ROLE_HOLD_STORE_ITEM",
+    ['USE_STORE_ITEM_END'] = "ET_ROLE_USE_STORE_ITEM_END",
 }
 
 ---@enum y3.Const.DestructibleEventType
 M.DestructibleEventType = {
-    ['DEST_CREATE'] = 'ET_DEST_CREATE_NEW',
-    ['DEST_DIE'] = 'ET_DEST_DIE_NEW',
-    ['DEST_REVIVE'] = 'ET_DEST_REVIVE_NEW',
-    ['DEST_RES_CNT_CHG'] = 'ET_DEST_RES_CNT_CHG_NEW',
-    ['DEST_COLLECTED'] = 'ET_DEST_COLLECTED_NEW',
-    ['DEST_GET_HURT'] = 'ET_GET_HURT_NEW',
-    ['DEST_DELETE'] = 'ET_DEST_DELETE',
+    ['DEST_CREATE'] = "ET_DEST_CREATE_NEW",
+    ['DEST_DIE'] = "ET_DEST_DIE_NEW",
+    ['DEST_REVIVE'] = "ET_DEST_REVIVE_NEW",
+    ['DEST_RES_CNT_CHG'] = "ET_DEST_RES_CNT_CHG_NEW",
+    ['DEST_COLLECTED'] = "ET_DEST_COLLECTED_NEW",
+    ['DEST_GET_HURT'] = "ET_GET_HURT_NEW",
+    ['DEST_DELETE'] = "ET_DEST_DELETE",
 }
 
 ---@alias y3.Const.UIEvent
@@ -885,10 +893,10 @@ M.HarmTextType = {
 ---| '右侧'
 
 M.UIRelativeParentPosType = {
-    ['顶部'] = 0,
-    ['底部'] = 1,
-    ['左侧'] = 2,
-    ['右侧'] = 3,
+    ["顶部"] = 0,
+    ["底部"] = 1,
+    ["左侧"] = 2,
+    ["右侧"] = 3,
 }
 
 ---@enum y3.Const.UIButtonStatus
@@ -899,72 +907,28 @@ M.UIButtonStatus = {
     ['禁用'] = 4,
 }
 
-
-
----@enum (key) y3.Const.镜头移动类型
-M.镜头移动类型 = {
-    ['匀速'] = 0,
-    ['匀加速'] = 1,
-    ['匀减速'] = 2,
-}
-
----@enum (key) y3.Const.镜头角度类型
-M.镜头角度类型 = {
-    ['俯视角'] = 1,
-    ['滚角'] = 2,
-    ['导航角'] = 3,
-}
-
-
----@enum (key) y3.Const.UIAttr
+---@enum (key) y3.Const.控件属性
 M.控件属性 = {
-    ['文本'] = 'text_bind',
-    ['最大值'] = 'max_value_bind',
-    ['当前值'] = 'current_value_bind',
+    ["文本"] = "text_bind",
+    ["最大值"] = "max_value_bind",
+    ["当前值"] = "current_value_bind",
 }
 
----@enum(key) y3.Const.单位状态
-M.单位状态 = {
-    ['禁止普攻'] = 2,
-    ['禁止施法'] = 4,
-    ['禁止移动'] = 8,
-    ['禁止转向'] = 16,
-    ['动画定帧'] = 32,
-    ['无法施加运动'] = 64,
-    ['无法被技能指示器锁定'] = 128,
-    ['无法被选中'] = 256,
-    ['隐身'] = 512,
-    ['无视静态碰撞'] = 1024,
-    ['无视动态碰撞'] = 2048,
-    ['不会死亡'] = 4096,
-    ['无敌'] = 8192,
-    ['无法控制'] = 16384,
-    ['无法被攻击'] = 32768,
-    ['AI无视'] = 65536,
-    ['物理伤害免疫'] = 131072,
-    ['魔法伤害免疫'] = 262144,
-    ['负面魔法效果免疫'] = 524288,
-    ['隐藏'] = 1048576,
-    ['无法被筛选器选中'] = 2097152,
-    ['真实伤害免疫'] = 4194304,
-    ['禁止使用道具'] = 8388608,
+---@enum(key) y3.Const.技能整数属性
+M.AbilityIntAttr = {
+    ["最大等级"] = "ability_max_level",
+    ["最大充能数"] = "ability_max_stack_count",
+    ["当前等级"] = "ability_level",
+    ["当前充能数"] = "cur_stack_count",
 }
 
----@enum y3.Const.技能整数属性
-M.技能整数属性 = {
-    ['最大等级'] = 'ability_max_level',
-    ['最大充能数'] = 'ability_max_stack_count',
-    ['当前等级'] = 'ability_level',
-    ['当前充能数'] = 'cur_stack_count',
+---@enum(key) y3.Const.技能字符串属性
+M.AbilityStrAttr = {
+    ["名称"] = "name",
+    ["描述"] = "description",
 }
 
----@enum y3.Const.技能字符串属性
-M.技能字符串属性 = {
-    ['名称'] = 'name',
-    ['描述'] = 'description',
-}
-
----@enum(key) y3.Const.AbilityFloatAttr
+---@enum(key) y3.Const.技能小数属性
 M.AbilityFloatAttr = {
     ['技能消耗'] = 'ability_cost',
     ['生命值消耗'] = 'ability_hp_cost',
@@ -986,29 +950,6 @@ M.CollisionLayers = {
     ['水面'] = 1 << 7,
     ['物件'] = 1 << 8,
 }
----@enum (key) y3.Const.ModelKey
-M.modelKey = {}
-
-
----@alias y3.Const.动画名称 '攻击'|'技能'|'受击'|string
-
----@enum(key) y3.Const.unitKeys
-M.unitKeys = {}
-
----@enum(key) y3.Const.abilityKeys
-M.abilityKeys = {}
-
-
----@enum(key) y3.Const.itemKeys
-M.itemKeys = {}
-
-
----@enum(key) y3.Const.projectileKeys
-M.projectileKeys = {}
-
-
----@enum(key) y3.Const.buffKeys
-M.buffKeys = {}
 
 ---@enum(key) y3.Const.SceneUI
 M.SceneUI = {}

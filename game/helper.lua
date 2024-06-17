@@ -27,10 +27,13 @@ function M.pack_list(lua_list, unwrapper)
     return py_list
 end
 
----@param n number | py.Fixed
----@return number
+---@param n number | py.Fixed | nil
+---@return number?
 function M.tonumber(n)
-    if type(n) == "number" then
+    if not n then
+        return nil
+    end
+    if type(n) == 'number' then
         return n
     else
         return n:float()

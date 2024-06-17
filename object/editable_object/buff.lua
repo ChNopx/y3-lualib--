@@ -42,6 +42,7 @@ end
 
 function M:__del()
     M.ref_manager:remove(self.id)
+    y3.py_proxy.kill(self.phandle)
     if self._removed_by_py then
         return
     end
@@ -92,7 +93,7 @@ end
 ---魔法效果的图标是否可见
 ---@return boolean is_visible 是否可见
 function M:获取图标是否可见()
-    return self.phandle:api_get_icon_is_visible()
+    return self.phandle:api_get_icon_is_visible() or false
 end
 
 ---移除
@@ -157,7 +158,7 @@ end
 ---获取魔法效果的堆叠层数
 ---@return integer stack 层数
 function M:获取堆叠层数()
-    return self.phandle:api_get_modifier_layer()
+    return self.phandle:api_get_modifier_layer() or 0
 end
 
 ---获取魔法效果的剩余持续时间
@@ -169,19 +170,19 @@ end
 ---获取魔法效果类型
 ---@return y3.Const.魔法效果类别
 function M:获取效果类型()
-    return y3.const.魔法效果类别映射[self.phandle:api_get_modifier_type('modifier_type')]
+    return y3.const.魔法效果类别映射[self.phandle:api_get_modifier_type('modifier_type') or 0]
 end
 
 ---获取魔法效果影响类型
 ---@return y3.Const.魔法影响类型
 function M:获取影响类型()
-    return y3.const.魔法效果影类型映射[self.phandle:api_get_modifier_effect_type('modifier_effect')]
+    return y3.const.魔法效果影类型映射[self.phandle:api_get_modifier_effect_type('modifier_effect') or 0]
 end
 
 ---获取魔法效果的最大堆叠层数
 ---@return integer stack 层数
 function M:获取最大堆叠数()
-    return self.phandle:api_get_int_attr('layer_max')
+    return self.phandle:api_get_int_attr('layer_max') or 0
 end
 
 ---获取魔法效果的护盾
@@ -191,9 +192,12 @@ function M:获取护盾值()
 end
 
 ---获取所属光环
----@return Buff aura 所属光环
+---@return Buff? aura 所属光环
 function M:获取所属光环()
     local py_modifier = self.phandle:api_get_halo_modifier_instance()
+    if not py_modifier then
+        return nil
+    end
     return M.获取于HD(py_modifier)
 end
 
@@ -212,13 +216,13 @@ end
 ---获取魔法效果的光环效果类型ID
 ---@return py.ModifierKey type 光环效果类型ID
 function M:获取光环效果类型()
-    return self.phandle:api_get_sub_halo_modifier_key()
+    return self.phandle:api_get_sub_halo_modifier_key() or 0
 end
 
 ---获取魔法效果的光环范围
 ---@return number range 光环范围
 function M:获取光环范围()
-    return self.phandle:api_get_halo_inf_rng()
+    return self.phandle:api_get_halo_inf_rng() or 0.0
 end
 
 ---获取魔法效果的施加者
@@ -244,19 +248,19 @@ end
 ---获取魔法效果对象的名称
 ---@return string name 名字
 function M:获取名称()
-    return self.phandle:api_get_str_attr('name_str')
+    return self.phandle:api_get_str_attr('name_str') or ''
 end
 
 ---获取魔法效果对象的描述
 ---@return string description 描述
 function M:获取描述()
-    return self.phandle:api_get_str_attr('description')
+    return self.phandle:api_get_str_attr('description') or ''
 end
 
 ---获取等级
 ---@return integer level 等级
 function M:获取等级()
-    return self.phandle:api_get_modifier_level()
+    return self.phandle:api_get_modifier_level() or 0
 end
 
 ---魔法效果类型的图标是否可见
@@ -319,6 +323,5 @@ end
 function M:set_cycle_time(time)
     self.phandle:api_set_cycle_time(Fix32(time))
 end
-
 
 return M

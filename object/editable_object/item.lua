@@ -39,6 +39,7 @@ end
 
 function M:__del()
     M.ref_manager:remove(self.id)
+    y3.py_proxy.kill(self.phandle)
     if self._removed_by_py then
         return
     end
@@ -60,7 +61,7 @@ end)
 ---@param  py_item py.Item py层的道具实例
 ---@return Item # 返回在lua层初始化后的lua层道具实例
 function M.获取于hd(py_item)
-    local id = y3.py_proxy.wrap(py_item):api_get_id()
+    local id = y3.py_proxy.wrap(py_item):api_get_id() or 0
     return M.获取于id(id)
 end
 
@@ -100,7 +101,7 @@ end
 ---@param tag string 删除标签
 ---@return boolean is_has_tag 是否有标签
 function M:是否存在标签(tag)
-    return self.phandle:api_has_tag(tag)
+    return self.phandle:api_has_tag(tag) or false
 end
 
 ---是否在场景中
@@ -109,19 +110,19 @@ function M:是否在场景中()
     if not self:是否存在() then
         return false
     end
-    return self.phandle:api_is_in_scene()
+    return self.phandle:api_is_in_scene() or false
 end
 
 ---物品在物品栏
 ---@return boolean is_in_bar 是否在物品栏
 function M:是否在物品栏()
-    return self.phandle:api_is_in_bar()
+    return self.phandle:api_is_in_bar() or false
 end
 
 ---物品在背包栏
 ---@return boolean is_in_bag 是否在背包栏
 function M:是否在背包栏()
-    return self.phandle:api_is_in_pkg()
+    return self.phandle:api_is_in_pkg() or false
 end
 
 ---遍历物品的单位属性
@@ -190,7 +191,7 @@ end
 ---获取物品的图标
 ---@return py.Texture
 function M:获取图标()
-    return self.phandle:api_get_item_icon()
+    return self.phandle:api_get_item_icon() or 0
 end
 
 ---设置所属玩家
@@ -346,7 +347,7 @@ end
 ---获取物品类型id
 ---@return py.ItemKey key 类型
 function M:获取物编ID()
-    return self.phandle:api_get_key()
+    return self.phandle:api_get_key() or 0
 end
 
 ---设置物品商品售价
@@ -382,25 +383,25 @@ end
 ---物品堆叠数
 ---@return integer stacks 堆叠数
 function M:获取堆叠数()
-    return self.phandle:api_get_stack_cnt()
+    return self.phandle:api_get_stack_cnt() or 0
 end
 
 ---物品充能数
 ---@return integer charges 充能数
 function M:获取充能数()
-    return self.phandle:api_get_charge_cnt()
+    return self.phandle:api_get_charge_cnt() or 0
 end
 
 ---获取最大充能数
 ---@return integer max_charge 最大充能数
 function M:获取最大充能数()
-    return self.phandle:api_get_max_charge()
+    return self.phandle:api_get_max_charge() or 0
 end
 
 ---获取物品等级
 ---@return integer level 物品等级
 function M:获取等级()
-    return self.phandle:api_get_level()
+    return self.phandle:api_get_level() or 0
 end
 
 ---获取物品的生命值
@@ -412,13 +413,13 @@ end
 ---获取物品名
 ---@return string name 物品名字
 function M:获取名称()
-    return self.phandle:get_name()
+    return self.phandle:get_name() or ''
 end
 
 ---获取物品描述
 ---@return string description 物品描述
 function M:获取描述()
-    return self.phandle:api_get_desc()
+    return self.phandle:api_get_desc() or ''
 end
 
 ---获取物品缩放
@@ -460,7 +461,7 @@ function M:获取槽位索引()
     if not self.phandle:api_get_owner() then
         return -1
     end
-    return self.phandle:api_get_item_slot_idx()
+    return self.phandle:api_get_item_slot_idx() or -1
 end
 
 ---获取物品的拥有玩家
@@ -482,7 +483,7 @@ function M:获取槽位类型()
     if not self.phandle:api_get_owner() then
         return -1
     end
-    return self.phandle:api_get_item_slot_type()
+    return self.phandle:api_get_item_slot_type() or -1
 end
 
 --------------------------------------------------------类的方法--------------------------------------------------------
@@ -560,7 +561,7 @@ end
 ---获取物品模型
 ---@return py.ModelKey model_key 模型类型
 function M:获取模型()
-    return self.phandle:api_get_item_model()
+    return self.phandle:api_get_item_model() or 0
 end
 
 ---获取物品类型的模型

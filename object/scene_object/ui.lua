@@ -337,7 +337,7 @@ end
 ---@param index integer 格子位置
 ---@return self
 function M:绑定物品组件到单位(unit, field, index)
-    GameAPI.set_ui_comp_unit_slot(self.player.handle, self.handle, unit.handle, y3.const.背包槽位类型[field], index - 1)
+    GameAPI.set_ui_comp_unit_slot(self.player.handle, self.handle, unit.handle, y3.const.ShiftSlotType[field], index - 1)
     return self
 end
 
@@ -599,7 +599,7 @@ function M:设置_模型控件观察点(x, y, z)
 end
 
 --绑定单位属性到玩家界面控件的属性
----@param uiAttr y3.Const.UIAttr 界面控件属性
+---@param uiAttr y3.Const.控件属性 界面控件属性
 ---@param attr_name y3.Const.UnitAttr|string 单位属性
 ---@param accuracy? integer 小数精度，默认为0
 ---@return self
@@ -610,7 +610,7 @@ function M:绑定_单位属性(uiAttr, attr_name, accuracy)
 end
 
 --绑定玩家属性到玩家界面控件的属性
----@param uiAttr y3.Const.UIAttr 界面控件属性
+---@param uiAttr y3.Const.控件属性 界面控件属性
 ---@param player Player # 玩家
 ---@param attr_or_var string # 玩家属性key
 ---@param accuracy integer 小数精度
@@ -622,7 +622,7 @@ function M:绑定_玩家属性(uiAttr, player, attr_or_var, accuracy)
 end
 
 --绑定全局变量到玩家界面控件的属性
----@param uiAttr y3.Const.UIAttr
+---@param uiAttr y3.Const.控件属性
 ---@param globalVar string 全局属性
 ---@param accuracy integer 小数精度
 ---@return self
@@ -632,7 +632,7 @@ function M:绑定_全局变量(uiAttr, globalVar, accuracy)
 end
 
 --解绑界面控件属性绑定
----@param uiAttr y3.Const.UIAttr
+---@param uiAttr y3.Const.控件属性
 ---@return self
 function M:解绑_单位属性(uiAttr)
     GameAPI.ui_comp_unbind(self.player.handle, self.handle, y3.const.控件属性[uiAttr])
@@ -712,7 +712,7 @@ function M:是否被移除()
 end
 
 --绑定技能冷却时间到玩家界面控件的属性
----@param uiAttr y3.Const.UIAttr 界面控件属性
+---@param uiAttr y3.Const.控件属性 界面控件属性
 ---@param skill Ability 技能
 ---@return self
 function M:绑定_技能冷却(uiAttr, skill)
@@ -721,7 +721,7 @@ function M:绑定_技能冷却(uiAttr, skill)
 end
 
 --绑定魔法效果剩余时间到玩家界面控件的属性
----@param uiAttr y3.Const.UIAttr 界面控件属性
+---@param uiAttr y3.Const.控件属性 界面控件属性
 ---@param buff Buff 魔法效果S
 ---@return self
 function M:绑定_魔法效果剩余时间(uiAttr, buff)

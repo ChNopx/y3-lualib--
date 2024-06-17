@@ -90,6 +90,11 @@ function M:获取z()
     return z
 end
 
+---@return Point
+function M:get_point()
+    return self
+end
+
 -- 移动点
 ---@param x number?
 ---@param y number?

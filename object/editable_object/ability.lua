@@ -39,6 +39,7 @@ end
 
 function M:__del()
     M.ref_manager:remove(self.id)
+    y3.py_proxy.kill(self.phandle)
     if self._removed_by_py then
         return
     end
@@ -49,6 +50,7 @@ function M:__del()
         y3.l计时器.loop_frame(1, function(timer, count)
             if not GameAPI.ability_is_exist(self.handle)
                 or self._removed_by_py then
+                timer:remove()
                 return
             end
             self.phandle:api_remove()
@@ -95,19 +97,19 @@ end
 ---是否受冷却缩减影响
 ---@return boolean is_influenced 是否受冷却缩减影响
 function M:是否受冷却影响()
-    return self.phandle:api_get_influenced_by_cd_reduce()
+    return self.phandle:api_get_influenced_by_cd_reduce() or false
 end
 
 ---消耗生命是否会死亡
 ---@return boolean is_cost 消耗生命是否会死亡
 function M:消耗_生命_是否_死亡()
-    return self.phandle:api_get_cost_hp_can_die()
+    return self.phandle:api_get_cost_hp_can_die() or false
 end
 
 ---生命不足是否可以释放
 ---@return boolean can_cast 生命不足是否可以释放
 function M:生命_不足_是否_可以_释放()
-    return self.phandle:api_get_can_cast_when_hp_insufficient()
+    return self.phandle:api_get_can_cast_when_hp_insufficient() or false
 end
 
 ---是否具有标签
@@ -163,7 +165,7 @@ end
 -- 获取技能等级
 ---@return integer level 等级
 function M:获取_等级()
-    return self.phandle:api_get_level()
+    return self.phandle:api_get_level() or 0
 end
 
 ---增加冷却时间
@@ -183,7 +185,7 @@ function M:获取_名称()
 end
 
 ---设置实数属性
----@param key y3.Const.AbilityFloatAttr | string 属性key
+---@param key y3.Const.技能小数属性 | string 属性key
 ---@param value number 属性值
 function M:设置_实数_属性(key, value)
     self.phandle:api_set_float_attr(y3.const.AbilityFloatAttr[key] or key, Fix32(value))
@@ -252,7 +254,7 @@ end
 ---@return string
 function M:获取描述()
     ---@diagnostic disable-next-line: param-type-mismatch
-    return self.phandle:api_get_str_attr('desc')
+    return self.phandle:api_get_str_attr('desc') or ''
 end
 
 ---学习技能
@@ -355,13 +357,13 @@ end
 ---获取技能种类
 ---@return py.AbilityType type 技能种类
 function M:获取_种类()
-    return self.phandle:api_get_type()
+    return self.phandle:api_get_type() or 0
 end
 
 ---获取技能所在技能位
 ---@return y3.Const.AbilityIndex index 技能所在技能位
 function M:获取所在槽位()
-    return self.phandle:api_get_ability_index()
+    return self.phandle:api_get_ability_index() or 0
 end
 
 ---获取技能消耗的玩家属性值
@@ -374,13 +376,13 @@ end
 ---获取技能释放类型 AbilityCastType
 ---@return py.AbilityCastType type 技能释放类型
 function M:获取释放类型()
-    return self.phandle:api_get_ability_cast_type()
+    return self.phandle:api_get_ability_cast_type() or 0
 end
 
 ---自动施法是否开启
 ---@return boolean is_enabled 是否开启
 function M:获取自动施法是否已开启()
-    return self.phandle:api_is_autocast_enabled()
+    return self.phandle:api_is_autocast_enabled() or false
 end
 
 ---获取技能公式类型的kv
@@ -391,7 +393,7 @@ function M:get_formula_kv(key)
 end
 
 ---获取实数属性
----@param key y3.Const.AbilityFloatAttr | string 键值key
+---@param key y3.Const.技能小数属性 | string 键值key
 ---@return number value 值
 function M:get_float_attr(key)
     return self.phandle:api_get_float_attr(y3.const.AbilityFloatAttr[key] or key):float()
@@ -401,7 +403,7 @@ end
 ---@param key y3.Const.技能整数属性
 ---@return number value 值
 function M:获取_整数_属性(key)
-    return self.phandle:api_get_int_attr(key)
+    return self.phandle:api_get_int_attr(key) or 0
 end
 
 ---获取字符串属性
@@ -409,13 +411,16 @@ end
 ---@return string value 值
 function M:获取_字符串_属性(key)
     ---@diagnostic disable-next-line: param-type-mismatch
-    return self.phandle:api_get_str_attr(key)
+    return self.phandle:api_get_str_attr(key) or ''
 end
 
 ---获取技能的拥有者
----@return Unit owner 技能拥有者
+---@return Unit? owner 技能拥有者
 function M:获取_拥有者_单位()
     local py_unit = self.phandle:api_get_owner()
+    if not py_unit then
+        return nil
+    end
     return y3.单位.从handle获取(py_unit)
 end
 
@@ -593,7 +598,7 @@ end
 ---获取技能的指示器类型
 ---@return y3.Const.AbilityPointerType
 function M:获取_指示器_类型()
-    return self.phandle:api_get_ability_skill_pointer()
+    return self.phandle:api_get_ability_skill_pointer() or 0
 end
 
 ---获取技能类型的指示器类型

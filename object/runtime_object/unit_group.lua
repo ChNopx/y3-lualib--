@@ -28,7 +28,7 @@ end)
 
 --创建空单位组
 ---@return UnitGroup
-function M.创建空单位组()
+function M.创建()
     return M.从handle获取(GameAPI.create_unit_group())
 end
 

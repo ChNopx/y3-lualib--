@@ -40,6 +40,7 @@ end
 ---@private
 function M:__del()
     M.ref_manager:remove(self.id)
+    y3.py_proxy.kill(self.phandle)
     if self._removed_by_py then
         return
     end
@@ -128,15 +129,18 @@ end
 ---@param type y3.Const.技能分类
 ---@param ability_key py.AbilityKey 物编id
 function M:移除_指定类型技能(type, ability_key)
-    self.phandle:api_remove_abilities_in_type(y3.const.技能分类[type], ability_key)
+    self.phandle:api_remove_abilities_in_type(y3.const.AbilityType[type], ability_key)
 end
 
 ---单位添加物品
 ---@param item_id py.ItemKey 物品id
 ---@param slot_type? y3.Const.物品槽位类型
----@return Item
+---@return Item?
 function M:添加物品(item_id, slot_type)
-    local py_item = self.phandle:api_add_item(item_id, y3.const.背包槽位类型[slot_type])
+    local py_item = self.phandle:api_add_item(item_id, y3.const.ShiftSlotType[slot_type])
+    if not py_item then
+        return nil
+    end
     return y3.物品.获取于hd(py_item)
 end
 
@@ -153,7 +157,7 @@ end
 ---@param index integer 槽位
 ---@param force boolean 是否强制移动，`true`: 如果目标有物品，则移动到另一个空格中；`false`: 如果目标有物品，则要移动的物品会掉落
 function M:移动_物品(item, 槽位类型, index, force)
-    self.phandle:api_shift_item_new(item.handle, y3.const.背包槽位类型[槽位类型], index, force)
+    self.phandle:api_shift_item_new(item.handle, y3.const.ShiftSlotType[槽位类型], index, force)
 end
 
 -- 交换物品
@@ -162,7 +166,7 @@ end
 ---@param type y3.Const.物品槽位类型
 ---@param index integer 槽位
 function M:交换_物品(item, type, index)
-    self.phandle:api_shift_item(item.handle, y3.const.背包槽位类型[type], index)
+    self.phandle:api_shift_item(item.handle, y3.const.ShiftSlotType[type], index)
 end
 
 ---获取指定类型的所有技能
@@ -171,7 +175,10 @@ end
 function M:获取_指定类型所有技能(type)
     ---@type Ability[]
     local abilities = {}
-    local py_list = self.phandle:api_get_abilities_by_type(y3.const.技能分类[type])
+    local py_list = self.phandle:api_get_abilities_by_type(y3.const.AbilityType[type])
+    if not py_list then
+        return abilities
+    end
     for i = 0, python_len(py_list) - 1 do
         local lua_ability = y3.技能.获取于HD(python_index(py_list, i))
         abilities[#abilities + 1] = lua_ability
@@ -185,6 +192,9 @@ function M:获取_所有魔法效果()
     ---@type Buff[]
     local buffs = {}
     local py_list = self.phandle:api_get_all_modifiers()
+    if not py_list then
+        return buffs
+    end
     for i = 0, python_len(py_list) - 1 do
         local lua_buff = y3.魔法效果.获取于HD(python_index(py_list, i))
         buffs[#buffs + 1] = lua_buff
@@ -205,7 +215,7 @@ end
 ---@param type_2 y3.Const.技能分类 第二个技能类型
 ---@param slot_2 y3.Const.AbilityIndex 第二个技能坑位
 function M:交换_技能_根据槽位(type_1, slot_1, type_2, slot_2)
-    self.phandle:api_switch_ability_by_index(y3.const.技能分类[type_1], slot_1, y3.const.技能分类[type_2], slot_2)
+    self.phandle:api_switch_ability_by_index(y3.const.AbilityType[type_1], slot_1, y3.const.AbilityType[type_2], slot_2)
 end
 
 ---停止所有技能
@@ -220,7 +230,7 @@ end
 ---@param 等级? integer 等级
 ---@return Ability?
 function M:添加_技能(类型, 物编id, 槽位, 等级)
-    local py_ability = self.phandle:api_add_ability(y3.const.技能分类[类型], 物编id, 槽位 or -1, 等级 or 1)
+    local py_ability = self.phandle:api_add_ability(y3.const.AbilityType[类型], 物编id, 槽位 or -1, 等级 or 1)
     if not py_ability then
         return nil
     end
@@ -232,7 +242,7 @@ end
 ---@param type y3.Const.技能分类 技能类型
 ---@param slot y3.Const.AbilityIndex 技能位
 function M:移除_技能(type, slot)
-    self.phandle:api_remove_ability_by_index(y3.const.技能分类[type], slot)
+    self.phandle:api_remove_ability_by_index(y3.const.AbilityType[type], slot)
 end
 
 ---通过技能名寻找技能
@@ -240,7 +250,7 @@ end
 ---@param id py.AbilityKey 物编id
 ---@return Ability? ability 技能
 function M:获取技能_通过技能类型(type, id)
-    local py_ability = self.phandle:api_get_ability_by_type(y3.const.技能分类[type], id)
+    local py_ability = self.phandle:api_get_ability_by_type(y3.const.AbilityType[type], id)
     if not py_ability then
         return nil
     end
@@ -253,7 +263,7 @@ end
 ---@return Ability? ability 技能
 function M:获取技能_通过槽位(type, slot)
     ---@diagnostic disable-next-line: param-type-mismatch
-    local py_ability = self.phandle:api_get_ability(y3.const.技能分类[type], slot)
+    local py_ability = self.phandle:api_get_ability(y3.const.AbilityType[type], slot)
     if not py_ability then
         return nil
     end
@@ -286,7 +296,7 @@ end
 ---@param slot integer 位置
 ---@return Item? item 物品
 function M:获取物品_通过槽位(type, slot)
-    local py_item = self.phandle:api_get_item_by_slot(y3.const.背包槽位类型[type], slot)
+    local py_item = self.phandle:api_get_item_by_slot(y3.const.ShiftSlotType[type], slot)
     if not py_item then
         return nil
     end
@@ -297,6 +307,9 @@ end
 ---@return ItemGroup item_group 所有物品
 function M:获取物品_所有()
     local py_item_group = self.phandle:api_get_all_item_pids()
+    if not py_item_group then
+        return y3.物品组.create()
+    end
     return y3.物品组.create_lua_item_group_from_py(py_item_group)
 end
 
@@ -333,7 +346,7 @@ end
 ---单位是否有正在释放的技能
 ---@return boolean
 function M:是否正在释放技能()
-    return self.phandle:api_unit_has_running_ability()
+    return self.phandle:api_unit_has_running_ability() or false
 end
 
 ---创建幻象
@@ -406,13 +419,13 @@ end
 ---添加状态
 ---@param 状态 y3.Const.单位状态
 function M:添加状态(状态)
-    self.phandle:api_add_state(y3.const.单位状态[状态])
+    self.phandle:api_add_state(y3.const.UnitEnumState[状态])
 end
 
 ---移除状态
 ---@param 状态 y3.Const.单位状态
 function M:移除状态(状态)
-    self.phandle:api_remove_state(y3.const.单位状态[状态])
+    self.phandle:api_remove_state(y3.const.UnitEnumState[状态])
 end
 
 ---添加多个状态
@@ -1023,6 +1036,9 @@ end
 function M:get_tech_list()
     local lua_table = {}
     local py_list = self.phandle:api_get_tech_list()
+    if not py_list then
+        return lua_table
+    end
     for i = 0, python_len(py_list) - 1 do
         local tech = python_index(py_list, i)
         table.insert(lua_table, tech)
@@ -1035,6 +1051,9 @@ end
 function M:get_affect_techs()
     local lua_table = {}
     local py_list = self.phandle:api_get_affect_techs()
+    if not py_list then
+        return lua_table
+    end
     for i = 0, python_len(py_list) - 1 do
         local tech = python_index(py_list, i)
         table.insert(lua_table, tech)
@@ -1188,7 +1207,7 @@ end
 ---单位移除所有指定类型的魔法效果
 ---@param effect_type y3.Const.魔法影响类型 影响类型的魔法效果
 function M:移除所有指定类型魔法效果(effect_type)
-    self.phandle:api_delete_all_modifiers_by_effect_type(y3.const.魔法效果影类型[effect_type])
+    self.phandle:api_delete_all_modifiers_by_effect_type(y3.const.ModifierEffectType[effect_type])
 end
 
 ---获取单位指定id的魔法效果
@@ -1225,6 +1244,9 @@ end
 function M:获取商店所有物品(page)
     local lua_table = {}
     local py_list = self.phandle:api_get_shop_item_list(page)
+    if not py_list then
+        return lua_table
+    end
     for i = 0, python_len(py_list) - 1 do
         local item_key = python_index(py_list, i)
         lua_table[#lua_table + 1] = item_key
@@ -1392,6 +1414,9 @@ end
 ---@return Player player 单位所属玩家
 function M:获取所属玩家()
     local py_player = self.phandle:api_get_role()
+    if not py_player then
+        return y3.玩家(31)
+    end
     return y3.玩家.从句柄获取(py_player)
 end
 
@@ -1425,19 +1450,19 @@ end
 ---获取单位的X轴缩放
 ---@return number xaxis X轴缩放
 function M:get_x_scale()
-    return self.phandle:api_get_x_scale()
+    return self.phandle:api_get_x_scale() or 0
 end
 
 ---获取单位的Z轴缩放
 ---@return number zaxis  Z轴缩放
 function M:get_z_scale()
-    return self.phandle:api_get_y_scale()
+    return self.phandle:api_get_y_scale() or 0
 end
 
 ---获取单位的Y轴缩放
 ---@return number yaxis Y轴缩放
 function M:get_y_scale()
-    return self.phandle:api_get_z_scale()
+    return self.phandle:api_get_z_scale() or 0
 end
 
 ---获取商店的购买范围
@@ -1449,75 +1474,75 @@ end
 ---获取单位等级
 ---@return integer unit_level 单位等级
 function M:获取等级()
-    return self.phandle:api_get_level()
+    return self.phandle:api_get_level() or 0
 end
 
 ---获取单位的单位类型ID
 ---@return py.UnitType unit_type 单位类型ID
 function M:get_type()
-    return self.phandle:api_get_type()
+    return self.phandle:api_get_type() or 0
 end
 
 ---获取单位类型的ID
 ---@return py.UnitKey type_id 单位类型的ID
 function M:获取物编ID()
-    return self.phandle:api_get_key()
+    return self.phandle:api_get_key() or 0
 end
 
 ---获取单位当前的经验值
 ---@return integer exp 单位当前的经验值
 function M:获取_当前经验()
-    return self.phandle:api_get_exp()
+    return self.phandle:api_get_exp() or 0
 end
 
 ---获取单位当前升级所需经验
 ---@return number exp 单位当前升级所需经验
 function M:获取_当前升级所需经验()
-    return self.phandle:api_get_upgrade_exp()
+    return self.phandle:api_get_upgrade_exp() or 0
 end
 
 ---获取英雄的技能点数量
 ---@return integer hero_ability_point_number 英雄的技能点数量
 function M:获取技能点数量()
-    return self.phandle:api_get_ability_point()
+    return self.phandle:api_get_ability_point() or 0
 end
 
 ---获取单位背包栏的槽位数
 ---@return integer slot_number 单位背包栏的槽位数
 function M:获取背包栏槽位数()
-    return self.phandle:api_get_unit_pkg_cnt()
+    return self.phandle:api_get_unit_pkg_cnt() or 0
 end
 
 ---获取单位物品栏的槽位数
 ---@return integer slot_number 单位物品栏的槽位数
 function M:获取物品栏槽位数()
-    return self.phandle:api_get_unit_bar_cnt()
+    return self.phandle:api_get_unit_bar_cnt() or 0
 end
 
 ---获取单位拥有的物品类型数量
 ---@param item_key py.ItemKey 物品类型id
 ---@return integer item_type_number 物品类型数量
 function M:get_item_type_number_of_unit(item_key)
-    return self.phandle:api_get_num_of_item_type(item_key)
+    return self.phandle:api_get_num_of_item_type(item_key) or 0
 end
 
 ---获取单位被击杀经验
 ---@return integer exp 单位被击杀经验
 function M:获取_被击杀经验奖励()
-    return self.phandle:api_get_unit_reward_exp()
+    return self.phandle:api_get_unit_reward_exp() or 0
 end
 
 ---获取单位指定护盾类型的护盾值
 ---@param shield_type integer 护盾类型
 ---@return integer shield_value 护盾类型的护盾值
 function M:get_shield(shield_type)
-    return self.phandle:api_get_unit_shield_value(shield_type)
+    return self.phandle:api_get_unit_shield_value(shield_type) or 0
 end
 
 ---获取商店页签数量
 ---@return number tab_number 页签数量
 function M:get_shop_tab_number()
-    return self.phandle:api_get_shop_tab_cnt()
+    return self.phandle:api_get_shop_tab_cnt() or 0
 end
 
 ---获取商店的物品商品库存
@@ -1525,19 +1550,22 @@ end
 ---@param item_key py.ItemKey 物品类型
 ---@return integer item_stock 商品库存
 function M:get_goods_stack(tag_index, item_key)
-    return self.phandle:api_get_shop_item_stock(tag_index, item_key)
+    return self.phandle:api_get_shop_item_stock(tag_index, item_key) or 0
 end
 
 ---获取单位名称
 ---@return string unit_name  单位名称
 function M:获取名称()
-    return self.phandle:api_get_name()
+    if not self.phandle.api_get_name then
+        return '<无效单位>'
+    end
+    return self.phandle:api_get_name() or ''
 end
 
 ---获取单位的描述
 ---@return string unit_description 单位的描述
 function M:获取_描述()
-    return self.phandle:api_get_str_attr('desc')
+    return self.phandle:api_get_str_attr('desc') or ''
 end
 
 ---获取单位类型名称
@@ -1558,13 +1586,13 @@ end
 ---@param tag_index py.TabIdx 页签
 ---@return string tab_name 页签名
 function M:get_shop_tab_name(tag_index)
-    return self.phandle:api_get_shop_tab_name(tag_index)
+    return self.phandle:api_get_shop_tab_name(tag_index) or ''
 end
 
 ---获取单位分类
 ---@return py.UnitType unit_subtype 单位分类
 function M:get_subtype()
-    return self.phandle:api_get_type()
+    return self.phandle:api_get_type() or 0
 end
 
 ---是否是英雄
@@ -1631,13 +1659,13 @@ end
 ---获得护甲类型
 ---@return integer DAMAGE_ARMOR_TYPE 护甲类型
 function M:get_armor_type()
-    return self.phandle:api_get_armor_type()
+    return self.phandle:api_get_armor_type() or 0
 end
 
 ---获得攻击类型
 ---@return integer DAMAGE_ATTACK_TYPE 攻击类型
 function M:get_attack_type()
-    return self.phandle:api_get_atk_type()
+    return self.phandle:api_get_atk_type() or 0
 end
 
 ---获取商店的物品id
@@ -1645,19 +1673,19 @@ end
 ---@param item_index integer 序号
 ---@return py.ItemKey item 物品类型
 function M:get_goods_key(tag_index, item_index)
-    return self.phandle:api_get_shop_tab_item_type(tag_index, item_index)
+    return self.phandle:api_get_shop_tab_item_type(tag_index, item_index) or 0
 end
 
 ---获取单位的当前模型
 ---@return py.ModelKey model 当前模型
 function M:获取当前模型()
-    return self.phandle:api_get_model()
+    return self.phandle:api_get_model() or 0
 end
 
 ---获取单位的原本模型
 ---@return py.ModelKey model 原本模型
 function M:获取原始模型()
-    return self.phandle:api_get_source_model()
+    return self.phandle:api_get_source_model() or 0
 end
 
 ---获取单位所在点
@@ -1681,7 +1709,7 @@ end
 ---获取单位的队伍
 ---@return py.Camp team 获取单位的队伍
 function M:get_team()
-    return self.phandle:api_get_camp()
+    return self.phandle:api_get_camp() or 0 --[[@as py.Camp]]
 end
 
 ---是否具有标签
@@ -1709,7 +1737,7 @@ end
 ---是否正在移动
 ---@return boolean is_moving 正在移动
 function M:是否正在一移动()
-    return self.phandle:api_is_moving()
+    return self.phandle:api_is_moving() or false
 end
 
 ---是否在另一个单位或点附近
@@ -1719,19 +1747,19 @@ end
 function M:是否在单位或点附近(other, range)
     if other.type == 'unit' then
         ---@cast other Unit
-        return self.phandle:api_is_in_range(other.handle, range)
+        return self.phandle:api_is_in_range(other.handle, range) or false
     else
         ---@cast other Point
         -- TODO 见问题2
         ---@diagnostic disable-next-line: param-type-mismatch
-        return self.phandle:api_is_point_in_range(other.handle, range)
+        return self.phandle:api_is_point_in_range(other.handle, range) or false
     end
 end
 
 ---是否是商店
 ---@return boolean is_shop 是商店
 function M:是否为商店()
-    return self.phandle:api_is_shop()
+    return self.phandle:api_is_shop() or false
 end
 
 ---是否是幻象单位
@@ -1750,56 +1778,56 @@ end
 ---是否在战斗状态
 ---@return boolean in_battle 在战斗状态
 function M:是否在战斗状态()
-    return self.phandle:api_is_in_battle_state()
+    return self.phandle:api_is_in_battle_state() or false
 end
 
 ---是否有指定状态
 ---@param state_name y3.Const.单位状态
 ---@return boolean has_buff_status 有指定状态
 function M:是否有指定状态(state_name)
-    return self.phandle:api_has_state(y3.const.单位状态[state_name])
+    return self.phandle:api_has_state(y3.const.UnitEnumState[state_name]) or false
 end
 
 ---是否有指定id的技能
 ---@param ability_key py.AbilityKey 技能类型
 ---@return boolean has_ability_type 有指定类型的技能
 function M:是否有指定类型技能(ability_key)
-    return self.phandle:api_check_has_ability_type(ability_key)
+    return self.phandle:api_check_has_ability_type(ability_key) or false
 end
 
 ---是否有指定物品
 ---@param item Item 物品
 ---@return boolean has_item 有物品
 function M:是否有指定物品(item)
-    return self.phandle:api_has_item(item.handle)
+    return self.phandle:api_has_item(item.handle) or false
 end
 
 ---是否有指定类型的物品
 ---@param item_key py.ItemKey 物品类型
 ---@return boolean has_item_name 有指定类型的物品
 function M:是否有指定类型物品(item_key)
-    return self.phandle:api_has_item_key(item_key)
+    return self.phandle:api_has_item_key(item_key) or false
 end
 
 ---是否有指定id的魔法效果
 ---@param buff_key py.ModifierKey 魔法效果id
 ---@return boolean has_modifier 有魔法效果
 function M:has_buff_by_key(buff_key)
-    return self.phandle:api_has_modifier(buff_key)
+    return self.phandle:api_has_modifier(buff_key) or false
 end
 
 ---是否有指定类型的魔法效果
 ---@param effect_type y3.Const.魔法影响类型 魔法效果类型
 ---@return boolean has_modifier_style 有指定类型的魔法效果
 function M:has_buff_by_effect_type(effect_type)
-    return self.phandle:api_has_modifier_type(y3.const.魔法效果影类型[effect_type])
+    return self.phandle:api_has_modifier_type(y3.const.ModifierEffectType[effect_type]) or false
 end
 
 ---是否有指定标签的魔法效果
 ---@param tag_name string 标签
 ---@return boolean has_modifier_tag 有指定标签的魔法效果
 function M:unit_has_modifier_tag(tag_name)
-    return self.phandle:api_has_modifier_with_tag(tag_name)
+    return self.phandle:api_has_modifier_with_tag(tag_name) or false
 end
 
 ---单位类型前置条件是否通过
@@ -1807,7 +1835,7 @@ end
 ---@param unit_key py.UnitKey 单位类型
 ---@return boolean unit_precondition 单位类型前置条件是否通过
 function M.check_precondition_by_key(player, unit_key)
-    return GameAPI.check_unit_key_precondition(player.handle, unit_key)
+    return GameAPI.check_unit_key_precondition(player.handle, unit_key) or false
 end
 
 ---是否是友方
@@ -1828,7 +1856,7 @@ end
 ---@param point Point 点
 ---@return boolean can_teleport 能否传送到点
 function M:can_blink_to(point)
-    return self.phandle:api_can_teleport_to(point.handle)
+    return self.phandle:api_can_teleport_to(point.handle) or false
 end
 
 ---是否与点碰撞
@@ -1855,7 +1883,7 @@ end
 ---@param collision_layer integer | y3.Const.CollisionLayers 碰撞类型
 ---@return boolean # 是否拥有指定碰撞类型
 function M:has_move_collision(collision_layer)
-    return self.phandle:api_get_move_collision(y3.const.CollisionLayers[collision_layer] or collision_layer)
+    return self.phandle:api_get_move_collision(y3.const.CollisionLayers[collision_layer] or collision_layer) or false
 end
 
 ---设置单位是否计算某种碰撞类型
@@ -1868,14 +1896,18 @@ end
 -- 获取所属玩家
 ---@return Player
 function M:获取所属玩家2()
-    return y3.玩家.从id获取(self.phandle:api_get_role_id())
+    local role_id = self.phandle:api_get_role_id()
+    if not role_id then
+        return y3.玩家(31)
+    end
+    return y3.玩家.从id获取(role_id)
 end
 
 ---玩家是否可以购买商店的物品
 ---@param player Player
 ---@return boolean
 function M:player_shop_check(player)
-    return self.phandle:api_shop_check_camp(player.handle)
+    return self.phandle:api_shop_check_camp(player.handle) or false
 end
 
 ---获取单位类型的模型
@@ -1952,7 +1984,7 @@ end
 ---获取单位主属性(需要开启复合属性)
 ---@return string
 function M:获取_主属性()
-    return self.phandle:api_get_main_attr()
+    return self.phandle:api_get_main_attr() or ''
 end
 
 ---设置单位的移动类型为地面
@@ -1972,7 +2004,7 @@ end
 ---获取单位阵营ID
 ---@return py.CampID
 function M:get_camp_id()
-    return self.phandle:api_get_camp_id()
+    return self.phandle:api_get_camp_id() or 0
 end
 
 return M

@@ -43,8 +43,26 @@ function M:in_range(cent, radius)
     return self
 end
 
--- 条件 - 属于某个玩家
----@param p Player?
+-- 条件 - 是某个玩家的敌人
+---@param p Player
+---@return self
+function M:is_enemy(p)
+    ---@private
+    self._owner_player = y3.玩家组.获取所有敌对玩家(p)
+    return self
+end
+
+-- 条件 - 是某个玩家的同盟
+---@param p Player
+---@return self
+function M:is_ally(p)
+    ---@private
+    self._owner_player = y3.玩家组.获取所有同盟玩家(p)
+    return self
+end
+
+-- 条件 - 属于某个玩家或某个玩家组
+---@param p Player | PlayerGroup
 ---@return self
 function M:属于玩家(p)
     ---@private
@@ -107,7 +125,7 @@ function M:排除特定单位(u)
 end
 
 -- 条件 - 拥有某个特定的状态
----@param state integer | y3.Const.UnitEnumState
+---@param state integer | y3.Const.单位状态
 ---@return self
 function M:拥有状态(state)
     ---@private
@@ -116,7 +134,7 @@ function M:拥有状态(state)
 end
 
 -- 条件 - 不拥有某个特定的状态
----@param state integer | y3.Const.UnitEnumState
+---@param state integer | y3.Const.单位状态
 ---@return self
 function M:排除状态(state)
     ---@private
@@ -188,6 +206,7 @@ function M:获取单位组()
     ---@diagnostic disable-next-line: param-type-mismatch
         pos.handle,
         shape.handle,
+        ---@diagnostic disable-next-line: param-type-mismatch
         self._owner_player and self._owner_player.handle or nil,
         self._visible_player and self._visible_player.handle or nil,
         self._invisible_player and self._invisible_player.handle or nil,

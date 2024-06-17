@@ -173,6 +173,7 @@ local function args_eq(a, b)
         return false
     end
     for i = 1, #a do
+        ---@diagnostic disable-next-line: need-check-nil
         if a[i] ~= b[i] then
             return false
         end

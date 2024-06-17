@@ -325,6 +325,7 @@ do
 
     local function subscribe(class, method, callback)
         local mark
+        ---@diagnostic disable-next-line: undefined-field
         class.__setter[method] = function(self, value)
             if not mark then
                 mark = true

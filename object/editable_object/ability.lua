@@ -185,17 +185,17 @@ function M:获取_名称()
 end
 
 ---设置实数属性
----@param key y3.Const.技能小数属性 | string 属性key
+---@param key y3.Const.AbilityFloatAttr | string 属性key
 ---@param value number 属性值
 function M:设置_实数_属性(key, value)
     self.phandle:api_set_float_attr(y3.const.AbilityFloatAttr[key] or key, Fix32(value))
 end
 
 ---设置整数属性
----@param key y3.Const.技能整数属性
+---@param key y3.Const.AbilityIntAttr
 ---@param value integer 属性值
 function M:设置_整数_属性(key, value)
-    self.phandle:api_set_int_attr(y3.const.技能整数属性[key] or key, value)
+    self.phandle:api_set_int_attr(y3.const.AbilityIntAttr[key] or key, value)
 end
 
 ---设置剩余冷却时间
@@ -393,21 +393,21 @@ function M:get_formula_kv(key)
 end
 
 ---获取实数属性
----@param key y3.Const.技能小数属性 | string 键值key
+---@param key y3.Const.AbilityFloatAttr | string 键值key
 ---@return number value 值
 function M:get_float_attr(key)
     return self.phandle:api_get_float_attr(y3.const.AbilityFloatAttr[key] or key):float()
 end
 
 ---获取整数属性
----@param key y3.Const.技能整数属性
+---@param key y3.Const.AbilityIntAttr
 ---@return number value 值
 function M:获取_整数_属性(key)
     return self.phandle:api_get_int_attr(key) or 0
 end
 
 ---获取字符串属性
----@param key y3.Const.技能字符串属性
+---@param key y3.Const.AbilityStrAttr
 ---@return string value 值
 function M:获取_字符串_属性(key)
     ---@diagnostic disable-next-line: param-type-mismatch

@@ -168,15 +168,15 @@ function M:获取剩余时间()
 end
 
 ---获取魔法效果类型
----@return y3.Const.魔法效果类别
+---@return y3.Const.ModifierType
 function M:获取效果类型()
-    return y3.const.魔法效果类别映射[self.phandle:api_get_modifier_type('modifier_type') or 0]
+    return self.phandle:api_get_modifier_type('modifier_type') or 0
 end
 
 ---获取魔法效果影响类型
----@return y3.Const.魔法影响类型
+---@return y3.Const.ModifierEffectType
 function M:获取影响类型()
-    return y3.const.魔法效果影类型映射[self.phandle:api_get_modifier_effect_type('modifier_effect') or 0]
+    return self.phandle:api_get_modifier_effect_type('modifier_effect') or 0
 end
 
 ---获取魔法效果的最大堆叠层数

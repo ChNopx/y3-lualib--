@@ -1205,7 +1205,7 @@ function M:移除所有指定物编id魔法效果(buff_key)
 end
 
 ---单位移除所有指定类型的魔法效果
----@param effect_type y3.Const.魔法影响类型 影响类型的魔法效果
+---@param effect_type y3.Const.ModifierEffectType 影响类型的魔法效果
 function M:移除所有指定类型魔法效果(effect_type)
     self.phandle:api_delete_all_modifiers_by_effect_type(y3.const.ModifierEffectType[effect_type])
 end
@@ -1817,7 +1817,7 @@ function M:has_buff_by_key(buff_key)
 end
 
 ---是否有指定类型的魔法效果
----@param effect_type y3.Const.魔法影响类型 魔法效果类型
+---@param effect_type y3.Const.ModifierEffectType 魔法效果类型
 ---@return boolean has_modifier_style 有指定类型的魔法效果
 function M:has_buff_by_effect_type(effect_type)
     return self.phandle:api_has_modifier_type(y3.const.ModifierEffectType[effect_type]) or false

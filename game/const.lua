@@ -447,7 +447,7 @@ M.ShiftSlotType = {
     ['背包栏'] = 0,
 }
 
----@enum (key) y3.Const.魔法影响类型
+---@enum y3.Const.ModifierEffectType
 M.ModifierEffectType = {
     ['NONE'] = 0,
     ['普通'] = 1,
@@ -455,7 +455,7 @@ M.ModifierEffectType = {
     ['负面'] = 3,
 }
 
----@enum (key) y3.Const.魔法效果类别
+---@enum y3.Const.ModifierType
 M.ModifierType = {
     ['NONE'] = 0,
     ['普通'] = 1,
@@ -914,7 +914,7 @@ M.控件属性 = {
     ["当前值"] = "current_value_bind",
 }
 
----@enum(key) y3.Const.技能整数属性
+---@enum(key) y3.Const.AbilityIntAttr
 M.AbilityIntAttr = {
     ["最大等级"] = "ability_max_level",
     ["最大充能数"] = "ability_max_stack_count",
@@ -922,13 +922,13 @@ M.AbilityIntAttr = {
     ["当前充能数"] = "cur_stack_count",
 }
 
----@enum(key) y3.Const.技能字符串属性
+---@enum(key) y3.Const.AbilityStrAttr
 M.AbilityStrAttr = {
     ["名称"] = "name",
     ["描述"] = "description",
 }
 
----@enum(key) y3.Const.技能小数属性
+---@enum(key) y3.Const.AbilityFloatAttr
 M.AbilityFloatAttr = {
     ['技能消耗'] = 'ability_cost',
     ['生命值消耗'] = 'ability_hp_cost',

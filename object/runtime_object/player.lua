@@ -476,7 +476,7 @@ end
 -- 获取鼠标在游戏内的所在点。
 -- 必须先设置 `y3.config.sync.mouse = true`。
 ---@return Point point 点
-function M:get_mouse_pos()
+function M:获取_鼠标所在点()
     if not y3.config.sync.mouse then
         error('必须先设置 `y3.config.sync.mouse = true`')
     end

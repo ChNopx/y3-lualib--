@@ -1173,24 +1173,24 @@ function M:从商店购买物品(unit, tag_num, item_key)
 end
 
 ---@class Buff.AddData
----@field key py.ModifierKey 魔法效果id
----@field source? Unit 来源单位
----@field ability? Ability 关联技能
----@field time? number 持续时间
----@field pulse? number 心跳周期
----@field stacks? integer 层数
+---@field 物编ID py.ModifierKey 魔法效果id
+---@field 来源单位? Unit 来源单位
+---@field 关联技能? Ability 关联技能
+---@field 持续时间? number 持续时间
+---@field 循环周期? number 心跳周期
+---@field 层数? integer 层数
 
 ---给单位添加魔法效果
 ---@param data Buff.AddData
 ---@return Buff?
 function M:添加_魔法效果(data)
     local py_buff = self.phandle:api_add_modifier(
-        data.key,
-        data.source and data.source.handle or nil,
-        data.ability and data.ability.handle or nil,
-        Fix32(data.time or -1),
-        Fix32(data.pulse or 0.0),
-        data.stacks or 1
+        data.物编ID,
+        data.来源单位 and data.来源单位.handle or nil,
+        data.关联技能 and data.关联技能.handle or nil,
+        Fix32(data.持续时间 or -1),
+        Fix32(data.循环周期 or 0.0),
+        data.层数 or 1
     )
     if not py_buff then
         return nil
@@ -1200,13 +1200,13 @@ end
 
 ---单位移除所有指定id的魔法效果
 ---@param buff_key py.ModifierKey 影响类型的魔法效果
-function M:移除所有指定物编id魔法效果(buff_key)
+function M:移除_所有魔法效果于物编ID(buff_key)
     self.phandle:api_remove_modifier_type(buff_key)
 end
 
 ---单位移除所有指定类型的魔法效果
 ---@param effect_type y3.Const.ModifierEffectType 影响类型的魔法效果
-function M:移除所有指定类型魔法效果(effect_type)
+function M:移除_所有魔法效果于状态(effect_type)
     self.phandle:api_delete_all_modifiers_by_effect_type(y3.const.ModifierEffectType[effect_type])
 end
 
@@ -1214,7 +1214,7 @@ end
 ---@param buff_key py.ModifierKey 魔法效果id
 ---@param index? integer 第几个
 ---@return Buff? # 单位指定类型的魔法效果
-function M:回去指定物编id魔法效果(buff_key, index)
+function M:获取_魔法效果于物编ID(buff_key, index)
     local py_modifier = self.phandle:api_get_modifier(index or -1, buff_key)
     if not py_modifier then
         return nil
@@ -1812,21 +1812,21 @@ end
 ---是否有指定id的魔法效果
 ---@param buff_key py.ModifierKey 魔法效果id
 ---@return boolean has_modifier 有魔法效果
-function M:has_buff_by_key(buff_key)
+function M:是否_拥有指定物编ID魔法效果(buff_key)
     return self.phandle:api_has_modifier(buff_key) or false
 end
 
 ---是否有指定类型的魔法效果
 ---@param effect_type y3.Const.ModifierEffectType 魔法效果类型
 ---@return boolean has_modifier_style 有指定类型的魔法效果
-function M:has_buff_by_effect_type(effect_type)
+function M:判断_拥有指定状态魔法效果(effect_type)
     return self.phandle:api_has_modifier_type(y3.const.ModifierEffectType[effect_type]) or false
 end
 
 ---是否有指定标签的魔法效果
 ---@param tag_name string 标签
 ---@return boolean has_modifier_tag 有指定标签的魔法效果
-function M:unit_has_modifier_tag(tag_name)
+function M:判断_拥有指定标签魔法效果(tag_name)
     return self.phandle:api_has_modifier_with_tag(tag_name) or false
 end
 

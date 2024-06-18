@@ -204,7 +204,7 @@ function M.create()
     end)
 end
 
-y3.游戏:自定义事件('$Y3-初始化', function()
+y3.游戏:事件_自定义('$Y3-初始化', function()
     if not y3.游戏.是否为调试模式() then
         return
     end

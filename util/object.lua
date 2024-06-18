@@ -397,31 +397,31 @@ do
 
     subscribe(Buff, 'on_can_add', function()
         y3.游戏:事件('效果-即将获得', function(trg, data)
-            M.callMethod('buff', 'on_can_add', data.buff:获取物编ID(), data.buff, data.buff)
+            M.callMethod('buff', 'on_can_add', data.buff:获取_物编ID(), data.buff, data.buff)
         end)
     end)
 
     subscribe(Buff, 'on_add', function()
         y3.游戏:事件('效果-获得', function(trg, data)
-            M.callMethod('buff', 'on_add', data.buff:获取物编ID(), data.buff, data.buff)
+            M.callMethod('buff', 'on_add', data.buff:获取_物编ID(), data.buff, data.buff)
         end)
     end)
 
     subscribe(Buff, 'on_lose', function()
         y3.游戏:事件('效果-失去', function(trg, data)
-            M.callMethod('buff', 'on_lose', data.buff:获取物编ID(), data.buff, data.buff)
+            M.callMethod('buff', 'on_lose', data.buff:获取_物编ID(), data.buff, data.buff)
         end)
     end)
 
     subscribe(Buff, 'on_pulse', function()
         y3.游戏:事件('效果-心跳', function(trg, data)
-            M.callMethod('buff', 'on_pulse', data.buff:获取物编ID(), data.buff, data.buff)
+            M.callMethod('buff', 'on_pulse', data.buff:获取_物编ID(), data.buff, data.buff)
         end)
     end)
 
     subscribe(Buff, 'on_stack_change', function()
         y3.游戏:事件('效果-层数变化', function(trg, data)
-            M.callMethod('buff', 'on_stack_change', data.buff:获取物编ID(), data.buff, data.buff)
+            M.callMethod('buff', 'on_stack_change', data.buff:获取_物编ID(), data.buff, data.buff)
         end)
     end)
 

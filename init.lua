@@ -131,4 +131,4 @@ collectgarbage 'generational'
 
 log.info('LuaLib版本：', y3.version)
 
-y3.游戏:发起自定义事件('$Y3-初始化')
+y3.游戏:发起事件_自定义('$Y3-初始化')

@@ -361,7 +361,7 @@ y3.游戏:事件('控制台-请求补全', function(trg, data)
     console_tips_match(table.concat(completes, '\x01'))
 end)
 
-y3.游戏:自定义事件('$Y3-初始化', function()
+y3.游戏:事件_自定义('$Y3-初始化', function()
     consoleprint(M.getHelpInfo())
 end)
 

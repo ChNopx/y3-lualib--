@@ -701,7 +701,7 @@ end
 
 --删除界面控件
 function M:移除()
-    y3.游戏:发起自定义事件('UI:__del', { 触发玩家 = self.player, 触发控件 = self })
+    y3.游戏:发起事件_自定义('UI:__del', { 触发玩家 = self.player, 触发控件 = self })
     pcall(self.发送事件, self, '提示框-移除')
     Delete(self)
 end

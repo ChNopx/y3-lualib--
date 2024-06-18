@@ -154,6 +154,15 @@ function M:设置图片颜色(r, g, b, a)
     return self
 end
 
+--设置图片颜色(hex)
+---@param color string hex
+---@param a number 透明度
+---@return self
+function M:set_image_color_hex(color, a)
+    GameAPI.set_ui_image_color_hex(self.player.handle, self.handle, color, a)
+    return self
+end
+
 --设置文本
 ---@param str string 文本
 ---@return self
@@ -1066,6 +1075,7 @@ local use_operation_map = {
 
 --设置使用物品操作方式
 ---@param use_operation Item.UseOperation # 操作方式
+---@return self
 function M:设置物品使用方式(use_operation)
     GameAPI.set_equip_slot_use_operation(self.player.handle, self.handle, use_operation_map[use_operation] or 0)
     return self
@@ -1080,6 +1090,7 @@ local drag_operation_map = {
 
 --设置拖拽物品操作方式
 ---@param drag_operation Item.DrapOperation # 操作方式
+---@return self
 function M:设置物品拖拽方式(drag_operation)
     GameAPI.set_equip_slot_drag_operation(self.player.handle, self.handle, drag_operation_map[drag_operation] or 0)
     return self

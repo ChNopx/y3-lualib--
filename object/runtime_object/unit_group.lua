@@ -98,6 +98,7 @@ function M:获取单位数量()
 end
 
 ---@param 状态 y3.Const.单位存活状态
+---@return integer
 function M:获取指定状态单位数量(状态)
     return GameAPI.get_state_unit_num_in_group(self.handle, y3.const.单位存活状态[状态])
 end
@@ -132,6 +133,7 @@ end
 ---@param 属性 string
 ---@param 数量? integer 默认 1
 ---@param 是否升序? boolean 默认 true
+---@return UnitGroup
 function M:获取属性值排序前几个单位(属性, 数量, 是否升序)
     local py_unit = GameAPI.get_unit_sort_by_attr(self.handle, 属性, 是否升序 or true, 数量 or 1)
     return y3.单位组.从handle获取(py_unit)
@@ -140,6 +142,7 @@ end
 ---@param 目标点 Point
 ---@param 数量? integer 默认 1
 ---@param 是否升序? boolean 默认true
+---@return UnitGroup
 function M:获取距离点排序前几个单位(目标点, 数量, 是否升序)
     local py_unit = GameAPI.get_unit_sort_by_position(self.handle, 目标点.handle, 是否升序 or true, 数量 or 1)
     return y3.单位组.从handle获取(py_unit)

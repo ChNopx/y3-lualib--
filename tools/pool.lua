@@ -150,11 +150,13 @@ function M:遍历()
     end
 end
 
+---@return self
 function M.创建()
     return New 'Pool' ()
 end
 
 ---@param 参数 {[any]:{权重:integer}} {{权重=?}}
+---@return self
 function M.创建自数据表(参数)
     local r = M.创建()
     for index, value in pairs(参数) do

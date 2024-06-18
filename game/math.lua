@@ -10,6 +10,7 @@ local m = Class '数学'
 
 ---@overload fun(对象:any):number
 ---@overload fun(对象:any,进制:integer):number @进制 范围[2-36]
+---@param ... any
 ---@return integer
 function 到数值(...)
     return tonumber(...)
@@ -179,6 +180,7 @@ function m.获取随机种子()
 end
 
 ---@param 数值 number
+---@return number
 function m.获取绝对值(数值)
     return math.abs(数值)
 end

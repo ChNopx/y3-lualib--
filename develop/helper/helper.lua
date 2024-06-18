@@ -63,11 +63,9 @@ function M.awaitRequest(method, params)
     if not client then
         return
     end
-    local co = coroutine.running()
-    M.request(method, params, function(data)
-        coroutine.resume(co, data)
+    return y3.await.yield(function (resume)
+        M.request(method, params, resume)
     end)
-    coroutine.yield()
 end
 
 --向《Y3开发助手》发送通知
@@ -246,13 +244,20 @@ function M.createTreeNode(name, optional)
     return treeNode
 end
 
-function M.create()
-    local suc, port = pcall(require, 'log.helper_port')
-    if not suc or math.type(port) ~= 'integer' then
-        return
-    end
+--初始化与《Y3开发助手》的连接。如果用VSCode启动游戏，会自动连接。
+--其他情况若有需求可以调用此函数连接。
+---@param port? integer
+function M.create(port)
+    if port then
+        createClient(port)
+    else
+        local suc, port = pcall(require, 'log.helper_port')
+        if not suc or math.type(port) ~= 'integer' then
+            return
+        end
 
-    createClient(port)
+        createClient(port)
+    end
 end
 
 --注册一个方法
@@ -262,6 +267,9 @@ end)
 
 y3.游戏:事件_自定义('$Y3-初始化', function()
     if not y3.游戏.是否为调试模式() then
+        return
+    end
+    if not y3.develop.arg['lua_dummy'] then
         return
     end
 

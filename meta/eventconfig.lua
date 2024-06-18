@@ -1,5 +1,6 @@
 -- 此文件由 `tools/genGameAPI` 生成，请勿手动修改。
 ---@meta
+---@diagnostic disable: incomplete-signature-doc
 
 ---@class EventConfig
 local M = {}

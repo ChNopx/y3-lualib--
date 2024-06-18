@@ -81,6 +81,9 @@ end
 function M:is_match_args(fire_args)
     local event_args = self._event_args
     local event_type = type(event_args)
+    if event_args == nil then
+        return true
+    end
 
     -- 如果类型不同直接返回false
     if event_type ~= type(fire_args) then
@@ -97,7 +100,7 @@ function M:is_match_args(fire_args)
     if event_args.__name then
         return event_args == fire_args
     end
-
+    
     -- 最后在假定是数组进行判断
     local fire_args_n = fire_args and #fire_args or 0
     local event_args_n = event_args and #event_args or 0

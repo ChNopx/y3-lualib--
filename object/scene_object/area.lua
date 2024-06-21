@@ -109,7 +109,7 @@ function M.从场景id获取矩形区域(res_id)
 end
 
 ---根据场景id获得多边形区域
----@param res_id py.AreaID|integer 编辑场景中的id
+---@param res_id py.AreaID 编辑场景中的id
 ---@return Area
 function M.从场景id获取多边形区域(res_id)
     return M.从id获取(res_id, M.SHAPE.POLYGON)

@@ -84,7 +84,7 @@ end
 
 -- 获取唯一ID
 ---@return integer
-function M:get_id()
+function M:获取_ID()
     return self.id
 end
 

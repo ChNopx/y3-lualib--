@@ -11,7 +11,7 @@ local m = Class '数学'
 ---@overload fun(对象:any):number
 ---@overload fun(对象:any,进制:integer):number @进制 范围[2-36]
 ---@param ... any
----@return integer
+---@return number?
 function 到数值(...)
     return tonumber(...)
 end
@@ -47,7 +47,7 @@ function m.获取小数部分(数值)
 end
 
 ---@param 参数 {行数:integer,列数:integer,宽度?:number,高度?:number,倒序?:boolean} @宽度默认100 高度默认100 倒序默认false, 坐标通过设置父控件相对, 可以达到上右排列
----@param 回调 fun(i:integer,x:integer,y:integer)
+---@param 回调 fun(i:integer,x:number,y:number)
 ---@return table @{{x,y}}
 function m.创建矩阵(参数, 回调)
     local 行数 = 参数.行数 or 1

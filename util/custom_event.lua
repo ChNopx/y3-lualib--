@@ -93,7 +93,7 @@ end
 ---@param event_name string
 ---@param args any[]
 ---@param ... any
-function M:发起事件_自定义P(event_name, args, ...)
+function M:发起事件_自定义C(event_name, args, ...)
     if not self.custom_event_manager then
         return
     end
@@ -142,7 +142,7 @@ end
 ---@param args any[]
 ---@param ... any
 ---@return any, any, any, any
-function M:发起事件_自定义DISP(event_name, args, ...)
+function M:发起事件_自定义DISC(event_name, args, ...)
     if not self.custom_event_manager then
         return
     end

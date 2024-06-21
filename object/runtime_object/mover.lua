@@ -307,7 +307,7 @@ function M.wrap_target_args(args)
         -- builder.is_parabola_height          = args.parabola_height ~= nil
         builder.parabola_height         = Fix32(args.parabola_height or 0.0)
         -- builder.is_open_bind_point          = args.bind_point ~= nil
-        builder.target_unit_id          = args.target:get_id()
+        builder.target_unit_id          = args.target:获取_ID()
 
         return builder
     else
@@ -324,7 +324,7 @@ function M.wrap_target_args(args)
         builder.set_is_parabola_height(args.parabola_height ~= nil)
         builder.set_parabola_height(Fix32(args.parabola_height or 0.0))
         builder.set_is_open_bind_point(args.bind_point ~= nil)
-        builder.set_target_unit_id(args.target:get_id())
+        builder.set_target_unit_id(args.target:获取_ID())
 
         return builder
     end
@@ -389,7 +389,7 @@ function M.wrap_round_args(args)
         if target.type == 'unit' then
             ---@cast target Unit
             builder.is_to_unit = true
-            builder.target_unit_id = target:获取_唯一id()
+            builder.target_unit_id = target:获取_ID()
         else
             ---@cast target Point
             builder.is_to_unit = false
@@ -415,7 +415,7 @@ function M.wrap_round_args(args)
         if target.type == 'unit' then
             ---@cast target Unit
             builder.set_is_to_unit(true)
-            builder.set_target_unit_id(target:获取_唯一id())
+            builder.set_target_unit_id(target:获取_ID())
         else
             ---@cast target Point
             builder.set_is_to_unit(false)

@@ -136,7 +136,7 @@ function M:设置是否可见(visible)
 end
 
 --设置图片
----@param img py.Texture|integer 图片id
+---@param img py.Texture 图片id
 ---@return self
 function M:设置图片(img)
     GameAPI.set_ui_comp_image_with_icon(self.player.handle, self.handle, img)

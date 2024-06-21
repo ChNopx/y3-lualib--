@@ -121,7 +121,7 @@ end
 
 -- 获取唯一ID
 ---@return integer
-function M:获取_唯一id()
+function M:获取_ID()
     return self.id
 end
 
@@ -225,7 +225,7 @@ end
 
 ---添加技能
 ---@param 类型 y3.Const.技能分类
----@param 物编id py.AbilityKey|integer 物编id
+---@param 物编id py.AbilityKey 物编id
 ---@param 槽位? y3.Const.AbilityIndex 技能位
 ---@param 等级? integer 等级
 ---@return Ability?
@@ -983,7 +983,7 @@ function M:设置转身速度(speed)
 end
 
 ---替换模型
----@param model_id py.ModelKey|integer 模型id
+---@param model_id py.ModelKey 模型id
 function M:设置模型(model_id)
     self.phandle:api_replace_model(model_id)
 end
@@ -1942,7 +1942,7 @@ end
 ---@field 视为普攻? boolean # 视为普攻
 ---@field 必定暴击? boolean # 必定暴击
 ---@field 必定命中? boolean # 必定命中
----@field 特效? py.SfxKey|integer # 特效
+---@field 特效? py.SfxKey # 特效
 ---@field 特效挂接点? string # 特效挂点
 
 ---@param 参数 Unit.DamageData

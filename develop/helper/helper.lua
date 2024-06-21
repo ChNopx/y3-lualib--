@@ -265,6 +265,7 @@ M.registerMethod('command', function(params)
     y3.develop.console.input(params.data)
 end)
 
+---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
 y3.游戏:事件_自定义('$Y3-初始化', function()
     if not y3.游戏.是否为调试模式() then
         return

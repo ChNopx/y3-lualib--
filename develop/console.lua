@@ -362,7 +362,7 @@ y3.游戏:事件('控制台-请求补全', function(trg, data)
 end)
 
 ---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
-y3.游戏:事件_自定义('$Y3-初始化', function()
+y3.游戏:事件C('$Y3-初始化', function()
     consoleprint(M.getHelpInfo())
 end)
 

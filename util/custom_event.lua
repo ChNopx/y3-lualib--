@@ -37,7 +37,7 @@ Obj:event_notify_with_args('输入', {'123', '666'}, 4) -- 可以触发事件
 ]]
 ---@overload fun(self: self, event_name:string, callback:Trigger.CallBack):Trigger
 ---@overload fun(self: self, event_name:string, args:any, callback:Trigger.CallBack):Trigger
-function M:事件_自定义(...)
+function M:事件C(...)
     if not rawget(self, 'custom_event_manager') then
         self.custom_event_manager = New "EventManager" (self)
     end
@@ -82,7 +82,7 @@ Obj:event_notify('获得')
 ]]
 ---@param event_name string
 ---@param ... any
-function M:发起事件_自定义(event_name, ...)
+function M:发起事件C(event_name, ...)
     if not self.custom_event_manager then
         return
     end
@@ -93,7 +93,7 @@ end
 ---@param event_name string
 ---@param args any[]
 ---@param ... any
-function M:发起事件_自定义C(event_name, args, ...)
+function M:发起事件CP(event_name, args, ...)
     if not self.custom_event_manager then
         return
     end
@@ -130,7 +130,7 @@ print('结果为：', result)
 ---@param event_name string
 ---@param ... any
 ---@return any, any, any, any
-function M:发起事件_自定义DIS(event_name, ...)
+function M:发起事件CD(event_name, ...)
     if not self.custom_event_manager then
         return
     end
@@ -142,7 +142,7 @@ end
 ---@param args any[]
 ---@param ... any
 ---@return any, any, any, any
-function M:发起事件_自定义DISC(event_name, args, ...)
+function M:发起事件CPD(event_name, args, ...)
     if not self.custom_event_manager then
         return
     end

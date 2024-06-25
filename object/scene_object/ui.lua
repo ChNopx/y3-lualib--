@@ -552,7 +552,7 @@ end
 --遍历某个界面控件的子节点
 --> 名字太长了，改用 `get_childs` 吧
 ---@return UI[]
-function M:获取所有子控件()
+function M:获取_所有子控件()
     local py_list = GameAPI.get_ui_comp_children(self.player.handle, self.handle)
     local uis = y3.helper.unpack_list(py_list, function(py_object)
         return y3.控件.获取于HD(self.player, py_object)
@@ -592,10 +592,11 @@ end
 ---@param duration number # 持续时间
 ---@param ease_type? integer # 曲线类型
 ---@return self
-function M:set_anim_scale(start_x, start_y, end_x, end_y, duration, ease_type)
+function M:播放_缩放动画(start_x, start_y, end_x, end_y, duration, ease_type)
     GameAPI.set_ui_comp_anim_scale(self.player.handle, self.handle, start_x, start_y, end_x, end_y, duration, ease_type)
     return self
 end
+
 
 --设置模型控件观察点
 ---@param x number x轴

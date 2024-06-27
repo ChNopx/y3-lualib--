@@ -1103,4 +1103,84 @@ function M:设置_文本超框处理方式(处理方式, 最小字号)
     GameAPI.set_text_over_length_handling_type(self.player.handle, self.handle, 处理方式, 最小字号)
 end
 
+---@param 控件 UI
+---@param 位置? integer 默认是最后一个, 如果位置大于当前最大位置, 也是默认最后一个
+function M:网格列表_插入控件(控件, 位置)
+    GameAPI.insert_ui_gridview_comp(self.player.handle, 控件.handle, self.handle, 位置)
+end
+
+--设置网格列表布局方式
+---@param layout_type integer # 布局方式
+function M:网格列表_设置_设置列表布局方式(layout_type)
+    GameAPI.set_ui_gridview_type(self.player.handle, self.handle, layout_type)
+end
+
+--设置网格列表行数列数
+---@param row_count integer # 行数
+---@param column_count integer # 列数
+function M:网格列表_设置_行列数(row_count, column_count)
+    GameAPI.set_ui_gridview_count(self.player.handle, self.handle, row_count, column_count)
+end
+
+--设置网格列表单元格宽高
+---@param width number # 宽
+---@param height number # 高
+function M:网格列表_设置_单元格尺寸(width, height)
+    GameAPI.set_ui_gridview_size(self.player.handle, self.handle, width, height)
+end
+
+--设置网格列表边距
+---@param top number # 上
+---@param bottom number # 下
+---@param left number # 左
+---@param right number # 右
+function M:网格列表_设置_外边距(top, bottom, left, right)
+    GameAPI.set_ui_gridview_margin(self.player.handle, self.handle, top, bottom, left, right)
+end
+
+--设置网格列表单元格间距
+---@param width number # 横向
+---@param height number # 纵向
+function M:网格列表_设置_单元格间距(width, height)
+    GameAPI.set_ui_gridview_space(self.player.handle, self.handle, width, height)
+end
+
+--设置网格列表对齐方式
+---@param align_type integer # 对齐方式
+function M:网格列表_设置_列表对齐方式(align_type)
+    GameAPI.set_ui_gridview_align(self.player.handle, self.handle, align_type)
+end
+
+--设置网格列表启用/禁止滚动
+---@param enable boolean # 是否启用
+function M:网格列表_设置_滚动(enable)
+    GameAPI.set_ui_gridview_scroll(self.player.handle, self.handle, enable)
+end
+
+--设置网格列表启用/禁止尺寸随内容变化
+---@param enable boolean # 是否启用
+function M:网格列表_设置_尺寸随内容变化(enable)
+    GameAPI.set_ui_gridview_size_adaptive(self.player.handle, self.handle, enable)
+end
+
+--设置网格列表横向/纵向跳转百分比
+---@param direction integer # 横向/纵向
+---@param ratio number # 百分比
+function M:网格列表_设置_跳转百分比(direction, ratio)
+    GameAPI.set_ui_gridview_bar_percent(self.player.handle, self.handle, direction, ratio)
+end
+
+--设置界面控件的父控件
+---@param parent_uid UI # 父控件uid
+---@param keep_pos? boolean # 保持位置
+---@param keep_rotation? boolean # 保持旋转
+---@param keep_scale? boolean # 保持缩放
+function M:设置_父控件(parent_uid, keep_pos, keep_rotation, keep_scale)
+    GameAPI.set_ui_comp_parent(self.player.handle, self.handle, parent_uid.handle, keep_pos, keep_rotation, keep_scale)
+end
+
+function M:清空_图片()
+    GameAPI.clear_ui_comp_image(self.player.handle, self.handle)
+end
+
 return M

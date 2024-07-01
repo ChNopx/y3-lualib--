@@ -6,6 +6,8 @@ local M = Class 'LocalUILogic'
 
 ---@class LocalUILogic: Storage
 Extends('LocalUILogic', 'Storage')
+---@class LocalUILogic: GCHost
+Extends('LocalUILogic', 'GCHost')
 
 ---@type table<LocalUILogic, boolean>
 local all_instances = setmetatable({}, { __mode = 'k' })
@@ -33,9 +35,7 @@ local local_player = y3.玩家.获取本地玩家()
 
 ---@param path_or_ui? string | UI
 function M:__init(path_or_ui)
-    if y3.游戏.是否为调试模式() then
-        all_instances[self] = true
-    end
+    all_instances[self] = true
     ---@private
     self._bind_unit_attr = {}
     ---@package
@@ -59,12 +59,6 @@ function M:__init(path_or_ui)
     end
     if type(path_or_ui) == 'table' then
         self:attach(path_or_ui)
-    end
-end
-
-function M:__del()
-    if self._main then
-        self._main:移除()
     end
 end
 
@@ -277,6 +271,7 @@ function M:refresh_prefab(prefab_token, count, on_create)
                         local ui = y3.元件.创建(local_player, info.prefab_logic._prefab_name, parent):获取子控件()
                         ---@cast ui -?
                         instance = info.prefab_logic:attach(ui, kv)
+                        self:bindGC(ui)
                     end
 
                     instances[i] = instance
@@ -285,7 +280,7 @@ function M:refresh_prefab(prefab_token, count, on_create)
         end
 
         for _, instance in ipairs(instances) do
-            instance:refresh('')
+            instance:refresh('*')
         end
         ::continue::
     end
@@ -379,11 +374,19 @@ end)
 ---@class LocalUILogic.API
 local API = {}
 
+---@package
+API.instance_map = {}
+
 --创建一个本地UI逻辑
 ---@param path_or_ui string | UI
 ---@return LocalUILogic
 function API.create(path_or_ui)
-    return New 'LocalUILogic' (path_or_ui)
+    if API.instance_map[path_or_ui] then
+        API.instance_map[path_or_ui]:remove()
+    end
+    local local_ui = New 'LocalUILogic' (path_or_ui)
+    API.instance_map[path_or_ui] = local_ui
+    return local_ui
 end
 
 --创建一个用于元件的本地UI逻辑

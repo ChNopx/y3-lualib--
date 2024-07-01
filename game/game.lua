@@ -426,6 +426,18 @@ function M.恢复软暂停()
     GameAPI.api_soft_resume_game()
 end
 
+---切换至关卡
+---@param level_id_str py.Map # 关卡ID
+function M.switch_level(level_id_str)
+    GameAPI.request_switch_level(level_id_str)
+end
+
+---获取当前关卡
+---@return py.Map # 当前关卡
+function M.get_level()
+    return GameAPI.get_current_level()
+end
+
 ---设置伤害系数
 ---@param attack_type integer 攻击类型
 ---@param armor_type integer 护甲类型
@@ -528,8 +540,12 @@ function M.获取游戏环境()
 end
 
 -- 是否是调试模式
+---@param ignore_config? boolean # 是否忽略用户的设置
 ---@return boolean
-function M.是否为调试模式()
+function M.是否为调试模式(ignore_config)
+    if ignore_config then
+        return M.获取游戏环境() == 1
+    end
     if y3.config.debug == true then
         return true
     end

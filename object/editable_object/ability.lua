@@ -74,6 +74,7 @@ function M.获取于HD(py_ability)
     return M.ref_manager:get(id, py_ability)
 end
 
+---@private
 ---@param id integer
 ---@return Ability
 function M.获取于ID(id)

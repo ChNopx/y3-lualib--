@@ -17,6 +17,8 @@ function M:__init(player, handle)
 end
 
 function M:__del()
+    -- pcall(self:发送事件('提示框-移除'))
+    self.__数据[self.handle] = nil
     GameAPI.del_ui_comp(self.player.handle, self.handle)
 end
 
@@ -136,9 +138,10 @@ function M:设置是否可见(visible)
 end
 
 --设置图片
----@param img py.Texture 图片id
+---@param img py.Texture | string 图片id
 ---@return self
 function M:设置图片(img)
+    ---@diagnostic disable-next-line: param-type-mismatch
     GameAPI.set_ui_comp_image_with_icon(self.player.handle, self.handle, img)
     return self
 end
@@ -283,11 +286,19 @@ function M:使输入框获得焦点()
     return self
 end
 
+--设置列表视图百分比
+---@param percent number # 百分比
+function M:set_list_view_percent(percent)
+    GameAPI.set_list_view_percent(self.player.handle, self.handle, percent)
+end
+
 --绑定技能对象到控件
----@param skill Ability 技能对象
+---@param skill? Ability 技能对象
 ---@return self
 function M:绑定技能到技能元件(skill)
-    GameAPI.set_skill_on_ui_comp(self.player.handle, skill.handle, self.handle)
+    local handle = skill and skill.handle or nil
+    ---@diagnostic disable-next-line: param-type-mismatch
+    GameAPI.set_skill_on_ui_comp(self.player.handle, handle, self.handle)
     return self
 end
 
@@ -771,17 +782,30 @@ function M:聊天框_发送私聊信息(player, msg)
     return self
 end
 
+--获取复选框当前选中状态
+---@return boolean # 当前选中状态
+function M:get_checkbox_selected()
+    return GameAPI.get_checkbox_selected(self.player.handle, self.handle)
+end
+
 --创建悬浮文字
 ---@param point Point 点
----@param text_type y3.Const.HarmTextType 跳字类型
+---@param text_type y3.Const.FloatTextType | string | integer 跳字类型
 ---@param str string 文字
----@param player_group? PlayerGroup 玩家组
----@param jump_word_track? integer 跳字轨迹类型
-function M.创建_悬浮文字(point, text_type, str, player_group, jump_word_track)
-    -- TODO 见问题2
-    ---@diagnostic disable-next-line: param-type-mismatch
-    GameAPI.create_harm_text_ex(point.handle, y3.const.HarmTextType[text_type] or text_type, str,
-        (player_group or y3.玩家组.获取所有玩家()).handle, jump_word_track or 0)
+---@param jump_word_track? y3.Const.FloatTextJumpType 跳字轨迹类型，如果不传会使用随机轨迹
+---@param player_group? PlayerGroup 可见的玩家组。传入 `nil` 表示所有玩家都可见
+function M.创建_悬浮文字(point, text_type, str, jump_word_track, player_group)
+    GameAPI.create_harm_text_ex(
+        -- TODO 见问题2
+        ---@diagnostic disable-next-line: param-type-mismatch
+        point.handle,
+        ---@diagnostic disable-next-line: param-type-mismatch
+        y3.const.FloatTextType[text_type] or text_type,
+        str,
+        (player_group or y3.玩家组.获取所有玩家()).handle,
+        ---@diagnostic disable-next-line: param-type-mismatch
+        y3.const.FloatTextJumpType[jump_word_track] or jump_word_track or 0
+    )
 end
 
 --设置窗口类型
@@ -1090,10 +1114,8 @@ local drag_operation_map = {
 
 --设置拖拽物品操作方式
 ---@param drag_operation Item.DrapOperation # 操作方式
----@return self
 function M:设置物品拖拽方式(drag_operation)
     GameAPI.set_equip_slot_drag_operation(self.player.handle, self.handle, drag_operation_map[drag_operation] or 0)
-    return self
 end
 
 ---@param 处理方式 string

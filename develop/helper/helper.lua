@@ -244,10 +244,17 @@ function M.createTreeNode(name, optional)
     return treeNode
 end
 
+---@private
+M._inited = false
+
 --初始化与《Y3开发助手》的连接。如果用VSCode启动游戏，会自动连接。
 --其他情况若有需求可以调用此函数连接。
 ---@param port? integer
-function M.create(port)
+function M.init(port)
+    if M._inited then
+        return
+    end
+    M._inited = true
     if port then
         createClient(port)
     else
@@ -274,7 +281,7 @@ y3.游戏:事件C('$Y3-初始化', function()
         return
     end
 
-    M.create()
+    M.init()
 end)
 
 return M

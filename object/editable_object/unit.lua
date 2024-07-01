@@ -423,6 +423,7 @@ function M:添加状态(状态)
 end
 
 ---移除状态
+-- 只有移除次数等同添加次数时才能移除状态
 ---@param 状态 y3.Const.单位状态
 function M:移除状态(状态)
     self.phandle:api_remove_state(y3.const.UnitEnumState[状态])
@@ -438,6 +439,13 @@ end
 ---@param state_enum integer 状态
 function M:remove_multi_state(state_enum)
     self.handle:api_remove_multi_state(state_enum)
+end
+
+---是否有某个状态
+---@param state_enum integer 状态
+---@return boolean?
+function M:has_state(state_enum)
+    return self.handle:api_has_state(state_enum)
 end
 
 ---添加状态
@@ -620,11 +628,16 @@ function M:命令_使用物品(item, target, extra_target)
 end
 
 -- 命令跟随单位
----@param 参数 {目标单位:Unit, 跟随距离?:number, 间隔?:number, 重新跟随距离?:number}
+---@param 参数 {目标单位:Unit, 跟随距离?:number, 间隔?:number, 重新跟随距离?:number, 跟随角度?:number, 跟随死亡单位?:boolean}
 ---@return py.UnitCommand
 function M:命令_跟随单位(参数)
-    local command = GameAPI.create_unit_command_follow(参数.目标单位.handle, Fix32(参数.间隔 or 0.5), Fix32(参数.跟随距离 or 50),
-        Fix32(参数.重新跟随距离 or 50))
+    local command = GameAPI.create_unit_command_follow(参数.目标单位.handle
+        ,Fix32(参数.间隔 or 0.5)
+        ,Fix32(参数.跟随距离 or 50)
+        ,Fix32(参数.重新跟随距离 or -1)
+        , Fix32(参数.跟随角度 or -10000)
+        , 参数.跟随死亡单位 or false
+    )
     self:命令_发布(command)
     return command
 end
@@ -1078,17 +1091,17 @@ end
 ---@param 动画名称 y3.Const.动画名称
 ---@param 速度? number 速度
 ---@param 开始时间? number 开始时间
----@param 结束时间? number 结束时间
+---@param 结束时间? number 结束时间(默认-1表示播到最后)
 ---@param 循环? boolean 是否循环
 ---@param 返回默认状态? boolean 是否返回默认状态
 function M:动画_播放(动画名称, 速度, 开始时间, 结束时间, 循环, 返回默认状态)
     self.phandle:api_play_animation(
         动画名称,
-        速度,
-        开始时间,
-        结束时间,
-        循环,
-        返回默认状态
+        速度 or 1,
+        开始时间 or 0,
+        结束时间 or -1,
+        循环 or false,
+        返回默认状态 or false
     )
 end
 
@@ -1376,7 +1389,7 @@ end
 ---获取单位飞行高度
 ---@return number height 单位飞行高度
 function M:get_height()
-    return self.phandle:api_get_height():float()
+    return y3.helper.tonumber(self.phandle:api_get_height()) or 0.0
 end
 
 ---获取单位转身速度
@@ -1782,6 +1795,8 @@ function M:是否在战斗状态()
 end
 
 ---是否有指定状态
+--> 请改用 `has_state` 方法
+---@deprecated
 ---@param state_name y3.Const.单位状态
 ---@return boolean has_buff_status 有指定状态
 function M:是否有指定状态(state_name)

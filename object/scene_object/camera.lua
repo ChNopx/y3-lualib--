@@ -1,12 +1,12 @@
 --镜头
 ---@class Camera
----@field handle integer
+---@field handle py.Camera
 ---@overload fun(py_camera: py.Camera): self
 local M = Class 'Camera'
 
 M.type = 'camera'
 
----@param py_camera integer
+---@param py_camera py.Camera
 ---@return self
 function M:__init(py_camera)
     self.handle = py_camera
@@ -20,10 +20,31 @@ function M.从handle获取(py_camera)
     return camera
 end
 
+-- 获取摆放在场景上的镜头
+---@param res_id integer
+---@return Camera
+function M.获取于场景ID(res_id)
+    return M.从handle获取(res_id)
+end
+
 y3.py_converter.register_py_to_lua('py.Camera', M.从handle获取)
-y3.py_converter.register_lua_to_py('py.Camera', function(lua_value)
+y3.py_converter.register_lua_to_py('py.Camera', function (lua_value)
     return lua_value.handle
 end)
+
+-- 引用镜头
+---@param player_or_group? Player | PlayerGroup # 玩家或玩家组，默认为所有玩家
+---@param duration? number # 过渡时间，默认为0
+---@param slope_mode? y3.Const.CameraMoveMode # 过渡模式，默认为匀速
+function M:应用配置(player_or_group, duration, slope_mode)
+    GameAPI.apply_camera_conf(
+        ---@diagnostic disable-next-line: param-type-mismatch
+        (player_or_group or y3.玩家组.获取所有玩家()).handle,
+        self.handle,
+        duration or 0,
+        y3.const.CameraMoveMode[slope_mode] or 0
+    )
+end
 
 ---玩家镜头是否正在播放动画
 ---@param player Player 玩家
@@ -85,8 +106,7 @@ end
 ---@param time number 持续时间
 ---@param shake_type integer 震动模式
 function M.设置_带衰减震动(player, shake, attenuation, frequency, time, shake_type)
-    GameAPI.camera_shake_with_decay(player.handle, Fix32(shake), Fix32(attenuation), Fix32(frequency), Fix32(time),
-                                    shake_type)
+    GameAPI.camera_shake_with_decay(player.handle, Fix32(shake), Fix32(attenuation), Fix32(frequency), Fix32(time), shake_type)
 end
 
 ---镜头摇晃镜头
@@ -112,8 +132,7 @@ end
 ---@param time? number 过渡时间
 ---@param 移动类型? y3.Const.镜头移动类型
 function M.线性移动(player, point, time, 移动类型)
-    GameAPI.camera_linear_move_duration(player.handle, point.handle, Fix32(time or 0),
-                                        y3.const.镜头移动类型[移动类型] or y3.const.镜头移动类型.匀速)
+    GameAPI.camera_linear_move_duration(player.handle, point.handle, Fix32(time or 0), y3.const.镜头移动类型[移动类型] or y3.const.镜头移动类型.匀速)
 end
 
 ---设置镜头跟随单位
@@ -143,8 +162,7 @@ end
 ---@param z_offset? number 偏移高度
 ---@param camera_distance? number 距离焦点距离
 function M.设置_第三人称跟随(player, unit, sensitivity, yaw, pitch, x_offset, y_offset, z_offset, camera_distance)
-    GameAPI.camera_set_tps_follow_unit(player.handle, unit.handle, sensitivity, yaw, pitch, x_offset, y_offset, z_offset,
-                                       camera_distance)
+    GameAPI.camera_set_tps_follow_unit(player.handle, unit.handle, sensitivity, yaw, pitch, x_offset, y_offset, z_offset, camera_distance)
 end
 
 ---取消镜头第三人称跟随单位
@@ -177,6 +195,7 @@ function M.设置_角度(player, angle_type, value, time)
     GameAPI.camera_set_param_rotate(player.handle, angle_type, Fix32(value), Fix32(time))
 end
 
+
 ---设置焦点距离
 ---@param player Player 玩家
 ---@param value number 值
@@ -184,6 +203,7 @@ end
 function M.设置_焦点距离(player, value, time)
     GameAPI.camera_set_param_distance(player.handle, Fix32(value), Fix32(time))
 end
+
 
 ---设置镜头焦点高度
 ---@param player Player 玩家
@@ -193,6 +213,7 @@ function M.设置_焦点高度(player, value, time)
     GameAPI.camera_set_focus_y(player.handle, Fix32(value), Fix32(time))
 end
 
+
 ---限制镜头移动范围
 ---@param player Player 玩家
 ---@param area Area 移动范围区域
@@ -200,11 +221,13 @@ function M.设置_限制移动范围(player, area)
     GameAPI.camera_limit_area(player.handle, area.handle)
 end
 
+
 ---关闭镜头限制移动
 ---@param player Player 玩家
 function M.设置_关闭限制移动(player)
     GameAPI.camera_limit_area_close(player.handle)
 end
+
 
 ---设置是否可以鼠标移动镜头
 ---@param player Player 玩家
@@ -213,6 +236,7 @@ function M.设置_是否可以鼠标移动镜头(player, state)
     GameAPI.set_mouse_move_camera_mode(player.handle, state)
 end
 
+
 ---设置镜头移动速度（鼠标）
 ---@param player Player 玩家
 ---@param speed number 移动速度
@@ -220,12 +244,14 @@ function M.设置_鼠标移动镜头速度(player, speed)
     GameAPI.set_mouse_move_camera_speed(player.handle, speed)
 end
 
+
 ---设置镜头移动速度（键盘）
 ---@param player Player 玩家
 ---@param speed number 移动速度
 function M.设置_键盘移动镜头速度(player, speed)
     GameAPI.set_key_move_camera_speed(player.handle, speed)
 end
+
 
 -- 获取玩家摄像机朝向。
 -- 必须先设置 `y3.config.sync.camera = true`
@@ -241,6 +267,7 @@ function M.获取_玩家摄像机朝向(player)
     return y3.点.从handle获取(py_point)
 end
 
+
 -- 获取玩家摄像机中心射线的碰撞点。
 -- 必须先设置 `y3.config.sync.camera = true`
 ---@param player Player 玩家
@@ -253,14 +280,6 @@ function M.获取_玩家摄像机射线碰撞点(player)
     -- TODO 见问题2
     ---@diagnostic disable-next-line: param-type-mismatch
     return y3.点.从handle获取(py_point)
-end
-
----@param 玩家 Player
----@param 过渡时间? number
----@param 移动类型? y3.Const.镜头移动类型
-function M:应用配置(玩家, 过渡时间, 移动类型)
-    ---@diagnostic disable-next-line: param-type-mismatch
-    GameAPI.apply_camera_conf(玩家.handle, self.handle, 过渡时间 or 0, y3.const.镜头移动类型[移动类型] or y3.const.镜头移动类型.匀速)
 end
 
 return M

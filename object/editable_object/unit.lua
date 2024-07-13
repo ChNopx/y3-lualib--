@@ -37,7 +37,6 @@ function M:__init(py_unit_id, py_unit)
     return self
 end
 
----@private
 function M:__del()
     M.ref_manager:remove(self.id)
     y3.py_proxy.kill(self.phandle)
@@ -60,8 +59,11 @@ end)
 
 ---通过py层的单位实例获取lua层的单位实例
 ---@param py_unit py.Unit
----@return Unit
+---@return Unit?
 function M.从handle获取(py_unit)
+    if not py_unit then
+        return nil
+    end
     local id = y3.py_proxy.wrap(py_unit):api_get_id()
     local unit = M.ref_manager:get(id)
     return unit
@@ -112,7 +114,6 @@ y3.游戏:事件('单位-移除后', function(trg, data)
     data.触发单位:移除()
 end)
 
-
 ---是否存在
 ---@return boolean is_exist 是否存在
 function M:是否存在()
@@ -124,6 +125,15 @@ end
 function M:获取_ID()
     return self.id
 end
+
+-- --移除技能(指定类型)
+-- --> 拼错了，请改用 `Unit:remove_ability_by_key`
+-- ---@deprecated
+-- ---@param type y3.Const.AbilityType | y3.Const.AbilityTypeAlias 技能类型
+-- ---@param ability_key py.AbilityKey 物编id
+-- function M:remove_abilitiy_by_key(type, ability_key)
+--     self.phandle:api_remove_abilities_in_type(y3.const.AbilityType[type] or type, ability_key)
+-- end
 
 ---移除技能(指定类型)
 ---@param type y3.Const.技能分类
@@ -334,7 +344,7 @@ function M.创建(owner, unit_id, point, direction)
         ---@diagnostic disable-next-line: param-type-mismatch
         owner.handle
     )
-    return M.从handle获取(py_unit)
+    return M.从handle获取(py_unit) --[[@as Unit]]
 end
 
 ---杀死单位
@@ -358,9 +368,7 @@ end
 ---@param clone_hp_mp boolean 复制当前的生命值和魔法值
 ---@return Unit?
 function M.创建幻象(illusion_unit, call_unit, player, point, direction, clone_hp_mp)
-    local py_unit = GameAPI.create_illusion(illusion_unit.handle, call_unit.handle, player.handle, point.handle,
-        Fix32(direction),
-        clone_hp_mp)
+    local py_unit = GameAPI.create_illusion(illusion_unit.handle, call_unit.handle, player.handle, point.handle, Fix32(direction), clone_hp_mp)
     if not py_unit then
         return nil
     end
@@ -398,10 +406,9 @@ end
 ---@param skill? Ability 技能
 ---@param source_unit? Unit 单位
 ---@param text_type? y3.Const.DamageTextType 跳字类型
----@param 轨迹? integer
-function M:造成治疗(value, skill, source_unit, text_type, 轨迹)
-    self.phandle:api_heal(Fix32(value), text_type ~= nil, skill and skill.handle or nil,
-        source_unit and source_unit.handle or nil, text_type or '', 轨迹)
+---@param 跳字轨迹? integer
+function M:造成治疗(value, skill, source_unit, text_type, 跳字轨迹)
+    self.phandle:api_heal(Fix32(value), text_type ~= nil, skill and skill.handle or nil, source_unit and source_unit.handle or nil, text_type or '', 跳字轨迹)
 end
 
 ---添加标签
@@ -525,8 +532,7 @@ end
 ---@param back_to_nearest boolean 偏离后就近返回
 ---@return py.UnitCommand # 命令
 function M:命令_沿路径移动(road, patrol_mode, can_attack, start_from_nearest, back_to_nearest)
-    local command = GameAPI.create_unit_command_move_along_road(road.handle, patrol_mode, can_attack, start_from_nearest,
-        back_to_nearest)
+    local command = GameAPI.create_unit_command_move_along_road(road.handle, patrol_mode, can_attack, start_from_nearest, back_to_nearest)
     self:命令_发布(command)
     return command
 end
@@ -558,8 +564,7 @@ function M:命令_释放技能(ability, target, extra_target)
     end
     -- TODO 见问题2
     ---@diagnostic disable-next-line: param-type-mismatch
-    local command = GameAPI.create_unit_command_use_skill(ability.handle, tar_pos_1, tar_pos_2, tar_unit, tar_item,
-        tar_dest)
+    local command = GameAPI.create_unit_command_use_skill(ability.handle, tar_pos_1, tar_pos_2, tar_unit, tar_item, tar_dest)
     self:命令_发布(command)
     return command
 end
@@ -684,8 +689,7 @@ function M:设置属性(attr_name, value, attr_type)
     if attr_type == nil then
         attr_type = '基础'
     end
-    self.phandle:api_set_attr_by_attr_element(y3.const.UnitAttr[attr_name] or attr_name, Fix32(value),
-        y3.const.UnitAttrType[attr_type])
+    self.phandle:api_set_attr_by_attr_element(y3.const.UnitAttr[attr_name] or attr_name, Fix32(value),y3.const.UnitAttrType[attr_type] or attr_type)
 end
 
 ---增加属性
@@ -711,8 +715,7 @@ function M:增加属性(attr_name, value, attr_type)
     if attr_type == nil then
         attr_type = '增益'
     end
-    self.phandle:api_add_attr_by_attr_element(attr_name, Fix32(value),
-        y3.const.UnitAttrType[attr_type])
+    self.phandle:api_add_attr_by_attr_element(attr_name, Fix32(value),y3.const.UnitAttrType[attr_type])
 end
 
 ---增加属性
@@ -1074,6 +1077,7 @@ function M:get_affect_techs()
     return lua_table
 end
 
+
 -- 设置白天的视野范围
 ---@param value number
 function M:set_day_vision(value)
@@ -1192,6 +1196,7 @@ end
 ---@field 持续时间? number 持续时间
 ---@field 循环周期? number 心跳周期
 ---@field 层数? integer 层数
+---@field data? table 自定义数据
 
 ---给单位添加魔法效果
 ---@param data Buff.AddData
@@ -1203,7 +1208,8 @@ function M:添加_魔法效果(data)
         data.关联技能 and data.关联技能.handle or nil,
         Fix32(data.持续时间 or -1),
         Fix32(data.循环周期 or 0.0),
-        data.层数 or 1
+        data.层数 or 1,
+        data.data or nil
     )
     if not py_buff then
         return nil
@@ -1949,7 +1955,7 @@ end
 --- 造成伤害
 ---@class Unit.DamageData
 ---@field 目标 Unit|Item|Destructible
----@field 伤害类型 y3.Const.DamageType
+---@field 伤害类型 y3.Const.DamageType | integer # 也可以传任意数字
 ---@field 伤害值 number
 ---@field 关联技能? Ability # 关联技能
 ---@field 跳字类型? y3.Const.DamageTextType # 跳字类型
@@ -1962,37 +1968,23 @@ end
 
 ---@param 参数 Unit.DamageData
 function M:造成伤害(参数)
-    local data = {
-        target = 参数.目标,
-        type = 参数.伤害类型,
-        damage = 参数.伤害值,
-        ability = 参数.关联技能,
-        text_type = 参数.跳字类型,
-        text_track = 参数.跳字轨迹类型,
-        common_attack = 参数.视为普攻,
-        critical = 参数.必定暴击,
-        no_miss = 参数.必定命中,
-        particle = 参数.特效,
-        socket = 参数.特效挂接点,
-    }
-
     GameAPI.apply_damage(
         self.handle,
-        data.ability and data.ability.handle or nil,
+        参数.关联技能 and 参数.关联技能.handle or nil,
         -- TODO 参考问题3
         ---@diagnostic disable-next-line: param-type-mismatch
-        data.target.handle,
-        y3.const.DamageTypeMap[data.type] or data.type,
-        Fix32(data.damage),
-        data.text_type ~= nil,
+        参数.目标.handle,
+        y3.const.DamageTypeMap[参数.伤害类型] or 参数.伤害类型,
+        Fix32(参数.伤害值),
+        参数.跳字类型 ~= nil,
         nil,
-        data.common_attack or false,
-        data.critical or false,
-        data.no_miss or false,
-        data.particle or nil,
-        data.socket or '',
-        data.text_type or 'physics',
-        data.text_track or 0
+        参数.视为普攻 or false,
+        参数.必定暴击 or false,
+        参数.必定命中 or false,
+        参数.特效 or nil,
+        参数.特效挂接点 or '',
+        参数.跳字类型 or 'physics',
+        参数.跳字轨迹类型 or 0
     )
 end
 

@@ -59,8 +59,11 @@ end)
 
 ---通过py层的技能实例获取lua层的道具实例
 ---@param  py_item py.Item py层的道具实例
----@return Item # 返回在lua层初始化后的lua层道具实例
+---@return Item? # 返回在lua层初始化后的lua层道具实例
 function M.获取于hd(py_item)
+    if not py_item then
+        return nil
+    end
     local id = y3.py_proxy.wrap(py_item):api_get_id() or 0
     return M.获取于id(id)
 end
@@ -285,7 +288,6 @@ end
 function M:获取增益属性(key)
     return self.phandle:api_get_attr('ATTR_BONUS', key):float()
 end
-
 ---设置生命值
 ---@param value number 生命值
 function M:设置生命值(value)
@@ -306,18 +308,14 @@ function M:设置是否可丢弃(dropable)
 end
 
 ---添加标签
----@param tag string[] 标签
+---@param tag string 标签
 function M:添加标签(tag)
-    for index, value in ipairs(tag) do
-        self.phandle:api_add_tag(value)
-    end
+    self.phandle:api_add_tag(tag)
 end
 
----@param tag string[] 标签
+---@param tag string 标签
 function M:移除标签(tag)
-    for index, value in ipairs(tag) do
-        self.phandle:api_remove_tag(value)
-    end
+    self.phandle:api_remove_tag(tag)
 end
 
 ---设置物品可否出售
@@ -506,7 +504,7 @@ function M.创建到点(point, item_key, player)
         player = y3.玩家(31)
     end
     local py_item = GameAPI.create_item_by_id(point.handle, item_key, player.handle)
-    return M.获取于hd(py_item)
+    return M.获取于hd(py_item) --[[@as Item]]
 end
 
 ---获取物品购买售价

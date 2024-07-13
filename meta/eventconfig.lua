@@ -1,6 +1,5 @@
 -- 此文件由 `tools/genGameAPI` 生成，请勿手动修改。
 ---@meta
----@diagnostic disable: incomplete-signature-doc
 
 ---@class EventConfig
 local M = {}
@@ -570,8 +569,7 @@ M.config["技能-建造完成"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -631,8 +629,7 @@ M.config["技能-层数变化"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -651,8 +648,7 @@ M.config["技能-学习"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -671,8 +667,7 @@ M.config["技能-充能进度变化"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -691,8 +686,7 @@ M.config["技能-可用状态变化"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -711,8 +705,7 @@ M.config["技能-沉默状态变化"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -731,8 +724,7 @@ M.config["技能-图标变化"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -1691,8 +1683,7 @@ M.config["技能类型-前置条件成立"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -1710,8 +1701,7 @@ M.config["技能类型-前置条件不成立"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -1729,8 +1719,7 @@ M.config["科技类型-前置条件成立"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -1748,8 +1737,7 @@ M.config["科技类型-前置条件不成立"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -1767,8 +1755,7 @@ M.config["技能-升级"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -1800,8 +1787,7 @@ end\
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -1845,8 +1831,7 @@ end\
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -1877,8 +1862,7 @@ end\
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -1922,8 +1906,7 @@ end\
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -1954,8 +1937,7 @@ end\
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -1986,8 +1968,7 @@ end\
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2062,8 +2043,7 @@ end\
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2094,8 +2074,7 @@ end\
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2139,8 +2118,7 @@ end\
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2159,8 +2137,7 @@ M.config["技能-获得"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2179,8 +2156,7 @@ M.config["技能-失去"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2199,8 +2175,7 @@ M.config["技能-交换"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2219,8 +2194,7 @@ M.config["技能-禁用"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2239,8 +2213,7 @@ M.config["技能-启用"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2259,8 +2232,7 @@ M.config["技能-冷却结束"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2279,8 +2251,7 @@ M.config["效果-获得"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2299,8 +2270,7 @@ M.config["效果-失去"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2319,8 +2289,7 @@ M.config["效果-心跳"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2339,8 +2308,7 @@ M.config["效果-叠加"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2359,8 +2327,7 @@ M.config["效果-层数变化"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2380,8 +2347,7 @@ M.config["效果-即将获得"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2401,8 +2367,7 @@ M.config["效果-覆盖"] = {
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -2614,6 +2579,75 @@ end\
             name = "event_name",
             type = "string",
         },
+    },
+}
+
+---@alias EventParam.界面-滑动条变化 EventParam.ET_TRIGGER_UI_SLIDER_CHANGE_EVENT
+M.config["界面-滑动条变化"] = {
+    __class__ = "EventConfigBuilder",
+    desc = "滑动条变化时触发",
+    extraArgs = {
+        [1] = {
+            code = "function (data)\
+    local ui = y3.ui.get_by_handle(data.player, data.comp_name)\
+    return ui\
+end\
+",
+            desc = "ui",
+            name = "ui",
+            type = "UI",
+        },
+    },
+    key = "ET_TRIGGER_UI_SLIDER_CHANGE_EVENT",
+    name = "界面-滑动条变化",
+    object = "Player",
+    params = {
+    },
+}
+
+---@alias EventParam.界面-聊天框可见性变化 EventParam.ET_TRIGGER_UI_CHATBOX_VISIBLE_CHANGE_EVENT
+M.config["界面-聊天框可见性变化"] = {
+    __class__ = "EventConfigBuilder",
+    desc = "聊天框可见性变化时触发",
+    extraArgs = {
+        [1] = {
+            code = "function (data)\
+    local ui = y3.ui.get_by_handle(data.player, data.comp_name)\
+    return ui\
+end\
+",
+            desc = "ui",
+            name = "ui",
+            type = "UI",
+        },
+    },
+    key = "ET_TRIGGER_UI_CHATBOX_VISIBLE_CHANGE_EVENT",
+    name = "界面-聊天框可见性变化",
+    object = "Player",
+    params = {
+    },
+}
+
+---@alias EventParam.界面-复选框变化 EventParam.ET_TRIGGER_UI_CHECKBOX_CHANGE_EVENT
+M.config["界面-复选框变化"] = {
+    __class__ = "EventConfigBuilder",
+    desc = "复选框变化时触发",
+    extraArgs = {
+        [1] = {
+            code = "function (data)\
+    local ui = y3.ui.get_by_handle(data.player, data.comp_name)\
+    return ui\
+end\
+",
+            desc = "ui",
+            name = "ui",
+            type = "UI",
+        },
+    },
+    key = "ET_TRIGGER_UI_CHECKBOX_CHANGE_EVENT",
+    name = "界面-复选框变化",
+    object = "Player",
+    params = {
     },
 }
 
@@ -2996,7 +3030,7 @@ M.config["本地-选中-单位"] = {
 ---@alias EventParam.选中-取消 EventParam.CANCEL_SELECT_UNIT
 M.config["选中-取消"] = {
     __class__ = "EventConfigBuilder",
-    desc = "玩家的选中状态被取消时触发",
+    desc = "玩家主动取消选中时触发",
     extraArgs = {
     },
     key = "CANCEL_SELECT_UNIT",
@@ -3014,6 +3048,32 @@ M.config["本地-选中-取消"] = {
     },
     key = "ET_ASYNC_CANCEL_SELECT_UNIT",
     name = "本地-选中-取消",
+    object = "Player",
+    params = {
+    },
+}
+
+---@alias EventParam.选中-失去单位 EventParam.LOST_SELECT_UNIT
+M.config["选中-失去单位"] = {
+    __class__ = "EventConfigBuilder",
+    desc = "玩家被动失去对单位的选中状态时触发",
+    extraArgs = {
+    },
+    key = "LOST_SELECT_UNIT",
+    name = "选中-失去单位",
+    object = "Player",
+    params = {
+    },
+}
+
+---@alias EventParam.本地-选中-失去单位 EventParam.ET_ASYNC_LOST_SELECT_UNIT
+M.config["本地-选中-失去单位"] = {
+    __class__ = "EventConfigBuilder",
+    desc = "本地玩家被动失去对单位的选中状态时触发",
+    extraArgs = {
+    },
+    key = "ET_ASYNC_LOST_SELECT_UNIT",
+    name = "本地-选中-失去单位",
     object = "Player",
     params = {
     },
@@ -3127,8 +3187,7 @@ end\
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -3175,8 +3234,7 @@ end\
     },
     extraObjs = {
         [1] = {
-            ---@param self Ability
-            getter = function(self) return self:获取_拥有者_单位() end,
+            getter = function(self) return self --[[@as Ability]] :获取_拥有者_单位() end,
             luaType = "Unit",
         },
     },
@@ -3679,6 +3737,9 @@ M.config["对话框-点击按钮"] = {
 ---@field 事件 fun(self: self, event: "投射物-创建", callback: fun(trg: Trigger, data: EventParam.投射物-创建)): Trigger
 ---@field 事件 fun(self: self, event: "投射物-死亡", callback: fun(trg: Trigger, data: EventParam.投射物-死亡)): Trigger
 ---@field 事件 fun(self: self, event: "界面-消息", event_name: string, callback: fun(trg: Trigger, data: EventParam.界面-消息)): Trigger
+---@field 事件 fun(self: self, event: "界面-滑动条变化", callback: fun(trg: Trigger, data: EventParam.界面-滑动条变化)): Trigger
+---@field 事件 fun(self: self, event: "界面-聊天框可见性变化", callback: fun(trg: Trigger, data: EventParam.界面-聊天框可见性变化)): Trigger
+---@field 事件 fun(self: self, event: "界面-复选框变化", callback: fun(trg: Trigger, data: EventParam.界面-复选框变化)): Trigger
 ---@field 事件 fun(self: self, event: "键盘-按下", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.键盘-按下)): Trigger
 ---@field 事件 fun(self: self, event: "键盘-抬起", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.键盘-抬起)): Trigger
 ---@field 事件 fun(self: self, event: "本地-键盘-按下", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.本地-键盘-按下)): Trigger
@@ -3703,6 +3764,8 @@ M.config["对话框-点击按钮"] = {
 ---@field 事件 fun(self: self, event: "本地-选中-单位", callback: fun(trg: Trigger, data: EventParam.本地-选中-单位)): Trigger
 ---@field 事件 fun(self: self, event: "选中-取消", callback: fun(trg: Trigger, data: EventParam.选中-取消)): Trigger
 ---@field 事件 fun(self: self, event: "本地-选中-取消", callback: fun(trg: Trigger, data: EventParam.本地-选中-取消)): Trigger
+---@field 事件 fun(self: self, event: "选中-失去单位", callback: fun(trg: Trigger, data: EventParam.选中-失去单位)): Trigger
+---@field 事件 fun(self: self, event: "本地-选中-失去单位", callback: fun(trg: Trigger, data: EventParam.本地-选中-失去单位)): Trigger
 ---@field 事件 fun(self: self, event: "选中-物品", callback: fun(trg: Trigger, data: EventParam.选中-物品)): Trigger
 ---@field 事件 fun(self: self, event: "本地-选中-物品", callback: fun(trg: Trigger, data: EventParam.本地-选中-物品)): Trigger
 ---@field 事件 fun(self: self, event: "玩家-检测到作弊", callback: fun(trg: Trigger, data: EventParam.玩家-检测到作弊)): Trigger
@@ -3824,6 +3887,9 @@ M.config["对话框-点击按钮"] = {
 ---@field 事件 fun(self: Player, event: "选中-可破坏物", callback: fun(trg: Trigger, data: EventParam.选中-可破坏物)): Trigger
 ---@field 事件 fun(self: Player, event: "本地-选中-可破坏物", callback: fun(trg: Trigger, data: EventParam.本地-选中-可破坏物)): Trigger
 ---@field 事件 fun(self: Player, event: "界面-消息", event_name: string, callback: fun(trg: Trigger, data: EventParam.界面-消息)): Trigger
+---@field 事件 fun(self: Player, event: "界面-滑动条变化", callback: fun(trg: Trigger, data: EventParam.界面-滑动条变化)): Trigger
+---@field 事件 fun(self: Player, event: "界面-聊天框可见性变化", callback: fun(trg: Trigger, data: EventParam.界面-聊天框可见性变化)): Trigger
+---@field 事件 fun(self: Player, event: "界面-复选框变化", callback: fun(trg: Trigger, data: EventParam.界面-复选框变化)): Trigger
 ---@field 事件 fun(self: Player, event: "键盘-按下", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.键盘-按下)): Trigger
 ---@field 事件 fun(self: Player, event: "键盘-抬起", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.键盘-抬起)): Trigger
 ---@field 事件 fun(self: Player, event: "本地-键盘-按下", key: y3.Const.KeyboardKey, callback: fun(trg: Trigger, data: EventParam.本地-键盘-按下)): Trigger
@@ -3848,6 +3914,8 @@ M.config["对话框-点击按钮"] = {
 ---@field 事件 fun(self: Player, event: "本地-选中-单位", callback: fun(trg: Trigger, data: EventParam.本地-选中-单位)): Trigger
 ---@field 事件 fun(self: Player, event: "选中-取消", callback: fun(trg: Trigger, data: EventParam.选中-取消)): Trigger
 ---@field 事件 fun(self: Player, event: "本地-选中-取消", callback: fun(trg: Trigger, data: EventParam.本地-选中-取消)): Trigger
+---@field 事件 fun(self: Player, event: "选中-失去单位", callback: fun(trg: Trigger, data: EventParam.选中-失去单位)): Trigger
+---@field 事件 fun(self: Player, event: "本地-选中-失去单位", callback: fun(trg: Trigger, data: EventParam.本地-选中-失去单位)): Trigger
 ---@field 事件 fun(self: Player, event: "选中-物品", callback: fun(trg: Trigger, data: EventParam.选中-物品)): Trigger
 ---@field 事件 fun(self: Player, event: "本地-选中-物品", callback: fun(trg: Trigger, data: EventParam.本地-选中-物品)): Trigger
 ---@field 事件 fun(self: Player, event: "玩家-检测到作弊", callback: fun(trg: Trigger, data: EventParam.玩家-检测到作弊)): Trigger

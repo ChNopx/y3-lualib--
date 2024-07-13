@@ -1,4 +1,4 @@
----@meta
+---@meta _
 
 lua_script_path = ''
 
@@ -14,7 +14,7 @@ local Unit = Class 'py.Unit'
 ---@class py.ProjectileEntity
 local Projectile = Class 'py.ProjectileEntity'
 
----@param luaNumber number
+---@param luaNumber number | string
 ---@return py.Fixed Fixed
 function Fix32(luaNumber) end
 
@@ -223,3 +223,5 @@ function Unit:api_add_multi_state(state_enum) end
 
 ---@param state_enum integer
 function Unit:api_remove_multi_state(state_enum) end
+
+---@alias y3.Number number | py.Fixed | XDouble

@@ -14,7 +14,6 @@ Extends('Projectile', 'ObjectEvent')
 ---@class Projectile: KV
 Extends('Projectile', 'KV')
 
----@private
 function M:__tostring()
     return string.format('{projectile|%s|%s}'
     , self:获取物编ID()
@@ -22,7 +21,6 @@ function M:__tostring()
     )
 end
 
----@private
 ---@param id integer
 ---@param py_projectile py.ProjectileEntity
 ---@return self
@@ -33,7 +31,6 @@ function M:__init(id, py_projectile)
     return self
 end
 
----@private
 function M:__del()
     M.ref_manager:remove(self.id)
     y3.py_proxy.kill(self.phandle)
@@ -53,8 +50,11 @@ M.ref_manager = New 'Ref' ('Projectile', function(id)
 end)
 
 ---@param py_projectile py.ProjectileEntity
----@return Projectile projectile
+---@return Projectile? projectile
 function M.获取于HD(py_projectile)
+    if not py_projectile then
+        return nil
+    end
     local id = y3.py_proxy.wrap(py_projectile):api_get_id()
     local projectile = M.ref_manager:get(id)
     return projectile
@@ -116,7 +116,7 @@ end
 ---获取投射物朝向
 ---@return number angle 投射物朝向
 function M:获取朝向()
-    return self.phandle:api_get_face_angle() or 0.0
+    return y3.helper.tonumber(self.phandle:api_get_face_angle()) or 0.0
 end
 
 ---获取投射物所在点
@@ -184,7 +184,7 @@ function M.创建(data)
             data.remove_immediately or false,
             data.remove_immediately == nil and true or false
         )
-        return M.获取于HD(py_obj)
+        return M.获取于HD(py_obj) --[[@as Projectile]]
     else
         ---@cast target Unit
         local py_obj = GameAPI.create_projectile_on_socket(
@@ -202,7 +202,7 @@ function M.创建(data)
             data.remove_immediately or false,
             data.remove_immediately == nil and true or false
         )
-        return M.获取于HD(py_obj)
+        return M.获取于HD(py_obj) --[[@as Projectile]]
     end
 end
 
@@ -285,6 +285,15 @@ function M:获取关联技能()
         return y3.技能.获取于HD(py_ability)
     end
     return nil
+end
+
+--设置投射物的可见性
+---@param visible boolean # 是否可见
+---@param player_or_group? Player | PlayerGroup # 应用于哪些玩家，默认为所有玩家
+function M:set_visible(visible, player_or_group)
+    player_or_group = player_or_group or y3.玩家组.获取所有玩家()
+    ---@diagnostic disable-next-line: param-type-mismatch
+    self.phandle:api_set_projectile_visible(player_or_group.handle, visible)
 end
 
 return M

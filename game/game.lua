@@ -335,10 +335,8 @@ end
 ---@param blue number 颜色b
 ---@param concentration number 浓度
 ---@param speed number 流速
-function M.set_fog_attribute(fog, direction, pos_x, pos_y, pos_z, scale_x, scale_y, scale_z, red, green, blue,
-                             concentration, speed)
-    GameAPI.set_fog_attr(fog, 4095, direction, pos_x, pos_y, pos_z, scale_x, scale_y, scale_z, red, green, blue,
-        concentration, speed)
+function M.set_fog_attribute(fog, direction, pos_x, pos_y, pos_z, scale_x, scale_y, scale_z, red, green, blue,concentration, speed)
+    GameAPI.set_fog_attr(fog, 4095, direction, pos_x, pos_y, pos_z, scale_x, scale_y, scale_z, red, green, blue,concentration, speed)
 end
 
 ---设置雾效属性(新)
@@ -596,16 +594,20 @@ end
 ---@class ServerTime: osdate
 ---@field timestamp integer # 时间戳
 ---@field msec integer # 毫秒
+---@field time_zone integer # 时区
 
---获取当前的服务器时间
+--获取当前的服务器时间。为了保证结果的一致性需要你自己指定时区。
+---@param time_zone? integer # 时区，默认为0。获取中国的时间请传入8。
 ---@return ServerTime
-function M.获取_当前服务器时间()
+function M.获取_当前服务器时间(time_zone)
     local init_time_stamp = GameAPI.get_game_init_time_stamp()
     local runned_sec, runned_ms = math.modf(GameAPI.get_cur_game_time():float())
     local time_stamp = init_time_stamp + runned_sec
-    local result = os.date("!*t", time_stamp) --[[@as ServerTime]]
+    local time_zone_stamp = time_stamp + (time_zone or 0) * 3600
+    local result = os.date("!*t", time_zone_stamp) --[[@as ServerTime]]
     result.msec = math.floor(runned_ms * 1000)
     result.timestamp = time_stamp
+    result.time_zone = time_zone or 0
     return result
 end
 
@@ -869,11 +871,12 @@ function M.on_client_tick(callback)
     M._client_tick_callback = callback
 end
 
+
 ---@class HttpRequestOptions
 ---@field post? boolean # post 请求还是 get 请求
 ---@field port? integer # 端口号
 ---@field timeout? number # 超时时间，默认为2秒
----@field headers? table # 请求头
+---@field headers? table | py.Dict # 请求头
 
 --发送 http 请求，成功或失败都会触发回调，
 --成功时回调的参数是 http 返回的 body，失败时回调的参数是 `nil`
@@ -882,12 +885,16 @@ end
 ---@param callback? fun(body?: string)
 ---@param options? HttpRequestOptions
 function M:发起HTTP请求(url, body, callback, options)
+    local headers = options and options.headers
+    if type(headers) == 'table' then
+        headers = y3.helper.py_dict(headers)
+    end
     request_url(url
     , options and options.post or false
     , body
     , options and options.port
     , options and options.timeout or 2
-    , options and options.headers
+    , headers
     , callback
     )
 end

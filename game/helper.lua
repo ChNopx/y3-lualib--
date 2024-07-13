@@ -27,7 +27,7 @@ function M.pack_list(lua_list, unwrapper)
     return py_list
 end
 
----@param n number | py.Fixed | nil
+---@param n? y3.Number
 ---@return number?
 function M.tonumber(n)
     if not n then
@@ -38,6 +38,23 @@ function M.tonumber(n)
     else
         return n:float()
     end
+end
+
+---@param n? y3.Number
+---@return 'number' | 'Fix32' | 'XDouble' | nil
+function M.number_type(n)
+    local tp = type(n)
+    if tp == 'number' then
+        return 'number'
+    elseif tp == 'userdata' then
+        if n['__name'] == 'LuaFix32' then
+            return 'Fix32'
+        end
+        if n['__name'] == 'xDouble' then
+            return 'XDouble'
+        end
+    end
+    return nil
 end
 
 ---@param v any
@@ -59,6 +76,18 @@ function M.as_lua(v, recursive)
         end
     end
     return v
+end
+
+---@param t? table
+---@return py.Dict
+function M.py_dict(t)
+    local dict = GlobalAPI.lua_get_python_empty_dict()
+    if t then
+        for k, v in pairs(t) do
+            dict[k] = v
+        end
+    end
+    return dict
 end
 
 return M

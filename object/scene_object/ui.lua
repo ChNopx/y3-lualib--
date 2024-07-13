@@ -174,6 +174,7 @@ function M:设置文本(str)
     return self
 end
 
+
 --设置控件透明度
 ---@param value number 透明度
 ---@return self
@@ -210,6 +211,7 @@ function M:设置是否拦截操作(intercepts)
     return self
 end
 
+
 --设置控件深度
 ---@param deep integer 深度
 ---@return self
@@ -218,6 +220,7 @@ function M:设置深度(deep)
     return self
 end
 
+
 --设置进度条最大值
 ---@param progress number 进度条最大值
 ---@return self
@@ -225,6 +228,7 @@ function M:设置进度条最大值(progress)
     GameAPI.set_progress_bar_max_value(self.player.handle, self.handle, progress)
     return self
 end
+
 
 --设置进度条当前值
 ---@param progress number 进度条当前值
@@ -235,6 +239,7 @@ function M:设置进度条当前值(progress, time)
     return self
 end
 
+
 --启用/禁用按钮
 ---@param enable boolean 启用/禁用按钮
 ---@return self
@@ -242,6 +247,7 @@ function M:设置是否启用按钮(enable)
     GameAPI.set_ui_comp_enable(self.player.handle, self.handle, enable)
     return self
 end
+
 
 --设置控件尺寸
 ---@param width number 宽度
@@ -302,6 +308,13 @@ function M:绑定技能到技能元件(skill)
     return self
 end
 
+-- --绑定技能
+-- ---@param ability? Ability 技能对象
+-- ---@return self
+-- function M:bind_ability(ability)
+--     return self:set_skill_on_ui_comp(ability)
+-- end
+
 --绑定单位到魔法效果显示栏组件
 ---@param unit Unit 单位
 ---@return self
@@ -309,6 +322,7 @@ function M:绑定魔法效果到魔法效果元件(unit)
     GameAPI.set_buff_on_ui_comp(self.player.handle, unit.handle, self.handle)
     return self
 end
+
 
 -- 绑定物品对象到物品组件
 ---@param item Item 物品对象
@@ -325,6 +339,7 @@ function M.设置默认游戏界面开关(player, visible)
     GameAPI.set_prefab_ui_visible(player.handle, visible)
 end
 
+
 --设置模型控件的模型
 ---@param modelid py.ModelKey 模型id
 ---@return self
@@ -340,8 +355,7 @@ end
 ---@param clone_attach? boolean # 继承挂接模型
 ---@param clone_material? boolean # 继承材质变化
 function M:设置模型控件单位(model_unit, clone_effect, clone_attach, clone_material)
-    GameAPI.set_ui_model_unit(self.player.handle, self.handle, model_unit.handle, clone_effect, clone_attach,
-        clone_material)
+    GameAPI.set_ui_model_unit(self.player.handle, self.handle, model_unit.handle, clone_effect, clone_attach, clone_material)
 end
 
 --改变小地图图片
@@ -350,6 +364,7 @@ end
 function M.设置小地图图片(player, img)
     GameAPI.change_mini_map_img_with_icon(player.handle, img)
 end
+
 
 --设置物品组件绑定单位
 ---@param unit Unit
@@ -377,24 +392,17 @@ function M:设置按钮组合快捷键(key)
     return self
 end
 
----@alias y3.控件.按钮状态
----| "常态"
----| "悬浮"
----| "按下"
----| "禁用"
-
-
 --设置按钮不同状态下的文本
----@param status y3.控件.按钮状态
+---@param status y3.Const.UIButtonStatus 状态
 ---@param text string 文本
 ---@return self
 function M:设置按钮文本(status, text)
-    GameAPI.set_ui_btn_status_string(self.player.handle, self.handle, y3.const.UIButtonStatus[status], text)
+    GameAPI.set_ui_btn_status_string(self.player.handle, self.handle, status, text)
     return self
 end
 
 --设置按钮不同状态下的图片
----@param status y3.控件.按钮状态
+---@param status y3.Const.UIButtonStatus 状态
 ---@param img integer 图片id
 ---@return self
 function M:设置按钮图片(status, img)
@@ -410,6 +418,7 @@ function M:设置智能施法快捷键(key)
     return self
 end
 
+
 --设置智能施法组合快捷键
 ---@param key integer 辅助按键
 ---@return self
@@ -418,6 +427,7 @@ function M:设置智能施法组合快捷键(key)
     return self
 end
 
+
 --播放/停止技能按钮激活动效
 ---@param isopen boolean 播放/停止技能按钮激活动效
 ---@return self
@@ -425,6 +435,7 @@ function M:播放_停止_技能按钮激活动效(isopen)
     GameAPI.set_skill_btn_action_effect(self.player.handle, self.handle, isopen)
     return self
 end
+
 
 --设置文本颜色
 ---@param r number 红色
@@ -446,6 +457,7 @@ function M:设置_文本颜色_HEX(color, a)
     return self
 end
 
+
 --设置模型控件的镜头视野
 ---@param fov number 视野范围
 ---@return self
@@ -453,6 +465,7 @@ function M:设置_模型控件镜头视野(fov)
     GameAPI.change_showroom_fov(self.player.handle, self.handle, fov)
     return self
 end
+
 
 --设置模型控件的镜头坐标
 ---@param x number x轴
@@ -464,6 +477,7 @@ function M:设置_模型控件镜头坐标(x, y, z)
     return self
 end
 
+
 --设置模型控件的镜头旋转
 ---@param x number x轴
 ---@param y number y轴
@@ -473,6 +487,7 @@ function M:设置_模型控件镜头旋转(x, y, z)
     GameAPI.change_showroom_crotation(self.player.handle, self.handle, x, y, z)
     return self
 end
+
 
 --系统消息提示
 ---@param player Player 玩家
@@ -502,6 +517,7 @@ function M:设置_相对旋转(rot)
     return self
 end
 
+
 --设置控件绝对坐标
 --> 同 `UI:set_absolute_pos`
 ---@param x number x轴
@@ -512,6 +528,7 @@ function M:设置_绝对坐标(x, y)
     return self
 end
 
+
 --设置控件绝对旋转
 ---@param rot number 角度
 ---@return self
@@ -519,6 +536,7 @@ function M:设置_绝对旋转(rot)
     GameAPI.set_ui_comp_world_rotation(self.player.handle, self.handle, rot)
     return self
 end
+
 
 --设置控件绝对缩放
 ---@param x number x轴
@@ -529,6 +547,7 @@ function M:设置_绝对缩放(x, y)
     return self
 end
 
+
 --设置控件相对缩放
 ---@param x number x轴
 ---@param y number y轴
@@ -538,12 +557,14 @@ function M:设置_相对缩放(x, y)
     return self
 end
 
+
 --设置小地图显示模式
 ---@param player Player 玩家
 ---@param type integer 小地图显示模式
 function M.设置_小地图显示模式(player, type)
     GameAPI.change_mini_map_color_type(player.handle, type)
 end
+
 
 --设置滑动条的进度
 ---@param percent number 滑动条的进度
@@ -560,8 +581,14 @@ function M:解绑()
     return self
 end
 
+-- --遍历某个界面控件的子节点
+-- --> 名字太长了，改用 `get_childs` 吧
+-- ---@return UI[]
+-- function M:get_ui_comp_children()
+--     return self:get_childs()
+-- end
+
 --遍历某个界面控件的子节点
---> 名字太长了，改用 `get_childs` 吧
 ---@return UI[]
 function M:获取_所有子控件()
     local py_list = GameAPI.get_ui_comp_children(self.player.handle, self.handle)
@@ -608,7 +635,6 @@ function M:播放_缩放动画(start_x, start_y, end_x, end_y, duration, ease_ty
     return self
 end
 
-
 --设置模型控件观察点
 ---@param x number x轴
 ---@param y number y轴
@@ -619,14 +645,25 @@ function M:设置_模型控件观察点(x, y, z)
     return self
 end
 
+-- --绑定单位属性到玩家界面控件的属性
+-- --> 请改用 `UI:bind_unit_attr`
+-- ---@deprecated
+-- ---@param uiAttr string 界面控件属性
+-- ---@param attr string 单位属性
+-- ---@param accuracy integer 小数精度
+-- ---@return self
+-- function M:bind_player_attribute(uiAttr, attr, accuracy)
+--     GameAPI.set_ui_comp_bind_attr(self.player.handle, self.handle, uiAttr, attr, accuracy)
+--     return self
+-- end
+
 --绑定单位属性到玩家界面控件的属性
 ---@param uiAttr y3.Const.控件属性 界面控件属性
 ---@param attr_name y3.Const.UnitAttr|string 单位属性
 ---@param accuracy? integer 小数精度，默认为0
 ---@return self
 function M:绑定_单位属性(uiAttr, attr_name, accuracy)
-    GameAPI.set_ui_comp_bind_attr(self.player.handle, self.handle, y3.const.控件属性[uiAttr],
-        y3.const.UnitAttr[attr_name] or attr_name, accuracy or 0)
+    GameAPI.set_ui_comp_bind_attr(self.player.handle, self.handle, y3.const.控件属性[uiAttr], y3.const.UnitAttr[attr_name] or attr_name, accuracy or 0)
     return self
 end
 
@@ -637,18 +674,17 @@ end
 ---@param accuracy integer 小数精度
 ---@return self
 function M:绑定_玩家属性(uiAttr, player, attr_or_var, accuracy)
-    GameAPI.set_ui_comp_bind_player_prop(self.player.handle, self.handle, y3.const.控件属性[uiAttr], player.handle,
-        attr_or_var, accuracy)
+    GameAPI.set_ui_comp_bind_player_prop(self.player.handle, self.handle, uiAttr, player.handle, attr_or_var, accuracy)
     return self
 end
 
 --绑定全局变量到玩家界面控件的属性
 ---@param uiAttr y3.Const.控件属性
 ---@param globalVar string 全局属性
----@param accuracy integer 小数精度
+---@param accuracy? integer 小数精度
 ---@return self
 function M:绑定_全局变量(uiAttr, globalVar, accuracy)
-    GameAPI.set_ui_comp_bind_var(self.player.handle, self.handle, y3.const.控件属性[uiAttr], globalVar, accuracy)
+    GameAPI.set_ui_comp_bind_var(self.player.handle, self.handle, y3.const.控件属性[uiAttr], globalVar, accuracy or 0)
     return self
 end
 
@@ -787,6 +823,20 @@ end
 function M:get_checkbox_selected()
     return GameAPI.get_checkbox_selected(self.player.handle, self.handle)
 end
+
+-- --创建悬浮文字
+-- --> 请改用 `UI.create_floating_text2`
+-- ---@deprecated
+-- ---@param point Point 点
+-- ---@param text_type y3.Const.HarmTextType 跳字类型
+-- ---@param str string 文字
+-- ---@param player_group? PlayerGroup 玩家组
+-- ---@param jump_word_track? integer 跳字轨迹类型
+-- function M.create_floating_text(point, text_type, str, player_group, jump_word_track)
+--     -- TODO 见问题2
+--     ---@diagnostic disable-next-line: param-type-mismatch
+--     GameAPI.create_harm_text_ex(point.handle, y3.const.HarmTextType[text_type] or text_type, str, (player_group or y3.player_group.get_all_players()).handle, jump_word_track or 0)
+-- end
 
 --创建悬浮文字
 ---@param point Point 点
@@ -1084,8 +1134,7 @@ end
 ---@return self
 function M:播放_序列帧(loop, space, start_frame, end_frame)
     ---@diagnostic disable-next-line: param-type-mismatch
-    GameAPI.play_ui_comp_sequence(self.player.handle, self.handle, loop or false, space or 0.1, start_frame or 0,
-        end_frame or -1)
+    GameAPI.play_ui_comp_sequence(self.player.handle, self.handle, loop or false, space or 0.1, start_frame or 0, end_frame or -1)
     return self
 end
 
@@ -1118,16 +1167,11 @@ function M:设置物品拖拽方式(drag_operation)
     GameAPI.set_equip_slot_drag_operation(self.player.handle, self.handle, drag_operation_map[drag_operation] or 0)
 end
 
----@param 处理方式 string
----@param 最小字号 integer
-function M:设置_文本超框处理方式(处理方式, 最小字号)
-    ---@diagnostic disable-next-line: param-type-mismatch
-    GameAPI.set_text_over_length_handling_type(self.player.handle, self.handle, 处理方式, 最小字号)
-end
-
+--添加UI到网格列表
 ---@param 控件 UI
 ---@param 位置? integer 默认是最后一个, 如果位置大于当前最大位置, 也是默认最后一个
 function M:网格列表_插入控件(控件, 位置)
+    ---@diagnostic disable-next-line: param-type-mismatch
     GameAPI.insert_ui_gridview_comp(self.player.handle, 控件.handle, self.handle, 位置)
 end
 
@@ -1201,8 +1245,16 @@ function M:设置_父控件(parent_uid, keep_pos, keep_rotation, keep_scale)
     GameAPI.set_ui_comp_parent(self.player.handle, self.handle, parent_uid.handle, keep_pos, keep_rotation, keep_scale)
 end
 
+--清空UI控件图片
 function M:清空_图片()
     GameAPI.clear_ui_comp_image(self.player.handle, self.handle)
+end
+
+---@param 处理方式 string
+---@param 最小字号 integer
+function M:设置_文本超框处理方式(处理方式, 最小字号)
+    ---@diagnostic disable-next-line: param-type-mismatch
+    GameAPI.set_text_over_length_handling_type(self.player.handle, self.handle, 处理方式, 最小字号)
 end
 
 return M

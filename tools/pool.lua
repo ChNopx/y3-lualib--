@@ -156,8 +156,9 @@ function M.创建()
 end
 
 ---@param 参数 {[any]:{权重:integer}} {{权重=?}}
+---@param 键做值? boolean
 ---@return self
-function M.创建自数据表(参数)
+function M.创建自数据表(参数, 键做值)
     local r = M.创建()
     for index, value in pairs(参数) do
         r:添加对象(value, value.权重)

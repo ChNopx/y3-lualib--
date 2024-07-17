@@ -6,7 +6,6 @@ local M = Class 'SceneUI'
 
 M.type = 'scene_ui'
 
----@private
 ---@param py_scene_node py.SceneNode
 ---@return self
 function M:__init(py_scene_node)
@@ -14,7 +13,6 @@ function M:__init(py_scene_node)
     return self
 end
 
----@private
 function M:__del()
     GameAPI.delete_scene_node(self.handle)
 end
@@ -49,8 +47,7 @@ end)
 function M.创建到点(sceneui, point, range, height)
     -- TODO 见问题2
     ---@diagnostic disable-next-line: param-type-mismatch
-    local py_scene_node = GameAPI.create_scene_node_on_point(y3.const.SceneUI[sceneui] or sceneui, point.handle,
-        range or 10000, height or 0)
+    local py_scene_node = GameAPI.create_scene_node_on_point(y3.const.SceneUI[sceneui] or sceneui, point.handle, range or 10000, height or 0)
     local scene_ui = M.获取于HD(py_scene_node)
     return scene_ui
 end
@@ -76,8 +73,7 @@ function M.创建到单位挂接点(scene_ui_type, player, unit, socket_name, di
     if follow_scale == nil then
         follow_scale = true
     end
-    local py_scene_node = GameAPI.create_scene_node_on_unit_ex(y3.const.SceneUI[scene_ui_type] or scene_ui_type,
-        player.handle, unit.handle, socket_name, follow_scale, distance or 100000)
+    local py_scene_node = GameAPI.create_scene_node_on_unit_ex(y3.const.SceneUI[scene_ui_type] or scene_ui_type, player.handle, unit.handle, socket_name, follow_scale, distance or 100000)
     return M.获取于HD(py_scene_node)
 end
 

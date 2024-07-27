@@ -71,6 +71,7 @@ function M:isValidName(name)
 end
 
 function M:fire()
+    M._reloading = true
     log.info('=========== reload start ===========')
     local beforeReloadCallbacksNoReload = {}
     local afterReloadCallbacksNoReload = {}
@@ -112,6 +113,7 @@ function M:fire()
         xpcall(data.callback, log.error, self, self:isValidName(data.name))
     end
     log.info('=========== reload finish ===========')
+    M._reloading = false
 end
 
 ---@private
@@ -146,12 +148,14 @@ end
 ---@return unknown
 ---@return unknown loaderdata
 function require(modname)
-    M.includeStack[#M.includeStack + 1] = false
-    local suc, result, loaderdata = xpcall(originRequire, debug.traceback, modname)
-    M.includeStack[#M.includeStack] = nil
-    if not suc then
-        error(result)
+    if package.loaded[modname] ~= nil then
+        return package.loaded[modname], nil
     end
+    M.includeStack[#M.includeStack + 1] = false
+    local _ <close> = y3.util.defer(function ()
+        M.includeStack[#M.includeStack] = nil
+    end)
+    local result, loaderdata = originRequire(modname)
     if loaderdata ~= nil then
         M.modNameMap[loaderdata] = modname
     end
@@ -175,14 +179,6 @@ function M.getIncludeName(func)
         return nil
     end
     return modName
-    -- if not debug or not debug.getinfo then
-    --     return nil
-    -- end
-    -- local info = debug.getinfo(func, 'S')
-    -- local source = info.source
-    -- local modName = source:match('/script/(.*)%.') --[[@as string]]
-    -- modName = modName:gsub('\\', '.')
-    -- return modName
 end
 
 ---@return string?
@@ -202,6 +198,12 @@ function M.reload(optional)
     optional = optional or M.defaultReloadOptional
     local reload = New 'Reload' (optional)
     reload:fire()
+end
+
+---是否正在重载
+---@return boolean
+function M.isReloading()
+    return M._reloading == true
 end
 
 -- 注册在重载之前的回调

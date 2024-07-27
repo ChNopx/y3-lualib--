@@ -164,14 +164,15 @@ end
 ---移动物品
 ---@param item Item 物品
 ---@param 槽位类型 y3.Const.物品槽位类型
----@param index integer 槽位
----@param force boolean 是否强制移动，`true`: 如果目标有物品，则移动到另一个空格中；`false`: 如果目标有物品，则要移动的物品会掉落
+---@param index? integer 槽位
+---@param force? boolean 是否强制移动，`true`: 如果目标有物品，则移动到另一个空格中；`false`: 如果目标有物品，则要移动的物品会掉落
 function M:移动_物品(item, 槽位类型, index, force)
-    self.phandle:api_shift_item_new(item.handle, y3.const.ShiftSlotType[槽位类型], index, force)
+    self.phandle:api_shift_item_new(item.handle, y3.const.ShiftSlotType[槽位类型], index or 0, force or false)
 end
 
 -- 交换物品
 -- 如果目标位置是空的，则相当于把物品移动了过去
+---@deprecated
 ---@param item Item 物品
 ---@param type y3.Const.物品槽位类型
 ---@param index integer 槽位
@@ -408,6 +409,7 @@ end
 ---@param text_type? y3.Const.DamageTextType 跳字类型
 ---@param 跳字轨迹? integer
 function M:造成治疗(value, skill, source_unit, text_type, 跳字轨迹)
+    ---@diagnostic disable-next-line: missing-parameter
     self.phandle:api_heal(Fix32(value), text_type ~= nil, skill and skill.handle or nil, source_unit and source_unit.handle or nil, text_type or '', 跳字轨迹)
 end
 
@@ -1968,6 +1970,7 @@ end
 
 ---@param 参数 Unit.DamageData
 function M:造成伤害(参数)
+    ---@diagnostic disable-next-line: missing-parameter
     GameAPI.apply_damage(
         self.handle,
         参数.关联技能 and 参数.关联技能.handle or nil,

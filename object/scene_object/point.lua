@@ -72,22 +72,28 @@ end)
 ---点的x坐标
 ---@return number
 function M:获取x()
-    local x = GlobalAPI.get_fixed_coord_index(self.handle, 0):float()
-    return x
+    if not self.x then
+        self.x = GlobalAPI.get_fixed_coord_index(self.handle, 0):float()
+    end
+    return self.x
 end
 
 ---点的y坐标
 ---@return number
 function M:获取y()
-    local y = GlobalAPI.get_fixed_coord_index(self.handle, 2):float()
-    return y
+    if not self.y then
+        self.y = GlobalAPI.get_fixed_coord_index(self.handle, 2):float()
+    end
+    return self.y
 end
 
 ---点的z坐标
 ---@return number
 function M:获取z()
-    local z = GlobalAPI.get_fixed_coord_index(self.handle, 1):float()
-    return z
+    if not self.z then
+        self.z = GlobalAPI.get_fixed_coord_index(self.handle, 1):float()
+    end
+    return self.z
 end
 
 ---@return Point
@@ -116,15 +122,13 @@ function M.创建自坐标(x, y, z)
     local py_point = GlobalAPI.coord_to_point(Fix32(x), Fix32(y), Fix32(z or 0))
     -- TODO 见问题2
     ---@diagnostic disable-next-line: param-type-mismatch
-    return M.从handle获取(py_point)
+    local p = M.从handle获取(py_point)
+    p.x = x
+    p.y = y
+    p.z = z or 0
+    return p
 end
 
----@param tostring文本 string
----@return self
-function M.创建自字符串(tostring文本)
-    local 坐标数组 = 字符串.分割(字符串.取右边文本(tostring文本, "|"), ",")
-    return M.创建自坐标(到数值(坐标数组[1]), 到数值(坐标数组[2]), 到数值(坐标数组[3]))
-end
 
 ---点向方向偏移
 ---@param point Point 点
@@ -170,6 +174,13 @@ function M:get_random_point(radius)
     local p = GameAPI.get_random_point_in_circular(self.handle, Fix32(radius))
     ---@diagnostic disable-next-line: param-type-mismatch
     return M.从handle获取(p)
+end
+
+---@param tostring文本 string
+---@return self
+function M.创建自字符串(tostring文本)
+    local 坐标数组 = 字符串.分割(字符串.取右边文本(tostring文本, "|"), ",")
+    return M.创建自坐标(到数值(坐标数组[1]), 到数值(坐标数组[2]), 到数值(坐标数组[3]))
 end
 
 return M

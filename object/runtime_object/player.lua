@@ -134,7 +134,7 @@ end
 ---设置属性值
 ---@param key y3.Const.PlayerAttr | string 属性名
 ---@param value number 值
-function M:设置属性值(key, value)
+function M:设置_属性值(key, value)
     key = y3.const.PlayerAttr[key] or key
     ---@cast key py.RoleResKey
     self.phandle:set_role_res(key, Fix32(value))
@@ -143,7 +143,7 @@ end
 ---增加属性值
 ---@param key y3.Const.PlayerAttr | string 属性名
 ---@param value number 值
-function M:增加属性值(key, value)
+function M:增加_属性值(key, value)
     key = y3.const.PlayerAttr[key] or key
     ---@cast key py.RoleResKey
     self.phandle:change_role_res(key, Fix32(value))
@@ -315,9 +315,9 @@ function M:is_in_shadow(point)
 end
 
 ---获取玩家属性
----@param key y3.Const.PlayerAttr | string # 属性名
+---@param key y3.Const.PlayerAttr  # 属性名
 ---@return number role_res 玩家属性
-function M:get_attr(key)
+function M:获取_属性值(key)
     key = y3.const.PlayerAttr[key] or key
     ---@cast key py.RoleResKey
     return self.phandle:get_role_res(key):float()
@@ -606,7 +606,7 @@ end
 ---获取玩家属性名称
 ---@param key py.RoleResKey 属性名
 ---@return string name 属性名称
-function M.get_res_name(key)
+function M.获取_属性名称(key)
     return GameAPI.get_role_res_name(key)
 end
 

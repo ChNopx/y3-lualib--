@@ -1747,7 +1747,7 @@ end
 ---是否可见
 ---@param target_unit Unit 目标单位
 ---@return boolean visibility 目标是否可见
-function M:can_visible(target_unit)
+function M:设置_是否可见(target_unit)
     -- TODO 见问题5
     ---@diagnostic disable-next-line: param-type-mismatch
     return GameAPI.get_visibility_of_unit(self.handle, target_unit.handle)
@@ -1862,14 +1862,14 @@ end
 ---是否是友方
 ---@param target_unit Unit 目标单位
 ---@return boolean is_enemy  是敌对关系
-function M:is_ally(target_unit)
+function M:判断_是否为友方(target_unit)
     return GameAPI.is_ally(self.handle, target_unit.handle)
 end
 
 ---是否是敌人
 ---@param target_unit Unit 目标单位
 ---@return boolean is_enemy  是敌对关系
-function M:is_enemy(target_unit)
+function M:判断_是否为敌方(target_unit)
     return GameAPI.is_enemy(self.handle, target_unit.handle)
 end
 

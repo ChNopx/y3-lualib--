@@ -11,6 +11,10 @@ function M:__init()
     return self
 end
 
+function M:__len()
+    return #self.order
+end
+
 -- 添加对象
 ---@param obj any
 ---@param w? integer

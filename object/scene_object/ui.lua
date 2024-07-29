@@ -1093,13 +1093,13 @@ end
 
 -- 获取窗口宽度
 ---@return integer
-function M:获取_窗口宽度()
+function M.获取_窗口宽度()
     return GameAPI.get_window_real_x_size()
 end
 
 -- 获取窗口高度
 ---@return integer
-function M:获取_窗口高度()
+function M.获取_窗口高度()
     return GameAPI.get_window_real_y_size()
 end
 

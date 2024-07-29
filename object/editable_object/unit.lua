@@ -172,7 +172,7 @@ end
 
 -- 交换物品
 -- 如果目标位置是空的，则相当于把物品移动了过去
----@deprecated
+----@deprecated
 ---@param item Item 物品
 ---@param type y3.Const.物品槽位类型
 ---@param index integer 槽位

@@ -445,10 +445,10 @@ function M.set_damage_factor(attack_type, armor_type, ratio)
 end
 
 ---设置复合属性
----@param primary_attribute string 一级属性
----@param secondary_attr string 二级属性
+---@param primary_attribute y3.Const.UnitAttr 一级属性
+---@param secondary_attr y3.Const.UnitAttr 二级属性
 ---@param value number 属性值
-function M.set_compound_attributes(primary_attribute, secondary_attr, value)
+function M.设置_复合属性影响(primary_attribute, secondary_attr, value)
     GameAPI.set_slave_coeff(primary_attribute, secondary_attr, Fix32(value))
 end
 
@@ -456,7 +456,7 @@ end
 ---@param primary_attribute string 一级属性
 ---@param secondary_attr string 二级属性
 ---@return number coefficient 系数
-function M.get_compound_attributes(primary_attribute, secondary_attr)
+function M.获取_复合属性影响(primary_attribute, secondary_attr)
     return GameAPI.get_slave_coeff(primary_attribute, secondary_attr):float()
 end
 

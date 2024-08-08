@@ -243,7 +243,7 @@ end
 ---@param attr_name string 属性名
 ---@param value number 属性值
 ---@param attr_type string 属性类型
-function M:set_attr(attr_name, value, attr_type)
+function M:设置_单位属性(attr_name, value, attr_type)
     self.phandle:api_set_attr(attr_type, attr_name, value)
 end
 

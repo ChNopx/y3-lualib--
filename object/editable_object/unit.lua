@@ -639,11 +639,11 @@ end
 ---@return py.UnitCommand
 function M:命令_跟随单位(参数)
     local command = GameAPI.create_unit_command_follow(参数.目标单位.handle
-        ,Fix32(参数.间隔 or 0.5)
-        ,Fix32(参数.跟随距离 or 50)
-        ,Fix32(参数.重新跟随距离 or -1)
-        , Fix32(参数.跟随角度 or -10000)
-        , 参数.跟随死亡单位 or false
+    , Fix32(参数.间隔 or 0.5)
+    , Fix32(参数.跟随距离 or 50)
+    , Fix32(参数.重新跟随距离 or -1)
+    , Fix32(参数.跟随角度 or -10000)
+    , 参数.跟随死亡单位 or false
     )
     self:命令_发布(command)
     return command
@@ -691,7 +691,7 @@ function M:设置属性(attr_name, value, attr_type)
     if attr_type == nil then
         attr_type = '基础'
     end
-    self.phandle:api_set_attr_by_attr_element(y3.const.UnitAttr[attr_name] or attr_name, Fix32(value),y3.const.UnitAttrType[attr_type] or attr_type)
+    self.phandle:api_set_attr_by_attr_element(y3.const.UnitAttr[attr_name] or attr_name, Fix32(value), y3.const.UnitAttrType[attr_type] or attr_type)
 end
 
 ---增加属性
@@ -717,7 +717,7 @@ function M:增加属性(attr_name, value, attr_type)
     if attr_type == nil then
         attr_type = '增益'
     end
-    self.phandle:api_add_attr_by_attr_element(attr_name, Fix32(value),y3.const.UnitAttrType[attr_type])
+    self.phandle:api_add_attr_by_attr_element(attr_name, Fix32(value), y3.const.UnitAttrType[attr_type])
 end
 
 ---增加属性
@@ -1078,7 +1078,6 @@ function M:get_affect_techs()
     end
     return lua_table
 end
-
 
 -- 设置白天的视野范围
 ---@param value number
@@ -2015,6 +2014,16 @@ end
 ---@return py.CampID
 function M:get_camp_id()
     return self.phandle:api_get_camp_id() or 0
+end
+
+---@param 类型 y3.Const.物品槽位类型
+---@return integer
+function M:获取_物品栏槽位数(类型)
+    if 类型 == "物品栏" then
+        return self:获取物品栏槽位数()
+    else
+        return self:获取背包栏槽位数()
+    end
 end
 
 return M

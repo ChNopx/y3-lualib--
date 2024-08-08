@@ -134,5 +134,7 @@ y3.await.setSleepWaker(y3.l计时器.wait)
 
 log.info('LuaLib版本：', y3.version)
 
+require 'y3.Y3-PxEx.init'
+
 ---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
 y3.游戏:发起事件C('$Y3-初始化')

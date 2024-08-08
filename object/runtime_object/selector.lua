@@ -98,7 +98,7 @@ function M:不在单位组(ug)
 end
 
 -- 条件 - 拥有特定标签
----@param tag 单位.标签
+---@param tag string
 ---@return self
 function M:拥有标签(tag)
     ---@private
@@ -107,7 +107,7 @@ function M:拥有标签(tag)
 end
 
 -- 条件 - 不拥有特定标签
----@param tag 单位.标签?
+---@param tag string?
 ---@return self
 function M:排除标签(tag)
     ---@private

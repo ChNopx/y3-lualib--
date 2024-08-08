@@ -32,7 +32,7 @@ function m:__init(参数)
     参数.单位或点 = self.局_单位
     参数.单位挂接点 = 'root'
     self.局_单位:移动_强制传送到点(参数.创建点, false)
-    self.局_特效 = y3.粒子特效.创建到单位或点(参数)
+    self.局_特效 = y3.粒子特效.创建到单位或点(参数 --[[@as Particle.Param.CreateChine]])
 end
 
 function m:移除()

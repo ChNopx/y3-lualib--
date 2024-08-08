@@ -414,13 +414,13 @@ function M:造成治疗(value, skill, source_unit, text_type, 跳字轨迹)
 end
 
 ---添加标签
----@param tag 单位.标签
+---@param tag string
 function M:添加标签(tag)
     self.phandle:api_add_tag(tag)
 end
 
 ---移除标签
----@param tag 单位.标签
+---@param tag string
 function M:移除标签(tag)
     self.phandle:api_remove_tag(tag)
 end
@@ -1733,7 +1733,7 @@ function M:get_team()
 end
 
 ---是否具有标签
----@param tag_name 单位.标签
+---@param tag_name string
 ---@return boolean has_tag 具有标签
 function M:是否_存在标签(tag_name)
     return GlobalAPI.has_tag(self.handle, tag_name)

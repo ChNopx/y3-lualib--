@@ -117,20 +117,20 @@ function M:生命_不足_是否_可以_释放()
 end
 
 ---是否具有标签
----@param tag 技能.标签 标签
+---@param tag string 标签
 ---@return boolean
 function M:是否_具有_标签(tag)
     return GlobalAPI.has_tag(self.handle, tag)
 end
 
 --添加标签
----@param tag 技能.标签 标签
+---@param tag string 标签
 function M:添加_标签(tag)
     self.phandle:api_add_tag(tag)
 end
 
 ---移除标签
----@param tag 技能.标签 标签
+---@param tag string 标签
 function M:移除_标签(tag)
     self.phandle:api_remove_tag(tag)
 end

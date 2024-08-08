@@ -222,7 +222,7 @@ end
 
 
 ---@param str string  格式化文本 =  获得经验{经验} {150}
----@param ... table <string, 枚举.颜色, integer>[] -- 内容, 颜色, 长度
+---@param ... table <string, string, integer>[] -- 内容, 颜色, 长度
 ---@return string
 格式化文本彩色 = function(str, ...)
     local 颜色数组 = 表.创建自不定长参数(...)
